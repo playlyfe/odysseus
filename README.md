@@ -70,4 +70,4 @@ limitations under the License.
 
 ---
 
-![Playlyfe](http://playlyfe.com/favicon.ico)
+![Playlyfe](http://www.playlyfe.com/favicon.ico)

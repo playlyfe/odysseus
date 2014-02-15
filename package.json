@@ -11,7 +11,7 @@
     "notifications"
   ],
   "author": "Kumar Harsh (khs@playlyfe.com)",
-  "license": "MIT",
+  "license": "Apache2.0",
   "dependencies": {
     "lodash": "~2.4.1",
     "moment": "~2.5.1"
