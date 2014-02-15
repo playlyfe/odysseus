@@ -1,0 +1,26 @@
+{
+  "name": "athena",
+  "version": "0.1.0",
+  "description": "A notification story compiler based on Playlyfe events",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha"
+  },
+  "keywords": [
+    "playlyfe",
+    "notifications"
+  ],
+  "author": "Kumar Harsh (khs@playlyfe.com)",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "~2.4.1",
+    "moment": "~2.5.1"
+  },
+  "devDependencies": {
+    "mocha": "~1.17.1",
+    "chai": "~1.5.0",
+    "jscoverage": "~0.3.6",
+    "sinon-chai": "~2.3.1",
+    "sinon": "~1.6.0"
+  }
+}
