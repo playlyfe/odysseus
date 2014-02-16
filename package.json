@@ -4,14 +4,32 @@
   "description": "A notification story compiler based on Playlyfe events",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha"
+    "test": "mocha"
   },
   "keywords": [
     "playlyfe",
-    "notifications"
+    "notifications",
+    "event",
+    "string compiler"
   ],
-  "author": "Kumar Harsh (khs@playlyfe.com)",
-  "license": "Apache2.0",
+  "main": "./index",
+  "author": {
+    "name": "Kumar Harsh",
+    "email": "khs@playlyfe.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/playlyfe/athena.git"
+  },
+  "bugs": {
+    "url": "http://github.com/playlyfe/athena/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/MIT"
+    }
+  ],
   "dependencies": {
     "lodash": "~2.4.1",
     "moment": "~2.5.1"
