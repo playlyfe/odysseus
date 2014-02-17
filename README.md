@@ -1,4 +1,4 @@
-Playlyfe Athena
+Playlyfe Athena  [![Build Status](https://travis-ci.org/playlyfe/athena.png?branch=develop)](https://travis-ci.org/playlyfe/athena)
 ===
 
 *A notification story compiler based on Playlyfe events*

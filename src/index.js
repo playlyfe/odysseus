@@ -101,24 +101,21 @@ var Athena = (function() {
                 "ath.story.process.name || ath.story.process.id}}"+
               "</span>"+
             "${ } }$ as "+
+            "<ul class='#{ath.markup.role_list}#'>"+
             "${ if (ath.ctx.isTeam) { }$"+
-              "<ul class='#{ath.markup.role_list}#'>"+
-                "${ _.forEach(ath.story.roles, function(enabled, role) { }$"+
-                  "<li class='#{ath.markup.role}#'>{{role}}</li>"+
-                "${ }) }$"+
-              "</ul>"+
+              "${ _.forEach(ath.story.roles, function(enabled, role) { }$"+
+                "<li class='#{ath.markup.role}#'>{{role}}</li>"+
+              "${ }) }$"+
             "${ } else if (ath.ctx.isProcess) { }$"+
-              "<ul class='#{ath.markup.role_list}#'>"+
-                "${ _.forEach(ath.story.roles, function(role, lane) { }$"+
-                  "<li>"+
-                    "<span class='#{ath.markup.role}#'>{{role}}</span> in "+
-                    "<span class='#{ath.markup.lane}#'>"+
-                      "{{lane === '*' ? 'All': lane }}"+
-                    "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
-                  "</li>"+
-                "${ })}$"+
-              "</ul>"+
-            "${ } }$."+
+              "${ _.forEach(ath.story.roles, function(role, lane) { }$"+
+                "<li>"+
+                  "<span class='#{ath.markup.role}#'>{{role}}</span> in "+
+                  "<span class='#{ath.markup.lane}#'>"+
+                    "{{lane === '*' ? 'All': lane }}"+
+                  "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
+                "</li>"+
+              "${ })}$"+
+            "${ } }$</ul>."+
             "<time class='#{ath.markup.timestamp}#' title='On "+
               "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
               "{{ts.fromNow()}}</time>"
@@ -201,6 +198,34 @@ var Athena = (function() {
               "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
               "{{ts.fromNow()}}</time>"
     },
+    "join:request:reject": {
+      text: "{{ath.ctx.isPlayer ? 'Your' : (ath.story.player.alias||ath.story.player.id) + '\u2019s'}} "+
+            "request to join "+
+            "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+            "${ if (!ath.ctx.isItem) { }$"+
+              " '{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                "ath.story.process.name || ath.story.process.id}}'"+
+            "${ } }$ has been rejected by "+
+            "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}.\n"+
+            "[{{moment(ath.story.timestamp).format('llll')}}]",
+
+      html: "<span class='#{ath.markup.target}#'>"+
+              "{{ath.ctx.isPlayer ? 'Your' : (ath.story.player.alias||ath.story.player.id) + '\u2019s'}}"+
+            "</span> request to join "+
+            "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+            "${ if (!ath.ctx.isItem) { }$"+
+              " <span class='#{ath.markup.object}#'>"+
+                "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                "ath.story.process.name || ath.story.process.id}}"+
+              "</span>"+
+            "${ } }$ has been rejected by "+
+            "<span class='#{ath.markup.actor}#'>"+
+              "{{ath.ctx.isActor ? 'you' : ath.story.actor.alias||ath.story.actor.id}}"+
+            "</span>."+
+            "<time class='#{ath.markup.timestamp}#' title='On "+
+              "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
+              "{{ts.fromNow()}}</time>"
+    },
     "invite:accept": {
       text: "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}} "+
             "accepted "+
@@ -236,24 +261,75 @@ var Athena = (function() {
                 "ath.story.process.name || ath.story.process.id}}"+
               "</span>"+
             "${ } }$ as "+
+            "<ul class='#{ath.markup.role_list}#'>"+
             "${ if (ath.ctx.isTeam) { }$"+
-              "<ul class='#{ath.markup.role_list}#'>"+
+              "${ _.forEach(ath.story.roles, function(enabled, role) { }$"+
+                "<li class='#{ath.markup.role}#'>{{role}}</li>"+
+              "${ }) }$"+
+            "${ } else if (ath.ctx.isProcess) { }$"+
+              "${ _.forEach(ath.story.roles, function(role, lane) { }$"+
+                "<li>"+
+                  "<span class='#{ath.markup.role}#'>{{role}}</span> in "+
+                  "<span class='#{ath.markup.lane}#'>"+
+                    "{{lane === '*' ? 'All': lane }}"+
+                  "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
+                "</li>"+
+              "${ })}$"+
+            "${ } }$</ul>."+
+            "<time class='#{ath.markup.timestamp}#' title='On "+
+              "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
+              "{{ts.fromNow()}}</time>"
+    },
+    "invite:reject": {
+      text: "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}} "+
+            "rejected "+
+            "{{ath.ctx.isInviter ? 'your' : (ath.story.inviter.alias||ath.story.inviter.id) + '\u2019s'}} "+
+            "invitation to join "+
+            "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+            "${ if (!ath.ctx.isItem) { }$"+
+              " '{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                "ath.story.process.name || ath.story.process.id}}'"+
+            "${ } }$ as "+
+            "${ if (ath.ctx.isTeam) { }$"+
+              "{{_.keys(ath.story.roles).join(', ')}}"+
+            "${ } else if (ath.ctx.isProcess) { }$"+
+              "{{_.reduce(ath.story.roles, function(list, role, lane) {"+
+                "list.push(["+
+                  "role + ' in ' + (lane === '*' ? 'All lanes' : (lane + ' lane'))"+
+                "]);"+
+                "return list;"+
+              "}, []).join(', ')}}"+
+            "${ } }$.\n"+
+            "[{{moment(ath.story.timestamp).format('llll')}}]",
+
+      html: "<span class='#{ath.markup.actor}#'>"+
+              "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
+            "</span> rejected "+
+            "<span class='#{ath.markup.target}#'>"+
+              "{{ath.ctx.isInviter ? 'your' : (ath.story.inviter.alias||ath.story.inviter.id) + '\u2019s'}}"+
+            "</span> invitation to join "+
+            "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+            "${ if (!ath.ctx.isItem) { }$"+
+              " <span class='#{ath.markup.object}#'>"+
+                "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                "ath.story.process.name || ath.story.process.id}}"+
+              "</span>"+
+            "${ } }$ as "+
+            "<ul class='#{ath.markup.role_list}#'>"+
+            "${ if (ath.ctx.isTeam) { }$"+
                 "${ _.forEach(ath.story.roles, function(enabled, role) { }$"+
                   "<li class='#{ath.markup.role}#'>{{role}}</li>"+
                 "${ }) }$"+
-              "</ul>"+
             "${ } else if (ath.ctx.isProcess) { }$"+
-              "<ul class='#{ath.markup.role_list}#'>"+
-                "${ _.forEach(ath.story.roles, function(role, lane) { }$"+
-                  "<li>"+
-                    "<span class='#{ath.markup.role}#'>{{role}}</span> in "+
-                    "<span class='#{ath.markup.lane}#'>"+
-                      "{{lane === '*' ? 'All': lane }}"+
-                    "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
-                  "</li>"+
-                "${ })}$"+
-              "</ul>"+
-            "${ } }$."+
+              "${ _.forEach(ath.story.roles, function(role, lane) { }$"+
+                "<li>"+
+                  "<span class='#{ath.markup.role}#'>{{role}}</span> in "+
+                  "<span class='#{ath.markup.lane}#'>"+
+                    "{{lane === '*' ? 'All': lane }}"+
+                  "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
+                "</li>"+
+              "${ })}$"+
+            "${ } }$</ul>."+
             "<time class='#{ath.markup.timestamp}#' title='On "+
               "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
               "{{ts.fromNow()}}</time>"
@@ -325,6 +401,33 @@ var Athena = (function() {
                 "${ }); }$"+
               "${ } }$"+
             "</ul>."+
+            "<time class='#{ath.markup.timestamp}#' title='On "+
+              "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
+              "{{ts.fromNow()}}</time>"
+    },
+    "role:request:reject": {
+      text: "{{ath.ctx.isPlayer ? 'Your' : (ath.story.player.alias||ath.story.player.id) + '\u2019s'}} "+
+            "request for a change of roles in "+
+            "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+            "${ if (!ath.ctx.isItem) { }$"+
+              " '{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                "ath.story.process.name || ath.story.process.id}}'"+
+            "${ } }$ has been rejected by "+
+            "{{ath.ctx.isActor ? 'you' : ath.story.actor.alias||ath.story.actor.id}}.\n"+
+            "[{{moment(ath.story.timestamp).format('llll')}}]",
+      html: "<span class='#{ath.markup.target}#'>"+
+              "{{ath.ctx.isPlayer ? 'Your' : (ath.story.player.alias||ath.story.player.id) + '\u2019s'}}"+
+            "</span> request for a change of roles in "+
+            "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+            "${ if (!ath.ctx.isItem) { }$"+
+              " <span class='#{ath.markup.object}#'>"+
+                "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                "ath.story.process.name || ath.story.process.id}}"+
+              "</span>"+
+            "${ } }$ has been rejected by "+
+            "<span class='#{ath.markup.actor}#'>"+
+              "{{ath.ctx.isActor ? 'you' : ath.story.actor.alias||ath.story.actor.id}}"+
+            "</span>."+
             "<time class='#{ath.markup.timestamp}#' title='On "+
               "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
               "{{ts.fromNow()}}</time>"
@@ -467,21 +570,18 @@ var Athena = (function() {
               "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
               "{{ts.fromNow()}}</time>"
     },
-
-
-
-    /**
-     * Notification Templates
-     */
     "join:request": {
-      text: "${ if(story.state === 'PENDING' && !ath.ctx.isActor) { }$"+
-              "{{ath.story.actor.alias||ath.story.actor.id}} wants to join "+
-              "{{ath.ctx.isItem ? 'this' : 'the'}} "+
-              "{{ath.ctx.isTeam ? 'team' : 'process'}}"+
+      text: "${ if(ath.story.state === 'PENDING') { }$"+
+              "${ if(ath.ctx.isActor) { }$"+
+                "Your request to join "+
+              "${ } else { }$"+
+                "{{ath.story.actor.alias||ath.story.actor.id}} wants to join "+
+              "${ } }$"+
+              "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
               "${ if (!ath.ctx.isItem) { }$"+
-              " '{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
-                "ath.story.process.name || ath.story.process.id}}'"+
-              "${ } }$ with the roles "+
+                " '{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}'"+
+              "${ } }$ as "+
               "${ if (ath.ctx.isTeam) { }$"+
                 "{{_.keys(ath.story.roles).join(', ')}}"+
               "${ } else if (ath.ctx.isProcess) { }$"+
@@ -492,182 +592,403 @@ var Athena = (function() {
                   "return list;"+
                 "}, []).join(', ')}}"+
               "${ } }$"+
-
-            "${ } else if(story.state === 'PENDING' && ath.ctx.isActor) { }$"+
-              "Your request to join "+
-              "{{ath.ctx.isItem ? 'this' : 'the'}} "+
-              "{{ath.ctx.isTeam ? 'team' : 'process'}}"+
-              "${ if (!ath.ctx.isItem) { }$"+
-              " '{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
-                "ath.story.process.name || ath.story.process.id}}'"+
-              "${ } }$ with the roles "+
-              "${ if (ath.ctx.isTeam) { }$"+
-                "{{_.keys(ath.story.roles).join(', ')}}"+
-              "${ } else if (ath.ctx.isProcess) { }$"+
-                "{{_.reduce(ath.story.roles, function(list, role, lane) {"+
-                  "list.push(["+
-                    "role + ' in ' + (lane === '*' ? 'All lanes' : (lane + ' lane'))"+
-                  "]);"+
-                  "return list;"+
-                "}, []).join(', ')}}"+
-              "${ } }$ is pending"+
-
-            "${ } else if(ath.story.state === 'ACCEPTED') { }$"+
-              "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}} joined "+
-              "{{ath.ctx.isItem ? 'this' : 'the'}} "+
-              "{{ath.ctx.isTeam ? 'team' : 'process'}}"+
-              "${ if (!ath.ctx.isItem) { }$"+
-              " '{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
-                "ath.story.process.name || ath.story.process.id}}'"+
-              "${ } }$ with the roles "+
-              "${ if (ath.ctx.isTeam) { }$"+
-                "{{_.keys(ath.story.roles).join(', ')}}"+
-              "${ } else if (ath.ctx.isProcess) { }$"+
-                "{{_.reduce(ath.story.roles, function(list, role, lane) {"+
-                  "list.push(["+
-                    "role + ' in ' + (lane === '*' ? 'All lanes' : (lane + ' lane'))"+
-                  "]);"+
-                  "return list;"+
-                "}, []).join(', ')}}"+
-              "${ } }$"+
-
-            "${ } else if(ath.story.state === 'REJECTED') { }$"+
-              "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}} "+
-              "{{ath.ctx.isActor ? 'were' : 'was'}} disallowed from joining "+
-              "{{ath.ctx.isItem ? 'this' : 'the'}} "+
-              "{{ath.ctx.isTeam ? 'team' : 'process'}}"+
-              "${ if (!ath.ctx.isItem) { }$"+
-              " '{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
-                "ath.story.process.name || ath.story.process.id}}'"+
-              "${ } }$"+
-
-            "${ } else if(story.state === 'CANCELLED') { }$"+
-              "{{ath.ctx.isActor ? 'You ' : ath.story.actor.alias||ath.story.actor.id}}"+
+              "{{ ath.ctx.isActor ? ' is pending' : '' }}.\n"+
+              "[{{moment(ath.story.timestamp).format('llll')}}]"+
+            "${ } else if(ath.story.state === 'CANCELLED') { }$"+
+              "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
               " cancelled the request to join "+
-              "{{ath.ctx.isItem ? 'this' : 'the'}} "+
-              "{{ath.ctx.isTeam ? 'team' : 'process'}}"+
+              "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
               "${ if (!ath.ctx.isItem) { }$"+
-              " '{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
-                "ath.story.process.name || ath.story.process.id}}'"+
-              "${ } }$"+
-            "${ } }$.\n"+
-            "[{{moment(ath.story.timestamp).format('llll')}}]",
-
-      html: "${ if(story.state === 'PENDING' && !ath.ctx.isActor) { }$"+
-              "<span class='#{ath.markup.actor}#'>{{ath.story.actor.alias||ath.story.actor.id}}</span> "+
-              "wants to join "+
-              "{{ath.ctx.isItem ? 'this' : 'the'}} "+
-              "{{ath.ctx.isTeam ? 'team' : 'process'}}"+
+                " '{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}'"+
+              "${ } }$.\n"+
+              "[{{moment(ath.story.cancelled_at).format('llll')}}]"+
+            "${ } else if(ath.story.state === 'ACCEPTED') { }$"+
+              "{{ath.ctx.isActor ? 'Your' : (ath.story.actor.alias||ath.story.actor.id) + '\u2019s'}}"+
+              " request to join "+
+              "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
               "${ if (!ath.ctx.isItem) { }$"+
-              " <span class='#{ath.markup.object}#'>"+
-                "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
-                "ath.story.process.name || ath.story.process.id}}"+
-                "</span>"+
-              "${ } }$ with the roles "+
-                "<ul class='#{ath.markup.role_list}#'>"+
-                  "${ _.forEach(ath.story.roles, function(enabled, role) { }$"+
-                    "<li class='#{ath.markup.role}#'>{{role}}</li>"+
-                  "${ }) }$"+
-                "</ul>"+
-              "${ } else if (ath.ctx.isProcess) { }$"+
-                "<ul class='#{ath.markup.role_list}#'>"+
-                  "${ _.forEach(ath.story.roles, function(role, lane) { }$"+
-                    "<li>"+
-                      "<span class='#{ath.markup.role}#'>{{role}}</span> in "+
-                      "<span class='#{ath.markup.lane}#'>"+
-                        "{{lane === '*' ? 'All': lane }}"+
-                      "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
-                    "</li>"+
-                  "${ })}$"+
-                "</ul>"+
-              "${ } }$"+
-
-            "${ } else if(story.state === 'PENDING' && ath.ctx.isActor) { }$"+
-              "<span class='#{ath.markup.actor}#'>Your</span> request to join "+
-              "{{ath.ctx.isItem ? 'this' : 'the'}} "+
-              "{{ath.ctx.isTeam ? 'team' : 'process'}}"+
-              "${ if (!ath.ctx.isItem) { }$"+
-              " <span class='#{ath.markup.object}#'>"+
-                "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
-                "ath.story.process.name || ath.story.process.id}}"+
-                "</span>"+
-              "${ } }$ with the roles "+
-                "<ul class='#{ath.markup.role_list}#'>"+
-                  "${ _.forEach(ath.story.roles, function(enabled, role) { }$"+
-                    "<li class='#{ath.markup.role}#'>{{role}}</li>"+
-                  "${ }) }$"+
-                "</ul>"+
-              "${ } else if (ath.ctx.isProcess) { }$"+
-                "<ul class='#{ath.markup.role_list}#'>"+
-                  "${ _.forEach(ath.story.roles, function(role, lane) { }$"+
-                    "<li>"+
-                      "<span class='#{ath.markup.role}#'>{{role}}</span> in "+
-                      "<span class='#{ath.markup.lane}#'>"+
-                        "{{lane === '*' ? 'All': lane }}"+
-                      "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
-                    "</li>"+
-                  "${ })}$"+
-                "</ul>"+
-              "${ } }$ is pending"+
-
-              "<span class='#{ath.markup.actor}#'>"+
-                "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
-              "</span> joined "+
-              "{{ath.ctx.isItem ? 'this' : 'the'}} "+
-              "{{ath.ctx.isTeam ? 'team' : 'process'}}"+
-              "${ if (!ath.ctx.isItem) { }$"+
-              " <span class='#{ath.markup.object}#'>"+
-                "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
-                "ath.story.process.name || ath.story.process.id}}"+
-                "</span>"+
-              "${ } }$ with the roles "+
-                "<ul class='#{ath.markup.role_list}#'>"+
-                  "${ _.forEach(ath.story.roles, function(enabled, role) { }$"+
-                    "<li class='#{ath.markup.role}#'>{{role}}</li>"+
-                  "${ }) }$"+
-                "</ul>"+
-              "${ } else if (ath.ctx.isProcess) { }$"+
-                "<ul class='#{ath.markup.role_list}#'>"+
-                  "${ _.forEach(ath.story.roles, function(role, lane) { }$"+
-                    "<li>"+
-                      "<span class='#{ath.markup.role}#'>{{role}}</span> in "+
-                      "<span class='#{ath.markup.lane}#'>"+
-                        "{{lane === '*' ? 'All': lane }}"+
-                      "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
-                    "</li>"+
-                  "${ })}$"+
-                "</ul>"+
-              "${ } }$"+
-
+                " '{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}'"+
+              "${ } }$ has been accepted by "+
+              "{{ath.story.accepted_by.alias||ath.story.accepted_by.id}}.\n"+
+              "[{{moment(ath.story.accepted_at).format('llll')}}]"+
             "${ } else if(ath.story.state === 'REJECTED') { }$"+
-              "<span class='#{ath.markup.actor}#'>"+
-                "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
-              "</span> {{ath.ctx.isActor ? 'were' : 'was'}} disallowed from joining "+
-              "{{ath.ctx.isItem ? 'this' : 'the'}} "+
-              "{{ath.ctx.isTeam ? 'team' : 'process'}}"+
+              "{{ath.ctx.isActor ? 'Your' : (ath.story.actor.alias||ath.story.actor.id) + '\u2019s'}}"+
+              " request to join "+
+              "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
               "${ if (!ath.ctx.isItem) { }$"+
-              " <span class='#{ath.markup.object}#'>"+
-                "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
-                "ath.story.process.name || ath.story.process.id}}"+
-                "</span>"+
-              "${ } }$"+
+                " '{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}'"+
+              "${ } }$ has been rejected by "+
+              "{{ath.story.rejected_by.alias||ath.story.rejected_by.id}}.\n"+
+              "[{{moment(ath.story.rejected_at).format('llll')}}]"+
+            "${ } }$",
 
+      html: "${ if(ath.story.state === 'PENDING') { }$"+
+              "${ if(ath.ctx.isActor) { }$"+
+                "<span class='#{ath.markup.actor}#'>Your</span> request to join "+
+              "${ } else { }$"+
+                "<span class='#{ath.markup.actor}#'>"+
+                  "{{ath.story.actor.alias||ath.story.actor.id}}"+
+                "</span> wants to join "+
+              "${ } }$"+
+              "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+              "${ if (!ath.ctx.isItem) { }$"+
+                " <span class='#{ath.markup.object}#'>"+
+                  "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}"+
+                "</span>"+
+              "${ } }$ as "+
+              "<ul class='#{ath.markup.role_list}#'>"+
+              "${ if (ath.ctx.isTeam) { }$"+
+                "${ _.forEach(ath.story.roles, function(enabled, role) { }$"+
+                  "<li class='#{ath.markup.role}#'>{{role}}</li>"+
+                "${ }) }$"+
+              "${ } else if (ath.ctx.isProcess) { }$"+
+                  "${ _.forEach(ath.story.roles, function(role, lane) { }$"+
+                    "<li>"+
+                      "<span class='#{ath.markup.role}#'>{{role}}</span> in "+
+                      "<span class='#{ath.markup.lane}#'>"+
+                        "{{lane === '*' ? 'All': lane }}"+
+                      "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
+                    "</li>"+
+                  "${ })}$"+
+              "${ } }$</ul>"+
+              "{{ ath.ctx.isActor ? ' is pending' : '' }}."+
+              "<time class='#{ath.markup.timestamp}#' title='On "+
+                "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
+                "{{ts.fromNow()}}</time>"+
             "${ } else if(ath.story.state === 'CANCELLED') { }$"+
               "<span class='#{ath.markup.actor}#'>"+
                 "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
-              "</span> cancelled the request to join "+
-              "{{ath.ctx.isItem ? 'this' : 'the'}} "+
-              "{{ath.ctx.isTeam ? 'team' : 'process'}}"+
+              "</span>"+
+              " cancelled the request to join "+
+              "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
               "${ if (!ath.ctx.isItem) { }$"+
-              " <span class='#{ath.markup.object}#'>"+
-                "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
-                "ath.story.process.name || ath.story.process.id}}"+
+                " <span class='#{ath.markup.object}#'>"+
+                  "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}"+
+                "</span>"+
+              "${ } }$."+
+              "<time class='#{ath.markup.timestamp}#' title='On "+
+                "{{(ts = moment(ath.story.cancelled_at)).format(\'llll\')}}'>"+
+                "{{ts.fromNow()}}</time>"+
+            "${ } else if(ath.story.state === 'ACCEPTED') { }$"+
+              "<span class='#{ath.markup.actor}#'>"+
+                "{{ath.ctx.isActor ? 'Your' : (ath.story.actor.alias||ath.story.actor.id) + '\u2019s'}}"+
+              "</span> request to join "+
+              "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+              "${ if (!ath.ctx.isItem) { }$"+
+                " <span class='#{ath.markup.object}#'>"+
+                  "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}"+
+                "</span>"+
+              "${ } }$ has been accepted by "+
+              "<span class='#{ath.markup.target}#'>"+
+                "{{ath.story.accepted_by.alias||ath.story.accepted_by.id}}"+
+              "</span>."+
+              "<time class='#{ath.markup.timestamp}#' title='On "+
+                "{{(ts = moment(ath.story.accepted_at)).format(\'llll\')}}'>"+
+                "{{ts.fromNow()}}</time>"+
+            "${ } else if(ath.story.state === 'REJECTED') { }$"+
+              "<span class='#{ath.markup.actor}#'>"+
+                "{{ath.ctx.isActor ? 'Your' : (ath.story.actor.alias||ath.story.actor.id) + '\u2019s'}}"+
+              "</span> request to join "+
+              "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+              "${ if (!ath.ctx.isItem) { }$"+
+                " <span class='#{ath.markup.object}#'>"+
+                  "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}"+
+                "</span>"+
+              "${ } }$ has been rejected by "+
+              "<span class='#{ath.markup.target}#'>"+
+                "{{ath.story.rejected_by.alias||ath.story.rejected_by.id}}"+
+              "</span>."+
+              "<time class='#{ath.markup.timestamp}#' title='On "+
+                "{{(ts = moment(ath.story.rejected_at)).format(\'llll\')}}'>"+
+                "{{ts.fromNow()}}</time>"+
+            "${ } }$"
+    },
+    "invite": {
+      text: "${ if(ath.story.state === 'PENDING') { }$"+
+              "${ if(ath.ctx.isActor) { }$"+
+                "Your invitation to {{ath.story.invitee.alias||ath.story.invitee.id}}"+
+                " to join "+
+              "${ } else { }$"+
+                "{{ath.story.actor.alias||ath.story.actor.id}} invited you to join "+
+              "${ } }$"+
+              "the {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+                " '{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}'"+
+              " as "+
+              "${ if (ath.ctx.isTeam) {   }$"+
+                "{{_.keys(ath.story.roles).join(', ')}}"+
+              "${ } else if (ath.ctx.isProcess) {  }$"+
+                "{{_.reduce(ath.story.roles, function(list, role, lane) {"+
+                  "list.push(["+
+                    "role + ' in ' + (lane === '*' ? 'All lanes' : (lane + ' lane'))"+
+                  "]);"+
+                  "return list;"+
+                "}, []).join(', ')}}"+
+              "${ } }$"+
+              "{{ ath.ctx.isActor ? ' is pending' : '' }}.\n"+
+              "[{{moment(ath.story.timestamp).format('llll')}}]"+
+            "${ } else if(ath.story.state === 'CANCELLED') { }$"+
+              "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
+              " cancelled the invitation for "+
+              "{{ath.ctx.isInvitee ? 'you' : ath.story.invitee.alias||ath.story.invitee.id}}"+
+              " to join "+
+              "the {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+              " '{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                "ath.story.process.name || ath.story.process.id}}'"+
+              ".\n"+
+              "[{{moment(ath.story.cancelled_at).format('llll')}}]"+
+            "${ } else if(ath.story.state === 'ACCEPTED' || ath.story.state === 'REJECTED') { }$"+
+              "{{ath.story.invitee.alias||ath.story.invitee.id}} "+
+              "{{ath.story.accepted_at ? 'accepted' : 'rejected'}}"+
+              " your invitation to join"+
+              " the {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+              " '{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                "ath.story.process.name || ath.story.process.id}}'"+
+              " as "+
+              "${ if (ath.ctx.isTeam) { }$"+
+                "{{_.keys(ath.story.roles).join(', ')}}"+
+              "${ } else if (ath.ctx.isProcess) { }$"+
+                "{{_.reduce(ath.story.roles, function(list, role, lane) {"+
+                  "list.push(["+
+                    "role + ' in ' + (lane === '*' ? 'All lanes' : (lane + ' lane'))"+
+                  "]);"+
+                  "return list;"+
+                "}, []).join(', ')}}"+
+              "${ } }$.\n"+
+              "[{{moment(ath.story.accepted_at||ath.story.rejected_at).format('llll')}}]"+
+            "${ } }$",
+      html: "${ if(ath.story.state === 'PENDING') { }$"+
+              "${ if(ath.ctx.isActor) { }$"+
+                "<span class='#{ath.markup.actor}#'>Your</span> invitation to "+
+                "<span class='#{ath.markup.target}#'>{{ath.story.invitee.alias||ath.story.invitee.id}}</span>"+
+                " to join "+
+              "${ } else { }$"+
+                "<span class='#{ath.markup.actor}#'>{{ath.story.actor.alias||ath.story.actor.id}}</span> "+
+                "invited <span class='#{ath.markup.target}#'>you</span> to join "+
+              "${ } }$"+
+              "the {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+                " <span class='#{ath.markup.object}#'>"+
+                  "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}"+
+                "</span>"+
+              " as "+
+              "<ul class='#{ath.markup.role_list}#'>"+
+              "${ if (ath.ctx.isTeam) { }$"+
+                "${ _.forEach(ath.story.roles, function(enabled, role) { }$"+
+                  "<li class='#{ath.markup.role}#'>{{role}}</li>"+
+                "${ }) }$"+
+              "${ } else if (ath.ctx.isProcess) { }$"+
+                "${ _.forEach(ath.story.roles, function(role, lane) { }$"+
+                  "<li>"+
+                    "<span class='#{ath.markup.role}#'>{{role}}</span> in "+
+                    "<span class='#{ath.markup.lane}#'>"+
+                      "{{lane === '*' ? 'All': lane }}"+
+                    "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
+                  "</li>"+
+                "${ })}$"+
+              "${ } }$</ul>"+
+              "{{ ath.ctx.isActor ? ' is pending' : '' }}."+
+              "<time class='#{ath.markup.timestamp}#' title='On "+
+                "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
+                "{{ts.fromNow()}}</time>"+
+            "${ } else if(ath.story.state === 'CANCELLED') { }$"+
+              "<span class='#{ath.markup.actor}#'>"+
+                "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
+              "</span>"+
+              " cancelled the invitation for "+
+              "<span class='#{ath.markup.target}#'>"+
+                "{{ath.ctx.isInvitee ? 'you' : ath.story.invitee.alias||ath.story.invitee.id}}"+
+              "</span>"+
+              " to join "+
+              "the {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+                " <span class='#{ath.markup.object}#'>"+
+                  "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}"+
+                "</span>."+
+              "<time class='#{ath.markup.timestamp}#' title='On "+
+                "{{(ts = moment(ath.story.cancelled_at)).format(\'llll\')}}'>"+
+                "{{ts.fromNow()}}</time>"+
+            "${ } else if(ath.story.state === 'ACCEPTED' || ath.story.state === 'REJECTED') { }$"+
+              "<span class='#{ath.markup.target}#'>"+
+                "{{ath.story.invitee.alias||ath.story.invitee.id}}"+
+              "</span> {{ath.story.accepted_at ? 'accepted' : 'rejected'}} "+
+              "<span class='#{ath.markup.actor}#'>your</span>"+
+              " invitation to join "+
+              "the {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+                " <span class='#{ath.markup.object}#'>"+
+                  "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}"+
+                "</span>"+
+              " as "+
+              "<ul class='#{ath.markup.role_list}#'>"+
+              "${ if (ath.ctx.isTeam) { }$"+
+                "${ _.forEach(ath.story.roles, function(enabled, role) { }$"+
+                  "<li class='#{ath.markup.role}#'>{{role}}</li>"+
+                "${ }) }$"+
+              "${ } else if (ath.ctx.isProcess) { }$"+
+                "${ _.forEach(ath.story.roles, function(role, lane) { }$"+
+                  "<li>"+
+                    "<span class='#{ath.markup.role}#'>{{role}}</span> in "+
+                    "<span class='#{ath.markup.lane}#'>"+
+                      "{{lane === '*' ? 'All': lane }}"+
+                    "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
+                  "</li>"+
+                "${ })}$"+
+              "${ } }$</ul>."+
+              "<time class='#{ath.markup.timestamp}#' title='On "+
+                "{{(ts = moment(ath.story.accepted_at||ath.story.rejected_at)).format(\'llll\')}}'>"+
+                "{{ts.fromNow()}}</time>"+
+            "${ } }$"
+    },
+    "role:request": {
+      text: "${ if(ath.story.state === 'PENDING') { }$"+
+              "${ if(ath.ctx.isActor) { }$"+
+                "Your request for change of roles in "+
+              "${ } else { }$"+
+                "{{ath.story.actor.alias||ath.story.actor.id}} wants to change roles in "+
+              "${ } }$"+
+              "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+              "${ if (!ath.ctx.isItem) { }$"+
+                " '{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}'"+
+              "${ } }$"+
+              "{{ ath.ctx.isActor ? ' is pending' : '' }}.\n"+
+              "New Roles:\n"+
+              "${ if (ath.ctx.isTeam) { }$"+
+                "  [*] {{_.keys(ath.story.roles).join(', ')}}"+
+              "${ } else if (ath.ctx.isProcess) { }$"+
+                "  [*] {{_.reduce(ath.story.roles, function(list, role, lane) {"+
+                  "list.push(["+
+                    "role + ' in ' + (lane === '*' ? 'All lanes' : (lane + ' lane'))"+
+                  "]);"+
+                  "return list;"+
+                "}, []).join(', ')}}"+
+              "${ } }$\n"+
+              "[{{moment(ath.story.timestamp).format('llll')}}]"+
+            "${ } else if(ath.story.state === 'CANCELLED') { }$"+
+              "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
+              " cancelled the request for change of roles in "+
+              "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+              "${ if (!ath.ctx.isItem) { }$"+
+                " '{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}'"+
+              "${ } }$.\n"+
+              "[{{moment(ath.story.cancelled_at).format('llll')}}]"+
+            "${ } else if(ath.story.state === 'ACCEPTED') { }$"+
+              "{{ath.ctx.isActor ? 'Your' : (ath.story.actor.alias||ath.story.actor.id) + '\u2019s'}}"+
+              " request for change of roles in "+
+              "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+              "${ if (!ath.ctx.isItem) { }$"+
+                " '{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}'"+
+              "${ } }$ has been accepted by "+
+              "{{ath.story.accepted_by.alias||ath.story.accepted_by.id}}.\n"+
+              "[{{moment(ath.story.accepted_at).format('llll')}}]"+
+            "${ } else if(ath.story.state === 'REJECTED') { }$"+
+              "{{ath.ctx.isActor ? 'Your' : (ath.story.actor.alias||ath.story.actor.id) + '\u2019s'}}"+
+              " request for change of roles in "+
+              "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+              "${ if (!ath.ctx.isItem) { }$"+
+                " '{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}'"+
+              "${ } }$ has been rejected by "+
+              "{{ath.story.rejected_by.alias||ath.story.rejected_by.id}}.\n"+
+              "[{{moment(ath.story.rejected_at).format('llll')}}]"+
+            "${ } }$",
+
+      html: "${ if(ath.story.state === 'PENDING') { }$"+
+              "${ if(ath.ctx.isActor) { }$"+
+                "<span class='#{ath.markup.actor}#'>Your</span> request for change of roles in "+
+              "${ } else { }$"+
+                "<span class='#{ath.markup.actor}#'>"+
+                  "{{ath.story.actor.alias||ath.story.actor.id}}"+
+                "</span> wants to change roles in "+
+              "${ } }$"+
+              "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+              "${ if (!ath.ctx.isItem) { }$"+
+                " <span class='#{ath.markup.object}#'>"+
+                  "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}"+
                 "</span>"+
               "${ } }$"+
-            "${ } }$."+
-            "<time class='#{ath.markup.timestamp}#' title='On "+
-              "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
-              "{{ts.fromNow()}}</time>"
+              "{{ ath.ctx.isActor ? ' is pending' : '' }}."+
+              "<ul class='#{ath.markup.role_list}#'>"+
+                "<li class='#{ath.markup.list_header}#'>New Roles</li>"+
+              "${ if (ath.ctx.isTeam) {"+
+                "_.forEach(ath.story.roles, function(enabled, role) { }$"+
+                  "<li class='#{ath.markup.role}#'>{{role}}</li>"+
+                "${ })"+
+              "} else if (ath.ctx.isProcess) {"+
+                "_.forEach(ath.story.roles, function(role, lane) { }$"+
+                  "<li>"+
+                    "<span class='#{ath.markup.role}#'>{{role}}</span> in "+
+                    "<span class='#{ath.markup.lane}#'>"+
+                      "{{lane === '*' ? 'All': lane }}"+
+                    "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
+                  "</li>"+
+                "${ })"+
+              "} }$"+
+              "</ul>"+
+              "<time class='#{ath.markup.timestamp}#' title='On "+
+                "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
+                "{{ts.fromNow()}}</time>"+
+            "${ } else if(ath.story.state === 'CANCELLED') { }$"+
+              "<span class='#{ath.markup.actor}#'>"+
+                "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
+              "</span>"+
+              " cancelled the request for change of roles in "+
+              "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+              "${ if (!ath.ctx.isItem) { }$"+
+                " <span class='#{ath.markup.object}#'>"+
+                  "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}"+
+                "</span>"+
+              "${ } }$."+
+              "<time class='#{ath.markup.timestamp}#' title='On "+
+                "{{(ts = moment(ath.story.cancelled_at)).format(\'llll\')}}'>"+
+                "{{ts.fromNow()}}</time>"+
+            "${ } else if(ath.story.state === 'ACCEPTED') { }$"+
+              "<span class='#{ath.markup.actor}#'>"+
+                "{{ath.ctx.isActor ? 'Your' : (ath.story.actor.alias||ath.story.actor.id) + '\u2019s'}}"+
+              "</span> request for change of roles in "+
+              "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+              "${ if (!ath.ctx.isItem) { }$"+
+                " <span class='#{ath.markup.object}#'>"+
+                  "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}"+
+                "</span>"+
+              "${ } }$ has been accepted by "+
+              "<span class='#{ath.markup.target}#'>"+
+                "{{ath.story.accepted_by.alias||ath.story.accepted_by.id}}"+
+              "</span>."+
+              "<time class='#{ath.markup.timestamp}#' title='On "+
+                "{{(ts = moment(ath.story.accepted_at)).format(\'llll\')}}'>"+
+                "{{ts.fromNow()}}</time>"+
+            "${ } else if(ath.story.state === 'REJECTED') { }$"+
+              "<span class='#{ath.markup.actor}#'>"+
+                "{{ath.ctx.isActor ? 'Your' : (ath.story.actor.alias||ath.story.actor.id) + '\u2019s'}}"+
+              "</span> request for change of roles in "+
+              "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
+              "${ if (!ath.ctx.isItem) { }$"+
+                " <span class='#{ath.markup.object}#'>"+
+                  "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
+                  "ath.story.process.name || ath.story.process.id}}"+
+                "</span>"+
+              "${ } }$ has been rejected by "+
+              "<span class='#{ath.markup.target}#'>"+
+                "{{ath.story.rejected_by.alias||ath.story.rejected_by.id}}"+
+              "</span>."+
+              "<time class='#{ath.markup.timestamp}#' title='On "+
+                "{{(ts = moment(ath.story.rejected_at)).format(\'llll\')}}'>"+
+                "{{ts.fromNow()}}</time>"+
+            "${ } }$"
     }
   };
 
@@ -686,16 +1007,20 @@ var Athena = (function() {
     if (_.contains([
         'create',
         'delete',
-        'join',
         'leave',
         'kick',
+        'join',
+        'join:request',
         'join:request:accept',
+        'join:request:reject',
+        'invite',
         'invite:accept',
+        'invite:reject',
+        'role:request',
         'role:request:accept',
+        'role:request:reject',
         'role:change',
-        'role:assign',
-        // 'join:request:reject',
-        // 'join:request'
+        'role:assign'
       ], story.event)) {
 
       // Determine whether the current story is for a team or process
@@ -715,13 +1040,17 @@ var Athena = (function() {
         'join',
         'leave',
         'kick',
+        'join:request',
         'join:request:accept',
+        'join:request:reject',
+        'invite',
         'invite:accept',
-        'role:request:accept',
+        'invite:reject',
         'role:change',
-        'role:assign',
-        // 'join:request:reject',
-        // 'join:request'
+        'role:request',
+        'role:request:accept',
+        'role:request:reject',
+        'role:assign'
       ], story.event)) {
       // Determine whether the current player is the actor
       if (story.actor == null || ext.profile && ext.profile.id === story.actor) {
@@ -732,19 +1061,24 @@ var Athena = (function() {
     // Determine whether the target is the current player
     if (_.contains([
         'kick',
+        'join:request',
         'join:request:accept',
+        'join:request:reject',
+        'role:request',
         'role:request:accept',
-        'role:assign',
-        // 'join:request',
-        // 'join:request:reject',
-        // 'role:change:accept'
+        'role:request:reject',
+        'role:assign'
       ], story.event)) {
       if (story.player == null || ext.profile && ext.profile.id === story.player) {
         ctx.isPlayer = true;
       }
-    } else if (_.contains(['invite:accept'], story.event)) {
+    } else if (_.contains(['invite:accept', 'invite:reject'], story.event)) {
       if (story.inviter == null || ext.profile && ext.profile.id === story.inviter) {
         ctx.isInviter = true;
+      }
+    } else if (_.contains(['invite'], story.event)) {
+      if (story.invitee == null || ext.profile && ext.profile.id === story.invitee) {
+        ctx.isInvitee = true;
       }
     }
     // Finally, return the config object

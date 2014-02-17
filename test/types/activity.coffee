@@ -1444,7 +1444,7 @@ describe 'The Activity Story Builder', ->
           @externals = {context: 'process'}
           next()
 
-        it 'builds the invite accept story (text)', (next) ->
+        it 'builds the role request accept story (text)', (next) ->
           expect(@athena.toString(@story_ctx, @externals)).to.equal """
             David Moyes\u2019s request for a change of roles in this process has been accepted by Sir Alex Ferguson.
             Changes:
@@ -1456,7 +1456,7 @@ describe 'The Activity Story Builder', ->
           """
           next()
 
-        it 'builds the invite accept story (html)', (next) ->
+        it 'builds the role request accept story (html)', (next) ->
           expect(@athena.toHTML(@story_ctx, @externals)).to.equal """
             <span class='pl-target'>David Moyes\u2019s</span> request for a change of roles in this process has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>super_admin</span> from <span class='pl-role pl-diff-rem'>admin</span> in <span class='pl-lane'>team</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>observer</span> in <span class='pl-lane'>external</span> lane</li></ul>.<time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
           """
@@ -1468,7 +1468,7 @@ describe 'The Activity Story Builder', ->
           @externals = { profile: {id: 'david', alias: 'Sir Alex Ferguson'} }
           next()
 
-        it 'builds the invite accept story (text)', (next) ->
+        it 'builds the role request accept story (text)', (next) ->
           expect(@athena.toString(@story_ctx, @externals)).to.equal """
             David Moyes\u2019s request for a change of roles in the process 'Qualify for UEFA Champions League 2014' has been accepted by you.
             Changes:
@@ -1480,7 +1480,7 @@ describe 'The Activity Story Builder', ->
           """
           next()
 
-        it 'builds the invite accept story (html)', (next) ->
+        it 'builds the role request accept story (html)', (next) ->
           expect(@athena.toHTML(@story_ctx, @externals)).to.equal """
             <span class='pl-target'>David Moyes\u2019s</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>you</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>super_admin</span> from <span class='pl-role pl-diff-rem'>admin</span> in <span class='pl-lane'>team</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>observer</span> in <span class='pl-lane'>external</span> lane</li></ul>.<time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
           """
@@ -1492,7 +1492,7 @@ describe 'The Activity Story Builder', ->
           @externals = { profile: {id: 'vidic', alias: 'David Moyes'} }
           next()
 
-        it 'builds the invite accept story (text)', (next) ->
+        it 'builds the role request accept story (text)', (next) ->
           expect(@athena.toString(@story_ctx, @externals)).to.equal """
             Your request for a change of roles in the process 'Qualify for UEFA Champions League 2014' has been accepted by Sir Alex Ferguson.
             Changes:
@@ -1504,7 +1504,7 @@ describe 'The Activity Story Builder', ->
           """
           next()
 
-        it 'builds the invite accept story (html)', (next) ->
+        it 'builds the role request accept story (html)', (next) ->
           expect(@athena.toHTML(@story_ctx, @externals)).to.equal """
             <span class='pl-target'>Your</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>super_admin</span> from <span class='pl-role pl-diff-rem'>admin</span> in <span class='pl-lane'>team</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>observer</span> in <span class='pl-lane'>external</span> lane</li></ul>.<time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
           """
