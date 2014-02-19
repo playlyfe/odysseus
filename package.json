@@ -1,11 +1,11 @@
 {
   "name": "athena",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "A notification story compiler based on Playlyfe events",
-  "main": "./index",
+  "main": "./athena",
   "scripts": {
     "test": "mocha",
-    "prepublish": "./node_modules/.bin/coffee -o lib -b -c src/index.coffee"
+    "prepublish": "./node_modules/.bin/coffee -o . -b -c src/athena.coffee"
   },
   "keywords": [
     "playlyfe",

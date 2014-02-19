@@ -1,4 +1,4 @@
-Athena = require '../index'
+{Athena} = require '../index'
 _ = require 'lodash'
 
 describe 'The Athena Module', ->
