@@ -1,13 +1,13 @@
 {
   "name": "odysseus",
-  "version": "0.3.0",
-  "description": "Parse and build stories out of the Playlyfe Events.",
+  "version": "0.3.1",
+  "description": "Parse and build stories out of Playlyfe Events.",
   "main": "./odysseus.js",
   "keywords": [
     "playlyfe",
     "notifications",
     "event",
-    "string compiler"
+    "story-builder"
   ],
   "ignore": [
     "node_modules",

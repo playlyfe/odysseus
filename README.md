@@ -1,7 +1,7 @@
 Playlyfe Odysseus  [![Build Status](https://travis-ci.org/playlyfe/odysseus.png?branch=develop)](https://travis-ci.org/playlyfe/odysseus)
 ===
 
-*Parse and build stories out of the Playlyfe Events.*
+*Parse and build stories out of Playlyfe Events.*
 
 ---
 
