@@ -1,11 +1,11 @@
 {
-  "name": "athena",
+  "name": "odysseus",
   "version": "0.3.0",
-  "description": "A notification story compiler based on Playlyfe events",
-  "main": "./athena",
+  "description": "Parse and build stories out of the Playlyfe Events.",
+  "main": "./odysseus",
   "scripts": {
     "test": "mocha",
-    "prepublish": "./node_modules/.bin/coffee -o . -b -c src/athena.coffee"
+    "prepublish": "./node_modules/.bin/coffee -o . -b -c src/odysseus.coffee"
   },
   "keywords": [
     "playlyfe",
@@ -19,10 +19,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/playlyfe/athena.git"
+    "url": "http://github.com/playlyfe/odysseus.git"
   },
   "bugs": {
-    "url": "http://github.com/playlyfe/athena/issues"
+    "url": "http://github.com/playlyfe/odysseus/issues"
   },
   "licenses": [
     {

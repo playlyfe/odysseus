@@ -1,20 +1,20 @@
-Playlyfe Athena  [![Build Status](https://travis-ci.org/playlyfe/athena.png?branch=develop)](https://travis-ci.org/playlyfe/athena)
+Playlyfe Odysseus  [![Build Status](https://travis-ci.org/playlyfe/odysseus.png?branch=develop)](https://travis-ci.org/playlyfe/odysseus)
 ===
 
-*A notification story compiler based on Playlyfe events*
+*Parse and build stories out of the Playlyfe Events.*
 
 ---
 
-Athena is a story spinner at heart, taking in the events in JSON format, and spinning out human readable sentences to be consumed by apps. Athena can output messages in both plaintext and HTML formats.
+Odysseus is a story spinner at heart, taking in the events in JSON format, and spinning out human readable sentences to be consumed by apps. Odysseus can output messages in both plain-text and HTML formats.
 
 ## Usage
 
-Athena can be used as a node module, or as a *bower module* (todo)
+Odysseus can be used as a node module, or as a *bower module* (todo)
 
 #### Node
 
-    Athena = require('athena');
-    athena = new Athena(config);
+    Odysseus = require('odysseus');
+    odysseus = new Odysseus(config);
     ...
 
 For getting proper messages in HTML format, you can supply a list of markup classes you want to assign different parts of the sentence. This markup class list will be in a key-value format like so:
@@ -47,7 +47,7 @@ The meaning of the markup tags are listed below:
 
 ## Authors
 
-##### Kumar Harsh ([Github](https://github.com/kumarharsh))
+* Kumar Harsh ([Github](https://github.com/kumarharsh))
 
 ## License
 
