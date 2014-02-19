@@ -92,7 +92,7 @@ describe 'The Activity Story Builder', ->
           """
           next()
 
-      describe 'in player context', ->
+      describe "in actor's context", ->
         before (next) ->
           @story_ctx = _.omit @story, 'actor'
           @externals = { profile: {id: 'bill', alias: 'Mr. Gates'} }
@@ -145,7 +145,7 @@ describe 'The Activity Story Builder', ->
           """
           next()
 
-      describe 'in player context', ->
+      describe "in actor's context", ->
         before (next) ->
           @story_ctx = _.omit @story, 'actor'
           @externals = { profile: {id: 'bill', alias: 'Mr. Gates'} }
@@ -194,7 +194,7 @@ describe 'The Activity Story Builder', ->
           """
           next()
 
-      describe 'in player context', ->
+      describe "in actor's context", ->
         before (next) ->
           @story_ctx = _.omit @story, 'actor'
           @externals = { profile: {id: 'bill', alias: 'Mr. Gates'} }
@@ -271,7 +271,7 @@ describe 'The Activity Story Builder', ->
           """
           next()
 
-      describe 'in player context', ->
+      describe "in actor's context", ->
         before (next) ->
           @story_ctx = _.omit @story, 'actor'
           @externals = { profile: {id: 'snadella', alias: 'Satya'} }
@@ -343,7 +343,7 @@ describe 'The Activity Story Builder', ->
           """
           next()
 
-      describe 'in player context', ->
+      describe "in actor's context", ->
         before (next) ->
           @story_ctx = _.omit @story, 'actor'
           @externals = { profile: {id: 'snadella', alias: 'Satya'} }
@@ -1165,7 +1165,7 @@ describe 'The Activity Story Builder', ->
           """
           next()
 
-      describe 'for one role deletion', ->
+      describe 'for single deletion', ->
         before (next) ->
           @story_ctx = _.extend {}, @story, {
             changes:
@@ -1344,7 +1344,7 @@ describe 'The Activity Story Builder', ->
           """
           next()
 
-      describe 'for one role deletion', ->
+      describe 'for single deletion', ->
         before (next) ->
           @story_ctx = _.extend {}, @story, {
             changes:
@@ -1367,7 +1367,7 @@ describe 'The Activity Story Builder', ->
           """
           next()
 
-      describe 'for one role change', ->
+      describe 'for single change', ->
         before (next) ->
           @story_ctx = _.extend {}, @story, {
             changes:
@@ -1391,7 +1391,7 @@ describe 'The Activity Story Builder', ->
           """
           next()
 
-      describe 'for mixed role additions and deletions', ->
+      describe 'for mixed additions and deletions', ->
         before (next) ->
           @story_ctx = _.extend {}, @story, {
             changes:
@@ -1465,7 +1465,7 @@ describe 'The Activity Story Builder', ->
       describe "in actor's context", ->
         before (next) ->
           @story_ctx = _.omit @story, 'actor'
-          @externals = { profile: {id: 'david', alias: 'Sir Alex Ferguson'} }
+          @externals = { profile: {id: 'alex', alias: 'Sir Alex Ferguson'} }
           next()
 
         it 'builds the role request accept story (text)', (next) ->
@@ -1558,7 +1558,7 @@ describe 'The Activity Story Builder', ->
           """
           next()
 
-      describe 'for one role deletion', ->
+      describe 'for single deletion', ->
         before (next) ->
           @story_ctx = _.extend {}, @story, {
             changes:
@@ -1904,7 +1904,7 @@ describe 'The Activity Story Builder', ->
           """
           next()
 
-      describe 'for one role deletion', ->
+      describe 'for single deletion', ->
         before (next) ->
           @story_ctx = _.extend {}, @story, {
             changes:
@@ -2248,3 +2248,582 @@ describe 'The Activity Story Builder', ->
             <span class='pl-target'>Your</span> roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> have been changed by <span class='pl-actor'>Mr. Glazer</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.<time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
           """
           next()
+
+
+  ###*
+   * The Progress Event
+  ###
+  describe 'for the "progress" event', ->
+    before (next) ->
+      @story = {
+        event: "progress",
+        process: {
+          id: "ucl",
+          name: "UEFA Champions League"
+        },
+        activity: {
+          id: "ro16",
+          name: "Round of 16"
+        },
+        actor: {
+          id: 'juan',
+          alias: 'Juan Mata'
+        }
+        timestamp: @iso_date
+      }
+      next()
+
+    describe 'without any score changes', ->
+      it 'builds the progress story (text)', (next) ->
+        expect(@athena.toString(@story)).to.equal """
+          Juan Mata completed 'Round of 16' in the process 'UEFA Champions League'.
+          [#{@text_date}]
+        """
+        next()
+
+      it 'builds the progress story (html)', (next) ->
+        expect(@athena.toHTML(@story)).to.equal """
+          <span class='pl-actor'>Juan Mata</span> completed <span class='pl-activity'>Round of 16</span>.<footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        """
+        next()
+
+    describe 'for "point" metric changes', ->
+      before (next) ->
+        @progress_story = _.extend {}, @story, {
+          changes: [
+            {
+              metric: {
+                name: "Goals"
+                id: "goals"
+                type: "point"
+              },
+              delta: {
+                'old': "1",
+                'new': "3"
+              }
+            }
+          ]
+        }
+        next()
+
+      it 'builds the progress story (text)', (next) ->
+        expect(@athena.toString(@progress_story)).to.equal """
+          Juan Mata completed 'Round of 16' in the process 'UEFA Champions League'.
+          Changes:
+            [*] +2 Goals
+          [#{@text_date}]
+        """
+        next()
+
+      it 'builds the progress story (html)', (next) ->
+        expect(@athena.toHTML(@progress_story)).to.equal """
+          <span class='pl-actor'>Juan Mata</span> completed <span class='pl-activity'>Round of 16</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td><span class='pl-score-metric'>Goals</span></td><td><span class='pl-score-delta-value'>+2</span></td></tr></tbody></table><footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        """
+        next()
+
+    describe 'for "set" metric changes', ->
+      before (next) ->
+        @progress_story = _.extend {}, @story, {
+          changes: [
+            {
+              metric: {
+                name: "UEFA Awards"
+                type: "set"
+                id: "uefa_awards"
+              },
+              delta: {
+                "Golden Boot": {
+                  "old": "0",
+                  "new": "1"
+                },
+                "Champion": {
+                  "old": "3",
+                  "new": "4"
+                },
+                "Suspensions": {
+                  "old": "1",
+                  "new": "0"
+                }
+              }
+            }
+          ]
+        }
+        next()
+
+      it 'builds the progress story (text)', (next) ->
+        expect(@athena.toString(@progress_story)).to.equal """
+          Juan Mata completed 'Round of 16' in the process 'UEFA Champions League'.
+          Changes:
+          [>] UEFA Awards
+            [*] +1 Golden Boot
+            [*] +1 Champion
+            [*] -1 Suspensions
+          [#{@text_date}]
+        """
+        next()
+
+      it 'builds the progress story (html)', (next) ->
+        expect(@athena.toHTML(@progress_story)).to.equal """
+          <span class='pl-actor'>Juan Mata</span> completed <span class='pl-activity'>Round of 16</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Champion</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Suspensions</span></td><td><span class='pl-score-delta-value'>-1</span></td></tr></tbody></table><footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        """
+        next()
+
+    describe 'for "state" metric changes', ->
+      before (next) ->
+        @progress_story = _.extend {}, @story, {
+          changes: [
+            {
+              metric: {
+                name: "Transfer Market Standing"
+                type: "state"
+                id: "transfers"
+              },
+              delta: {
+                "old": "Meh"
+                "new": "Hot Property"
+              }
+            }
+          ]
+        }
+        next()
+
+      it 'builds the progress story (text)', (next) ->
+        expect(@athena.toString(@progress_story)).to.equal """
+          Juan Mata completed 'Round of 16' in the process 'UEFA Champions League'.
+          Changes:
+          [>] Transfer Market Standing
+            [+] Hot Property
+            [-] Meh
+          [#{@text_date}]
+        """
+        next()
+
+      it 'builds the progress story (html)', (next) ->
+        expect(@athena.toHTML(@progress_story)).to.equal """
+          <span class='pl-actor'>Juan Mata</span> completed <span class='pl-activity'>Round of 16</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>Transfer Market Standing</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-value pl-diff-add'>Hot Property</span></td><td><span class='pl-score-delta-value pl-diff-rem'>Meh</span></td></tr></tbody></table><footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        """
+        next()
+
+    describe 'in process context', ->
+      before (next) ->
+        @progress_story = _.omit @story, 'process'
+        @externals = {context: 'process'}
+        next()
+
+      it 'builds the progress story (text)', (next) ->
+        expect(@athena.toString(@progress_story, @externals)).to.equal """
+          Juan Mata completed 'Round of 16' in this process.
+          [#{@text_date}]
+        """
+        next()
+
+      it 'builds the progress story (html)', (next) ->
+        expect(@athena.toHTML(@progress_story, @externals)).to.equal """
+          <span class='pl-actor'>Juan Mata</span> completed <span class='pl-activity'>Round of 16</span>.<time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        """
+        next()
+
+    describe "in actor's context", ->
+      before (next) ->
+        @progress_story = _.omit @story, 'actor'
+        @externals = { profile: {id: 'juan', alias: 'Juan Mata'} }
+        next()
+
+      it 'builds the progress story (text)', (next) ->
+        expect(@athena.toString(@progress_story, @externals)).to.equal """
+          You completed 'Round of 16' in the process 'UEFA Champions League'.
+          [#{@text_date}]
+        """
+        next()
+
+      it 'builds the progress story (html)', (next) ->
+        expect(@athena.toHTML(@progress_story, @externals)).to.equal """
+          <span class='pl-actor'>You</span> completed <span class='pl-activity'>Round of 16</span>.<footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        """
+        next()
+
+  ###*
+   * The Resolution event
+  ###
+  describe 'for the "resolution" event', ->
+    before (next) ->
+      @story = {
+        event: "resolution",
+        activity: {
+          id: "interview",
+          name: "A Candid Interview"
+        },
+        process: {
+          id: "ucl",
+          name: "UEFA Champions League"
+        },
+        actor: {
+          id: "david",
+          alias: "David Moyes"
+        },
+        deferred: {
+          activity: {
+            id: "score_in_finals",
+            name: "Score a Brace in UEFA Champions League Finals"
+          },
+          actor: {
+            id: "juan",
+            alias: "Juan Mata"
+          }
+          changes: [
+            {
+              metric: {
+                name: "GBP"
+                id: "salary"
+                type: "point"
+              },
+              delta: {
+                'old': "50000",
+                'new': "100000"
+              }
+            },
+            {
+              metric: {
+                name: "UEFA Awards"
+                type: "set"
+                id: "uefa_awards"
+              },
+              delta: {
+                "Golden Boot": {
+                  "old": "0",
+                  "new": "1"
+                },
+                "Champion": {
+                  "old": "3",
+                  "new": "4"
+                },
+                "Suspensions": {
+                  "old": "1",
+                  "new": "0"
+                }
+              }
+            }
+          ]
+        },
+        timestamp: @iso_date
+      }
+      next()
+
+    describe 'for "point" metric changes', ->
+      before (next) ->
+        @progress_story = _.clone @story, true
+        @progress_story.deferred.changes = [
+          {
+            metric: {
+              name: "GBP"
+              id: "salary"
+              type: "point"
+            },
+            delta: {
+              'old': "50000",
+              'new': "100000"
+            }
+          }
+        ]
+        next()
+
+      it 'builds the progress story (text)', (next) ->
+        expect(@athena.toString(@progress_story)).to.equal """
+          David Moyes completed 'A Candid Interview' in the process 'UEFA Champions League' and credited Juan Mata for completing 'Score a Brace in UEFA Champions League Finals'.
+          Changes:
+            [*] +50000 GBP
+          [#{@text_date}]
+        """
+        next()
+
+      it 'builds the progress story (html)', (next) ->
+        expect(@athena.toHTML(@progress_story)).to.equal """
+          <span class='pl-actor'>David Moyes</span> completed <span class='pl-activity'>A Candid Interview</span> and credited <span class='pl-target'>Juan Mata</span> for completing <span class='pl-activity'>Score a Brace in UEFA Champions League Finals</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td><span class='pl-score-metric'>GBP</span></td><td><span class='pl-score-delta-value'>+50000</span></td></tr></tbody></table><footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        """
+        next()
+
+    describe 'for "set" metric changes', ->
+      before (next) ->
+        @progress_story = _.clone @story, true
+        @progress_story.deferred.changes = [
+          {
+            metric: {
+              name: "UEFA Awards"
+              type: "set"
+              id: "uefa_awards"
+            },
+            delta: {
+              "Golden Boot": {
+                "old": "0",
+                "new": "1"
+              },
+              "Champion": {
+                "old": "3",
+                "new": "4"
+              },
+              "Suspensions": {
+                "old": "1",
+                "new": "0"
+              }
+            }
+          }
+        ]
+        next()
+
+      it 'builds the progress story (text)', (next) ->
+        expect(@athena.toString(@progress_story)).to.equal """
+          David Moyes completed 'A Candid Interview' in the process 'UEFA Champions League' and credited Juan Mata for completing 'Score a Brace in UEFA Champions League Finals'.
+          Changes:
+          [>] UEFA Awards
+            [*] +1 Golden Boot
+            [*] +1 Champion
+            [*] -1 Suspensions
+          [#{@text_date}]
+        """
+        next()
+
+      it 'builds the progress story (html)', (next) ->
+        expect(@athena.toHTML(@progress_story)).to.equal """
+          <span class='pl-actor'>David Moyes</span> completed <span class='pl-activity'>A Candid Interview</span> and credited <span class='pl-target'>Juan Mata</span> for completing <span class='pl-activity'>Score a Brace in UEFA Champions League Finals</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Champion</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Suspensions</span></td><td><span class='pl-score-delta-value'>-1</span></td></tr></tbody></table><footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        """
+        next()
+
+    describe 'for "state" metric changes', ->
+      before (next) ->
+        @progress_story = _.clone @story, true
+        @progress_story.deferred.changes = [
+          {
+            metric: {
+              name: "Transfer Market Standing"
+              type: "state"
+              id: "transfers"
+            },
+            delta: {
+              "old": "Meh"
+              "new": "Hot Property"
+            }
+          }
+        ]
+        next()
+
+      it 'builds the progress story (text)', (next) ->
+        expect(@athena.toString(@progress_story)).to.equal """
+          David Moyes completed 'A Candid Interview' in the process 'UEFA Champions League' and credited Juan Mata for completing 'Score a Brace in UEFA Champions League Finals'.
+          Changes:
+          [>] Transfer Market Standing
+            [+] Hot Property
+            [-] Meh
+          [#{@text_date}]
+        """
+        next()
+
+      it 'builds the progress story (html)', (next) ->
+        expect(@athena.toHTML(@progress_story)).to.equal """
+          <span class='pl-actor'>David Moyes</span> completed <span class='pl-activity'>A Candid Interview</span> and credited <span class='pl-target'>Juan Mata</span> for completing <span class='pl-activity'>Score a Brace in UEFA Champions League Finals</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>Transfer Market Standing</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-value pl-diff-add'>Hot Property</span></td><td><span class='pl-score-delta-value pl-diff-rem'>Meh</span></td></tr></tbody></table><footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        """
+        next()
+
+    describe 'in process context', ->
+      before (next) ->
+        @progress_story = _.omit @story, 'process'
+        @externals = {context: 'process'}
+        next()
+
+      it 'builds the progress story (text)', (next) ->
+        expect(@athena.toString(@progress_story, @externals)).to.equal """
+          David Moyes completed 'A Candid Interview' in this process and credited Juan Mata for completing 'Score a Brace in UEFA Champions League Finals'.
+          Changes:
+            [*] +50000 GBP
+          [>] UEFA Awards
+            [*] +1 Golden Boot
+            [*] +1 Champion
+            [*] -1 Suspensions
+          [#{@text_date}]
+        """
+        next()
+
+      it 'builds the progress story (html)', (next) ->
+        expect(@athena.toHTML(@progress_story, @externals)).to.equal """
+          <span class='pl-actor'>David Moyes</span> completed <span class='pl-activity'>A Candid Interview</span> and credited <span class='pl-target'>Juan Mata</span> for completing <span class='pl-activity'>Score a Brace in UEFA Champions League Finals</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td><span class='pl-score-metric'>GBP</span></td><td><span class='pl-score-delta-value'>+50000</span></td></tr></tbody><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Champion</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Suspensions</span></td><td><span class='pl-score-delta-value'>-1</span></td></tr></tbody></table><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        """
+        next()
+
+    describe "in actor's context", ->
+      before (next) ->
+        @progress_story = _.omit @story, 'actor'
+        @externals = { profile: {id: 'david', alias: 'David Moyes'} }
+        next()
+
+      it 'builds the progress story (text)', (next) ->
+        expect(@athena.toString(@progress_story, @externals)).to.equal """
+          You completed 'A Candid Interview' in the process 'UEFA Champions League' and credited Juan Mata for completing 'Score a Brace in UEFA Champions League Finals'.
+          Changes:
+            [*] +50000 GBP
+          [>] UEFA Awards
+            [*] +1 Golden Boot
+            [*] +1 Champion
+            [*] -1 Suspensions
+          [#{@text_date}]
+        """
+        next()
+
+      it 'builds the progress story (html)', (next) ->
+        expect(@athena.toHTML(@progress_story, @externals)).to.equal """
+          <span class='pl-actor'>You</span> completed <span class='pl-activity'>A Candid Interview</span> and credited <span class='pl-target'>Juan Mata</span> for completing <span class='pl-activity'>Score a Brace in UEFA Champions League Finals</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td><span class='pl-score-metric'>GBP</span></td><td><span class='pl-score-delta-value'>+50000</span></td></tr></tbody><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Champion</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Suspensions</span></td><td><span class='pl-score-delta-value'>-1</span></td></tr></tbody></table><footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        """
+        next()
+
+    describe "in target player's context", ->
+      before (next) ->
+        @progress_story = _.clone @story, true
+        delete @progress_story.deferred.actor
+        @externals = { profile: {id: 'juan', alias: 'Juan Mata'} }
+        next()
+
+      it 'builds the progress story (text)', (next) ->
+        expect(@athena.toString(@progress_story, @externals)).to.equal """
+          David Moyes completed 'A Candid Interview' in the process 'UEFA Champions League' and credited you for completing 'Score a Brace in UEFA Champions League Finals'.
+          Changes:
+            [*] +50000 GBP
+          [>] UEFA Awards
+            [*] +1 Golden Boot
+            [*] +1 Champion
+            [*] -1 Suspensions
+          [#{@text_date}]
+        """
+        next()
+
+      it 'builds the progress story (html)', (next) ->
+        expect(@athena.toHTML(@progress_story, @externals)).to.equal """
+          <span class='pl-actor'>David Moyes</span> completed <span class='pl-activity'>A Candid Interview</span> and credited <span class='pl-target'>you</span> for completing <span class='pl-activity'>Score a Brace in UEFA Champions League Finals</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td><span class='pl-score-metric'>GBP</span></td><td><span class='pl-score-delta-value'>+50000</span></td></tr></tbody><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Champion</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Suspensions</span></td><td><span class='pl-score-delta-value'>-1</span></td></tr></tbody></table><footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        """
+        next()
+
+
+
+  ###*
+   * The Level event
+  ###
+  describe 'for the "level" event', ->
+    before (next) ->
+      @story = {
+        event: "level",
+        actor: {
+          id: "juan",
+          alias: "Juan Mata"
+        },
+        changes: [
+          metric: {
+            name: "Transfer Market Standing"
+            type: "state"
+            id: "transfers"
+          },
+          delta: {
+            "old": "Meh"
+            "new": "Hot Property"
+          }
+        ]
+        timestamp: @iso_date
+      }
+      next()
+
+    describe "in actor's context", ->
+      before (next) ->
+        @externals = { profile: {id: 'juan', alias: 'Juan Mata'} }
+        next()
+
+      it 'builds the progress story (text)', (next) ->
+        expect(@athena.toString(@story, @externals)).to.equal """
+          Your 'Transfer Market Standing' level changed to 'Hot Property' from 'Meh'.
+          [#{@text_date}]
+        """
+        next()
+
+      it 'builds the progress story (html)', (next) ->
+        expect(@athena.toHTML(@story, @externals)).to.equal """
+          <span class='pl-actor'>Your</span> <span class='pl-score-metric'>Transfer Market Standing</span> level changed to <span class='pl-score-delta-value pl-diff-add'>Hot Property</span> from <span class='pl-score-delta-value pl-diff-rem'>Meh</span>.<time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        """
+        next()
+
+    describe "in global context", ->
+      it 'builds the progress story (text)', (next) ->
+        expect(@athena.toString(@story)).to.equal """
+          Juan Mata\u2019s 'Transfer Market Standing' level changed to 'Hot Property' from 'Meh'.
+          [#{@text_date}]
+        """
+        next()
+
+      it 'builds the progress story (html)', (next) ->
+        expect(@athena.toHTML(@story)).to.equal """
+          <span class='pl-actor'>Juan Mata\u2019s</span> <span class='pl-score-metric'>Transfer Market Standing</span> level changed to <span class='pl-score-delta-value pl-diff-add'>Hot Property</span> from <span class='pl-score-delta-value pl-diff-rem'>Meh</span>.<time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        """
+        next()
+
+
+  ###*
+   * The Achievement event
+  ###
+  describe 'for the "achievement" event', ->
+    before (next) ->
+      @story = {
+        event: "achievement",
+        actor: {
+          id: "juan",
+          alias: "Juan Mata"
+        },
+        changes: [
+          {
+            metric: {
+              id: "uefa_awards",
+              name: "UEFA Awards",
+              type: "set"
+            },
+            delta: {
+              "Golden Boot": {
+                "old": "0",
+                "new": "1"
+              }
+            }
+          }
+        ],
+        timestamp: @iso_date
+      }
+      next()
+
+    describe "in actor's context", ->
+      before (next) ->
+        @externals = { profile: {id: 'juan', alias: 'Juan Mata'} }
+        next()
+
+      it 'builds the progress story (text)', (next) ->
+        expect(@athena.toString(@story, @externals)).to.equal """
+          Congratulations! You unlocked an achievement.
+          Changes:
+          [>] UEFA Awards
+            [*] +1 Golden Boot
+          [#{@text_date}]
+        """
+        next()
+
+      it 'builds the progress story (html)', (next) ->
+        expect(@athena.toHTML(@story, @externals)).to.equal """
+          Congratulations! <span class='pl-actor'>You</span> unlocked an achievement.<table class='pl-score-table pl-achievement-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr></tbody></table><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        """
+        next()
+
+    describe "in global context", ->
+      it 'builds the progress story (text)', (next) ->
+        expect(@athena.toString(@story)).to.equal """
+          Juan Mata unlocked an achievement.
+          Changes:
+          [>] UEFA Awards
+            [*] +1 Golden Boot
+          [#{@text_date}]
+        """
+        next()
+
+      it 'builds the progress story (html)', (next) ->
+        expect(@athena.toHTML(@story)).to.equal """
+          <span class='pl-actor'>Juan Mata</span> unlocked an achievement.<table class='pl-score-table pl-achievement-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr></tbody></table><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        """
+        next()

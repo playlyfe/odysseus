@@ -24,6 +24,14 @@ global.config =
     diff_add: "pl-diff-add"
     diff_rem: "pl-diff-rem"
     diff_change: "pl-diff-change"
+    score_activity: "pl-activity"
+    score_table: "pl-score-table"
+    score_table_header: "pl-score-header"
+    score_table_body: "pl-score-body"
+    score_metric: "pl-score-metric"
+    score_delta_item: "pl-score-delta-item"
+    score_delta_value: "pl-score-delta-value"
+    achievement_table: "pl-achievement-table"
     timestamp: "pl-ts"
 
 chai.use sinonChai

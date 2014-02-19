@@ -1971,7 +1971,7 @@ describe 'The Notification Story Builder', ->
       describe "in actor's context", ->
         before (next) ->
           @story_ctx = _.omit @story, 'actor'
-          @externals = { profile: {id: 'david', alias: 'Sir Alex Ferguson'} }
+          @externals = { profile: {id: 'alex', alias: 'Sir Alex Ferguson'} }
           next()
 
         it 'builds the invite accept story (text)', (next) ->
@@ -2005,3 +2005,53 @@ describe 'The Notification Story Builder', ->
             <span class='pl-target'>Your</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been rejected by <span class='pl-actor'>Sir Alex Ferguson</span>.<time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
           """
           next()
+
+
+  ###*
+   * For Escalation Event
+  ###
+  describe 'for the "escalation" event', ->
+    before (next) ->
+      @story = {
+        event: "escalation",
+        message: "There is a potential transfer target!",
+        process: {
+          id: "epl2014",
+          name: "Premier League Campaign"
+        },
+        triggers: [
+          {
+            trigger: "defender",
+            name: "Grab a World Class Defender",
+            actions: [
+              {
+                metric: {
+                  id: "defences",
+                  type: "point",
+                  name: "Defences"
+                },
+                value: "10",
+                verb: "add"
+              }
+            ]
+          }
+        ],
+        timestamp: @iso_date
+        code: "229ab956-6af7-4438-8d12-5a6045a9542c",
+        id: "b6172731-98da-11e3-bb03-ed7aec7ec4e1"
+        play_token: "YmMzMDQ3YTAtOThkYS0xMWUzLWJiMDMtZWQ3YWVjN2VjNGUxOGFiYjFhMTgtMzljNy00MGYyLTg5MWItOGIxNTZjZjRkYTEz",
+      }
+      next()
+
+    it 'builds the escalation story (text)', (next) ->
+      expect(@athena.toString(@story)).to.equal """
+        There is a potential transfer target!
+        [#{@text_date}]
+      """
+      next()
+
+    it 'builds the invite accept story (html)', (next) ->
+      expect(@athena.toHTML(@story)).to.equal """
+        There is a potential transfer target!<time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+      """
+      next()
