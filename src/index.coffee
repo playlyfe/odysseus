@@ -21,7 +21,7 @@ class Athena
    * in-case no object is supplied in the constructor
    * @type {Object}
   ###
-  default_markup = {
+  @default_markup: {
     actor: "ath-actor",
     target: "ath-target",
     object: "ath-object",
@@ -35,7 +35,7 @@ class Athena
    * A list of all the available templates
    * @type {Object}
   ###
-  stored_templates = {
+  @stored_templates: {
     ###*
      * Activity Templates
     ###
@@ -1354,7 +1354,7 @@ class Athena
   constructor: (options) ->
     options = options or {}
     @options = _.defaults options, {
-      markup: default_markup
+      markup: Athena.default_markup
       external: {}
     }
 
@@ -1443,7 +1443,7 @@ class Athena
     return ctx
 
   compile: (evt, type) ->
-    unless (tpl_collection = stored_templates[evt])?
+    unless (tpl_collection = Athena.stored_templates[evt])?
       throw("The #{evt} event is not supported")
     unless (tpl = tpl_collection[type])?
       throw("The #{type} template for #{evt} event cannot be found")

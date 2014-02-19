@@ -1,6 +1,6 @@
 {
   "name": "athena",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A notification story compiler based on Playlyfe events",
   "main": "./index",
   "scripts": {
