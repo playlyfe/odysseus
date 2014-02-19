@@ -1,24 +1,27 @@
-/*jshint multistr: true, eqnull: true, expr: true */
-var _ = require('lodash');
-var moment = require('moment');
+_ = require 'lodash'
+moment = require 'moment'
+BigNumber = require 'bignumber.js'
 
-_.templateSettings.interpolate = /#\{([\s\S]+?)\}#/g;
-_.templateSettings.escape = /\{\{([\s\S]+?)\}\}/g;
-_.templateSettings.evaluate = /\$\{([\s\S]+?)\}\$/g;
-_.templateSettings.variable = 'ath';
+# Override the templating delimiters to distinguish from HTML tags
+_.templateSettings.interpolate = /@\{([\s\S]+?)\}@/g
+_.templateSettings.escape = /\{\{([\s\S]+?)\}\}/g
+_.templateSettings.evaluate = /\$\{([\s\S]+?)\}\$/g
+_.templateSettings.variable = 'ath'
 _.templateSettings.imports = {
-  '_': _,
-  'moment': moment
+  '_': _            # Pass the default lodash object
+  'moment': moment    # Pass moment for time transformations
+  'ONE': new BigNumber(1)   # In this scenario, BigNumber isnt really required.
+                            # Just send ONE for idempotency and
+                            # to enable bignumber operations.
 };
 
-
-var Athena = (function() {
-  /**
+class Athena
+  ###*
    * A map of the default markup tags to be inserted into the rendered HTML
    * in-case no object is supplied in the constructor
    * @type {Object}
-   */
-  var default_markup = {
+  ###
+  default_markup = {
     actor: "ath-actor",
     target: "ath-target",
     object: "ath-object",
@@ -26,16 +29,16 @@ var Athena = (function() {
     role: "ath-role",
     lane: "ath-lane",
     timestamp: "ath-ts"
-  };
+  }
 
-  /**
+  ###*
    * A list of all the available templates
    * @type {Object}
-   */
-  var stored_templates = {
-    /**
+  ###
+  stored_templates = {
+    ###*
      * Activity Templates
-     */
+    ###
     "create": {
       text: "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}} created "+
             "the {{ath.ctx.isTeam ? 'team' : 'process'}} "+
@@ -43,14 +46,14 @@ var Athena = (function() {
               "ath.story.process.name || ath.story.process.id}}'.\n"+
             "[{{moment(ath.story.timestamp).format('llll')}}]",
 
-      html: "<span class='#{ath.markup.actor}#'>"+
+      html: "<span class='@{ath.markup.actor}@'>"+
               "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
             "</span> created the {{ath.ctx.isTeam ? 'team' : 'process'}} "+
-            "<span class='#{ath.markup.object}#'>"+
+            "<span class='@{ath.markup.object}@'>"+
               "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
               "ath.story.process.name || ath.story.process.id}}"+
             "</span>."+
-            "<time class='#{ath.markup.timestamp}#' title='On "+
+            "<time class='@{ath.markup.timestamp}@' title='On "+
               "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
               "{{ts.fromNow()}}</time>"
     },
@@ -61,14 +64,14 @@ var Athena = (function() {
               "ath.story.process.name || ath.story.process.id}}'.\n"+
             "[{{moment(ath.story.timestamp).format('llll')}}]",
 
-      html: "<span class='#{ath.markup.actor}#'>"+
+      html: "<span class='@{ath.markup.actor}@'>"+
               "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
             "</span> deleted the {{ath.ctx.isTeam ? 'team' : 'process'}} "+
-            "<span class='#{ath.markup.object}#'>"+
+            "<span class='@{ath.markup.object}@'>"+
               "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
               "ath.story.process.name || ath.story.process.id}}"+
             "</span>."+
-            "<time class='#{ath.markup.timestamp}#' title='On "+
+            "<time class='@{ath.markup.timestamp}@' title='On "+
               "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
               "{{ts.fromNow()}}</time>"
     },
@@ -91,32 +94,32 @@ var Athena = (function() {
             "${ } }$.\n"+
             "[{{moment(ath.story.timestamp).format('llll')}}]",
 
-      html: "<span class='#{ath.markup.actor}#'>"+
+      html: "<span class='@{ath.markup.actor}@'>"+
               "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
             "</span> joined "+
             "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
             "${ if (!ath.ctx.isItem) { }$"+
-              " <span class='#{ath.markup.object}#'>"+
+              " <span class='@{ath.markup.object}@'>"+
                 "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                 "ath.story.process.name || ath.story.process.id}}"+
               "</span>"+
             "${ } }$ as "+
-            "<ul class='#{ath.markup.role_list}#'>"+
+            "<ul class='@{ath.markup.role_list}@'>"+
             "${ if (ath.ctx.isTeam) { }$"+
               "${ _.forEach(ath.story.roles, function(enabled, role) { }$"+
-                "<li class='#{ath.markup.role}#'>{{role}}</li>"+
+                "<li class='@{ath.markup.role}@'>{{role}}</li>"+
               "${ }) }$"+
             "${ } else if (ath.ctx.isProcess) { }$"+
               "${ _.forEach(ath.story.roles, function(role, lane) { }$"+
                 "<li>"+
-                  "<span class='#{ath.markup.role}#'>{{role}}</span> in "+
-                  "<span class='#{ath.markup.lane}#'>"+
+                  "<span class='@{ath.markup.role}@'>{{role}}</span> in "+
+                  "<span class='@{ath.markup.lane}@'>"+
                     "{{lane === '*' ? 'All': lane }}"+
                   "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
                 "</li>"+
               "${ })}$"+
             "${ } }$</ul>."+
-            "<time class='#{ath.markup.timestamp}#' title='On "+
+            "<time class='@{ath.markup.timestamp}@' title='On "+
               "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
               "{{ts.fromNow()}}</time>"
     },
@@ -129,17 +132,17 @@ var Athena = (function() {
             "${ } }$.\n"+
             "[{{moment(ath.story.timestamp).format('llll')}}]",
 
-      html: "<span class='#{ath.markup.actor}#'>"+
+      html: "<span class='@{ath.markup.actor}@'>"+
               "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
             "</span> left "+
             "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
             "${ if (!ath.ctx.isItem) { }$"+
-              " <span class='#{ath.markup.object}#'>"+
+              " <span class='@{ath.markup.object}@'>"+
                 "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                 "ath.story.process.name || ath.story.process.id}}"+
               "</span>"+
             "${ } }$."+
-            "<time class='#{ath.markup.timestamp}#' title='On "+
+            "<time class='@{ath.markup.timestamp}@' title='On "+
               "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
               "{{ts.fromNow()}}</time>"
     },
@@ -153,20 +156,20 @@ var Athena = (function() {
             "${ } }$.\n"+
             "[{{moment(ath.story.timestamp).format('llll')}}]",
 
-      html: "<span class='#{ath.markup.actor}#'>"+
+      html: "<span class='@{ath.markup.actor}@'>"+
               "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
             "</span> kicked "+
-            "<span class='#{ath.markup.target}#'>"+
+            "<span class='@{ath.markup.target}@'>"+
               "{{ath.ctx.isPlayer ? 'you' : ath.story.player.alias||ath.story.player.id}}"+
             "</span> from "+
             "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
             "${ if (!ath.ctx.isItem) { }$"+
-              " <span class='#{ath.markup.object}#'>"+
+              " <span class='@{ath.markup.object}@'>"+
                 "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                 "ath.story.process.name || ath.story.process.id}}"+
               "</span>"+
             "${ } }$."+
-            "<time class='#{ath.markup.timestamp}#' title='On "+
+            "<time class='@{ath.markup.timestamp}@' title='On "+
               "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
               "{{ts.fromNow()}}</time>"
     },
@@ -181,20 +184,20 @@ var Athena = (function() {
             "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}.\n"+
             "[{{moment(ath.story.timestamp).format('llll')}}]",
 
-      html: "<span class='#{ath.markup.target}#'>"+
+      html: "<span class='@{ath.markup.target}@'>"+
               "{{ath.ctx.isPlayer ? 'Your' : (ath.story.player.alias||ath.story.player.id) + '\u2019s'}}"+
             "</span> request to join "+
             "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
             "${ if (!ath.ctx.isItem) { }$"+
-              " <span class='#{ath.markup.object}#'>"+
+              " <span class='@{ath.markup.object}@'>"+
                 "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                 "ath.story.process.name || ath.story.process.id}}"+
               "</span>"+
             "${ } }$ has been accepted by "+
-            "<span class='#{ath.markup.actor}#'>"+
+            "<span class='@{ath.markup.actor}@'>"+
               "{{ath.ctx.isActor ? 'you' : ath.story.actor.alias||ath.story.actor.id}}"+
             "</span>."+
-            "<time class='#{ath.markup.timestamp}#' title='On "+
+            "<time class='@{ath.markup.timestamp}@' title='On "+
               "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
               "{{ts.fromNow()}}</time>"
     },
@@ -209,20 +212,20 @@ var Athena = (function() {
             "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}.\n"+
             "[{{moment(ath.story.timestamp).format('llll')}}]",
 
-      html: "<span class='#{ath.markup.target}#'>"+
+      html: "<span class='@{ath.markup.target}@'>"+
               "{{ath.ctx.isPlayer ? 'Your' : (ath.story.player.alias||ath.story.player.id) + '\u2019s'}}"+
             "</span> request to join "+
             "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
             "${ if (!ath.ctx.isItem) { }$"+
-              " <span class='#{ath.markup.object}#'>"+
+              " <span class='@{ath.markup.object}@'>"+
                 "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                 "ath.story.process.name || ath.story.process.id}}"+
               "</span>"+
             "${ } }$ has been rejected by "+
-            "<span class='#{ath.markup.actor}#'>"+
+            "<span class='@{ath.markup.actor}@'>"+
               "{{ath.ctx.isActor ? 'you' : ath.story.actor.alias||ath.story.actor.id}}"+
             "</span>."+
-            "<time class='#{ath.markup.timestamp}#' title='On "+
+            "<time class='@{ath.markup.timestamp}@' title='On "+
               "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
               "{{ts.fromNow()}}</time>"
     },
@@ -248,35 +251,35 @@ var Athena = (function() {
             "${ } }$.\n"+
             "[{{moment(ath.story.timestamp).format('llll')}}]",
 
-      html: "<span class='#{ath.markup.actor}#'>"+
+      html: "<span class='@{ath.markup.actor}@'>"+
               "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
             "</span> accepted "+
-            "<span class='#{ath.markup.target}#'>"+
+            "<span class='@{ath.markup.target}@'>"+
               "{{ath.ctx.isInviter ? 'your' : (ath.story.inviter.alias||ath.story.inviter.id) + '\u2019s'}}"+
             "</span> invitation to join "+
             "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
             "${ if (!ath.ctx.isItem) { }$"+
-              " <span class='#{ath.markup.object}#'>"+
+              " <span class='@{ath.markup.object}@'>"+
                 "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                 "ath.story.process.name || ath.story.process.id}}"+
               "</span>"+
             "${ } }$ as "+
-            "<ul class='#{ath.markup.role_list}#'>"+
+            "<ul class='@{ath.markup.role_list}@'>"+
             "${ if (ath.ctx.isTeam) { }$"+
               "${ _.forEach(ath.story.roles, function(enabled, role) { }$"+
-                "<li class='#{ath.markup.role}#'>{{role}}</li>"+
+                "<li class='@{ath.markup.role}@'>{{role}}</li>"+
               "${ }) }$"+
             "${ } else if (ath.ctx.isProcess) { }$"+
               "${ _.forEach(ath.story.roles, function(role, lane) { }$"+
                 "<li>"+
-                  "<span class='#{ath.markup.role}#'>{{role}}</span> in "+
-                  "<span class='#{ath.markup.lane}#'>"+
+                  "<span class='@{ath.markup.role}@'>{{role}}</span> in "+
+                  "<span class='@{ath.markup.lane}@'>"+
                     "{{lane === '*' ? 'All': lane }}"+
                   "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
                 "</li>"+
               "${ })}$"+
             "${ } }$</ul>."+
-            "<time class='#{ath.markup.timestamp}#' title='On "+
+            "<time class='@{ath.markup.timestamp}@' title='On "+
               "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
               "{{ts.fromNow()}}</time>"
     },
@@ -302,35 +305,35 @@ var Athena = (function() {
             "${ } }$.\n"+
             "[{{moment(ath.story.timestamp).format('llll')}}]",
 
-      html: "<span class='#{ath.markup.actor}#'>"+
+      html: "<span class='@{ath.markup.actor}@'>"+
               "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
             "</span> rejected "+
-            "<span class='#{ath.markup.target}#'>"+
+            "<span class='@{ath.markup.target}@'>"+
               "{{ath.ctx.isInviter ? 'your' : (ath.story.inviter.alias||ath.story.inviter.id) + '\u2019s'}}"+
             "</span> invitation to join "+
             "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
             "${ if (!ath.ctx.isItem) { }$"+
-              " <span class='#{ath.markup.object}#'>"+
+              " <span class='@{ath.markup.object}@'>"+
                 "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                 "ath.story.process.name || ath.story.process.id}}"+
               "</span>"+
             "${ } }$ as "+
-            "<ul class='#{ath.markup.role_list}#'>"+
+            "<ul class='@{ath.markup.role_list}@'>"+
             "${ if (ath.ctx.isTeam) { }$"+
                 "${ _.forEach(ath.story.roles, function(enabled, role) { }$"+
-                  "<li class='#{ath.markup.role}#'>{{role}}</li>"+
+                  "<li class='@{ath.markup.role}@'>{{role}}</li>"+
                 "${ }) }$"+
             "${ } else if (ath.ctx.isProcess) { }$"+
               "${ _.forEach(ath.story.roles, function(role, lane) { }$"+
                 "<li>"+
-                  "<span class='#{ath.markup.role}#'>{{role}}</span> in "+
-                  "<span class='#{ath.markup.lane}#'>"+
+                  "<span class='@{ath.markup.role}@'>{{role}}</span> in "+
+                  "<span class='@{ath.markup.lane}@'>"+
                     "{{lane === '*' ? 'All': lane }}"+
                   "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
                 "</li>"+
               "${ })}$"+
             "${ } }$</ul>."+
-            "<time class='#{ath.markup.timestamp}#' title='On "+
+            "<time class='@{ath.markup.timestamp}@' title='On "+
               "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
               "{{ts.fromNow()}}</time>"
     },
@@ -350,7 +353,8 @@ var Athena = (function() {
               "${ }); }$"+
             "${ } else if (ath.ctx.isProcess) {"+
               "_.forEach(ath.story.changes, function(diff, lane) {"+
-                "if(!!diff['old'] && !!diff['new']) { }$"+    // if both new and old keys exist, the role was changed
+                # if both new and old keys exist, the role was changed
+                "if(!!diff['old'] && !!diff['new']) { }$"+
                   "\n  [+] {{diff['new']}} in {{lane}} lane"+
                   "\n  [-] {{diff['old']}} in {{lane}} lane"+
                 "${ } else { }$"+
@@ -361,39 +365,41 @@ var Athena = (function() {
               "});"+
             "} }$\n"+
             "[{{moment(ath.story.timestamp).format('llll')}}]",
-      html: "<span class='#{ath.markup.target}#'>"+
+
+      html: "<span class='@{ath.markup.target}@'>"+
               "{{ath.ctx.isPlayer ? 'Your' : (ath.story.player.alias||ath.story.player.id) + '\u2019s'}}"+
             "</span> request for a change of roles in "+
             "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
             "${ if (!ath.ctx.isItem) { }$"+
-              " <span class='#{ath.markup.object}#'>"+
+              " <span class='@{ath.markup.object}@'>"+
                 "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                 "ath.story.process.name || ath.story.process.id}}"+
               "</span>"+
             "${ } }$ has been accepted by "+
-            "<span class='#{ath.markup.actor}#'>"+
+            "<span class='@{ath.markup.actor}@'>"+
               "{{ath.ctx.isActor ? 'you' : ath.story.actor.alias||ath.story.actor.id}}"+
             "</span>."+
-            "<ul class='#{ath.markup.role_list}# #{ath.markup.diff_list}#'>"+
-              "<li class='#{ath.markup.list_header}#'>Changes</li>"+
+            "<ul class='@{ath.markup.role_list}@ @{ath.markup.diff_list}@'>"+
+              "<li class='@{ath.markup.list_header}@'>Changes</li>"+
               "${ if (ath.ctx.isTeam) {"+
                 "_.forEach(ath.story.changes, function(diff, role) { }$"+
-                  "<li class='#{ath.markup.role}# #{ath.markup[!diff.old ? 'diff_add' : 'diff_rem']}#'>"+
+                  "<li class='@{ath.markup.role}@ @{ath.markup[!diff.old ? 'diff_add' : 'diff_rem']}@'>"+
                     "{{role}}"+
                   "</li>"+
                 "${ }); }$"+
               "${ } else if (ath.ctx.isProcess) {"+
                 "_.forEach(ath.story.changes, function(diff, lane) {"+
-                  "if(!!diff['old'] && !!diff['new']) { }$"+    // if both new and old keys exist, the role was changed
-                    "<li class='#{ath.markup.diff_change}#'>"+
-                      "<span class='#{ath.markup.role}# #{ath.markup.diff_add}#'>{{diff['new']}}</span> from "+
-                      "<span class='#{ath.markup.role}# #{ath.markup.diff_rem}#'>{{diff['old']}}</span> in "+
-                      "<span class='#{ath.markup.lane}#'>{{lane}}</span> lane"+
+                  # if both new and old keys exist, the role was changed
+                  "if(!!diff['old'] && !!diff['new']) { }$"+
+                    "<li class='@{ath.markup.diff_change}@'>"+
+                      "<span class='@{ath.markup.role}@ @{ath.markup.diff_add}@'>{{diff['new']}}</span> from "+
+                      "<span class='@{ath.markup.role}@ @{ath.markup.diff_rem}@'>{{diff['old']}}</span> in "+
+                      "<span class='@{ath.markup.lane}@'>{{lane}}</span> lane"+
                     "</li>"+
                   "${ } else { }$"+
-                    "<li class='#{ath.markup[!diff.old ? 'diff_add' : 'diff_rem']}#'>"+
-                      "<span class='#{ath.markup.role}#'>{{diff['new'] || diff['old']}}</span> in "+
-                      "<span class='#{ath.markup.lane}#'>"+
+                    "<li class='@{ath.markup[!diff.old ? 'diff_add' : 'diff_rem']}@'>"+
+                      "<span class='@{ath.markup.role}@'>{{diff['new'] || diff['old']}}</span> in "+
+                      "<span class='@{ath.markup.lane}@'>"+
                         "{{lane === '*' ? 'All' : lane}}"+
                       "</span> lane{{lane === '*' ? 's' : ''}}"+
                     "</li>"+
@@ -401,7 +407,7 @@ var Athena = (function() {
                 "${ }); }$"+
               "${ } }$"+
             "</ul>."+
-            "<time class='#{ath.markup.timestamp}#' title='On "+
+            "<time class='@{ath.markup.timestamp}@' title='On "+
               "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
               "{{ts.fromNow()}}</time>"
     },
@@ -415,20 +421,21 @@ var Athena = (function() {
             "${ } }$ has been rejected by "+
             "{{ath.ctx.isActor ? 'you' : ath.story.actor.alias||ath.story.actor.id}}.\n"+
             "[{{moment(ath.story.timestamp).format('llll')}}]",
-      html: "<span class='#{ath.markup.target}#'>"+
+
+      html: "<span class='@{ath.markup.target}@'>"+
               "{{ath.ctx.isPlayer ? 'Your' : (ath.story.player.alias||ath.story.player.id) + '\u2019s'}}"+
             "</span> request for a change of roles in "+
             "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
             "${ if (!ath.ctx.isItem) { }$"+
-              " <span class='#{ath.markup.object}#'>"+
+              " <span class='@{ath.markup.object}@'>"+
                 "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                 "ath.story.process.name || ath.story.process.id}}"+
               "</span>"+
             "${ } }$ has been rejected by "+
-            "<span class='#{ath.markup.actor}#'>"+
+            "<span class='@{ath.markup.actor}@'>"+
               "{{ath.ctx.isActor ? 'you' : ath.story.actor.alias||ath.story.actor.id}}"+
             "</span>."+
-            "<time class='#{ath.markup.timestamp}#' title='On "+
+            "<time class='@{ath.markup.timestamp}@' title='On "+
               "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
               "{{ts.fromNow()}}</time>"
     },
@@ -447,7 +454,8 @@ var Athena = (function() {
               "${ }); }$"+
             "${ } else if (ath.ctx.isProcess) {"+
               "_.forEach(ath.story.changes, function(diff, lane) {"+
-                "if(!!diff['old'] && !!diff['new']) { }$"+    // if both new and old keys exist, the role was changed
+                # if both new and old keys exist, the role was changed
+                "if(!!diff['old'] && !!diff['new']) { }$"+
                   "\n  [+] {{diff['new']}} in {{lane}} lane"+
                   "\n  [-] {{diff['old']}} in {{lane}} lane"+
                 "${ } else { }$"+
@@ -458,36 +466,38 @@ var Athena = (function() {
               "});"+
             "} }$\n"+
             "[{{moment(ath.story.timestamp).format('llll')}}]",
-      html: "<span class='#{ath.markup.actor}#'>"+
+
+      html: "<span class='@{ath.markup.actor}@'>"+
               "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
             "</span> {{ath.ctx.isActor ? 'have' : 'has'}} changed roles in "+
             "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
             "${ if (!ath.ctx.isItem) { }$"+
-              " <span class='#{ath.markup.object}#'>"+
+              " <span class='@{ath.markup.object}@'>"+
                 "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                 "ath.story.process.name || ath.story.process.id}}"+
               "</span>"+
             "${ } }$."+
-            "<ul class='#{ath.markup.role_list}# #{ath.markup.diff_list}#'>"+
-              "<li class='#{ath.markup.list_header}#'>Changes</li>"+
+            "<ul class='@{ath.markup.role_list}@ @{ath.markup.diff_list}@'>"+
+              "<li class='@{ath.markup.list_header}@'>Changes</li>"+
               "${ if (ath.ctx.isTeam) {"+
                 "_.forEach(ath.story.changes, function(diff, role) { }$"+
-                  "<li class='#{ath.markup.role}# #{ath.markup[!diff.old ? 'diff_add' : 'diff_rem']}#'>"+
+                  "<li class='@{ath.markup.role}@ @{ath.markup[!diff.old ? 'diff_add' : 'diff_rem']}@'>"+
                     "{{role}}"+
                   "</li>"+
                 "${ }); }$"+
               "${ } else if (ath.ctx.isProcess) {"+
                 "_.forEach(ath.story.changes, function(diff, lane) {"+
-                  "if(!!diff['old'] && !!diff['new']) { }$"+    // if both new and old keys exist, the role was changed
-                    "<li class='#{ath.markup.diff_change}#'>"+
-                      "<span class='#{ath.markup.role}# #{ath.markup.diff_add}#'>{{diff['new']}}</span> from "+
-                      "<span class='#{ath.markup.role}# #{ath.markup.diff_rem}#'>{{diff['old']}}</span> in "+
-                      "<span class='#{ath.markup.lane}#'>{{lane}}</span> lane"+
+                  # if both new and old keys exist, the role was changed
+                  "if(!!diff['old'] && !!diff['new']) { }$"+
+                    "<li class='@{ath.markup.diff_change}@'>"+
+                      "<span class='@{ath.markup.role}@ @{ath.markup.diff_add}@'>{{diff['new']}}</span> from "+
+                      "<span class='@{ath.markup.role}@ @{ath.markup.diff_rem}@'>{{diff['old']}}</span> in "+
+                      "<span class='@{ath.markup.lane}@'>{{lane}}</span> lane"+
                     "</li>"+
                   "${ } else { }$"+
-                    "<li class='#{ath.markup[!diff.old ? 'diff_add' : 'diff_rem']}#'>"+
-                      "<span class='#{ath.markup.role}#'>{{diff['new'] || diff['old']}}</span> in "+
-                      "<span class='#{ath.markup.lane}#'>"+
+                    "<li class='@{ath.markup[!diff.old ? 'diff_add' : 'diff_rem']}@'>"+
+                      "<span class='@{ath.markup.role}@'>{{diff['new'] || diff['old']}}</span> in "+
+                      "<span class='@{ath.markup.lane}@'>"+
                         "{{lane === '*' ? 'All' : lane}}"+
                       "</span> lane{{lane === '*' ? 's' : ''}}"+
                     "</li>"+
@@ -495,7 +505,7 @@ var Athena = (function() {
                 "${ }); }$"+
               "${ } }$"+
             "</ul>."+
-            "<time class='#{ath.markup.timestamp}#' title='On "+
+            "<time class='@{ath.markup.timestamp}@' title='On "+
               "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
               "{{ts.fromNow()}}</time>"
     },
@@ -526,39 +536,41 @@ var Athena = (function() {
               "});"+
             "} }$\n"+
             "[{{moment(ath.story.timestamp).format('llll')}}]",
-      html: "<span class='#{ath.markup.target}#'>"+
+
+      html: "<span class='@{ath.markup.target}@'>"+
               "{{ath.ctx.isPlayer ? 'Your' : (ath.story.player.alias||ath.story.player.id) + '\u2019s'}}"+
             "</span> roles in "+
             "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
             "${ if (!ath.ctx.isItem) { }$"+
-              " <span class='#{ath.markup.object}#'>"+
+              " <span class='@{ath.markup.object}@'>"+
                 "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                 "ath.story.process.name || ath.story.process.id}}"+
               "</span>"+
             "${ } }$ have been changed by "+
-            "<span class='#{ath.markup.actor}#'>"+
+            "<span class='@{ath.markup.actor}@'>"+
               "{{ath.ctx.isActor ? 'you' : ath.story.actor.alias||ath.story.actor.id}}"+
             "</span>."+
-            "<ul class='#{ath.markup.role_list}# #{ath.markup.diff_list}#'>"+
-              "<li class='#{ath.markup.list_header}#'>Changes</li>"+
+            "<ul class='@{ath.markup.role_list}@ @{ath.markup.diff_list}@'>"+
+              "<li class='@{ath.markup.list_header}@'>Changes</li>"+
               "${ if (ath.ctx.isTeam) {"+
                 "_.forEach(ath.story.changes, function(diff, role) { }$"+
-                  "<li class='#{ath.markup.role}# #{ath.markup[!diff.old ? 'diff_add' : 'diff_rem']}#'>"+
+                  "<li class='@{ath.markup.role}@ @{ath.markup[!diff.old ? 'diff_add' : 'diff_rem']}@'>"+
                     "{{role}}"+
                   "</li>"+
                 "${ }); }$"+
               "${ } else if (ath.ctx.isProcess) {"+
                 "_.forEach(ath.story.changes, function(diff, lane) {"+
-                  "if(!!diff['old'] && !!diff['new']) { }$"+    // if both new and old keys exist, the role was changed
-                    "<li class='#{ath.markup.diff_change}#'>"+
-                      "<span class='#{ath.markup.role}# #{ath.markup.diff_add}#'>{{diff['new']}}</span> from "+
-                      "<span class='#{ath.markup.role}# #{ath.markup.diff_rem}#'>{{diff['old']}}</span> in "+
-                      "<span class='#{ath.markup.lane}#'>{{lane}}</span> lane"+
+                  # if both new and old keys exist, the role was changed
+                  "if(!!diff['old'] && !!diff['new']) { }$"+
+                    "<li class='@{ath.markup.diff_change}@'>"+
+                      "<span class='@{ath.markup.role}@ @{ath.markup.diff_add}@'>{{diff['new']}}</span> from "+
+                      "<span class='@{ath.markup.role}@ @{ath.markup.diff_rem}@'>{{diff['old']}}</span> in "+
+                      "<span class='@{ath.markup.lane}@'>{{lane}}</span> lane"+
                     "</li>"+
                   "${ } else { }$"+
-                    "<li class='#{ath.markup[!diff.old ? 'diff_add' : 'diff_rem']}#'>"+
-                      "<span class='#{ath.markup.role}#'>{{diff['new'] || diff['old']}}</span> in "+
-                      "<span class='#{ath.markup.lane}#'>"+
+                    "<li class='@{ath.markup[!diff.old ? 'diff_add' : 'diff_rem']}@'>"+
+                      "<span class='@{ath.markup.role}@'>{{diff['new'] || diff['old']}}</span> in "+
+                      "<span class='@{ath.markup.lane}@'>"+
                         "{{lane === '*' ? 'All' : lane}}"+
                       "</span> lane{{lane === '*' ? 's' : ''}}"+
                     "</li>"+
@@ -566,7 +578,7 @@ var Athena = (function() {
                 "${ }); }$"+
               "${ } }$"+
             "</ul>."+
-            "<time class='#{ath.markup.timestamp}#' title='On "+
+            "<time class='@{ath.markup.timestamp}@' title='On "+
               "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
               "{{ts.fromNow()}}</time>"
     },
@@ -627,85 +639,85 @@ var Athena = (function() {
 
       html: "${ if(ath.story.state === 'PENDING') { }$"+
               "${ if(ath.ctx.isActor) { }$"+
-                "<span class='#{ath.markup.actor}#'>Your</span> request to join "+
+                "<span class='@{ath.markup.actor}@'>Your</span> request to join "+
               "${ } else { }$"+
-                "<span class='#{ath.markup.actor}#'>"+
+                "<span class='@{ath.markup.actor}@'>"+
                   "{{ath.story.actor.alias||ath.story.actor.id}}"+
                 "</span> wants to join "+
               "${ } }$"+
               "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
               "${ if (!ath.ctx.isItem) { }$"+
-                " <span class='#{ath.markup.object}#'>"+
+                " <span class='@{ath.markup.object}@'>"+
                   "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                   "ath.story.process.name || ath.story.process.id}}"+
                 "</span>"+
               "${ } }$ as "+
-              "<ul class='#{ath.markup.role_list}#'>"+
+              "<ul class='@{ath.markup.role_list}@'>"+
               "${ if (ath.ctx.isTeam) { }$"+
                 "${ _.forEach(ath.story.roles, function(enabled, role) { }$"+
-                  "<li class='#{ath.markup.role}#'>{{role}}</li>"+
+                  "<li class='@{ath.markup.role}@'>{{role}}</li>"+
                 "${ }) }$"+
               "${ } else if (ath.ctx.isProcess) { }$"+
                   "${ _.forEach(ath.story.roles, function(role, lane) { }$"+
                     "<li>"+
-                      "<span class='#{ath.markup.role}#'>{{role}}</span> in "+
-                      "<span class='#{ath.markup.lane}#'>"+
+                      "<span class='@{ath.markup.role}@'>{{role}}</span> in "+
+                      "<span class='@{ath.markup.lane}@'>"+
                         "{{lane === '*' ? 'All': lane }}"+
                       "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
                     "</li>"+
                   "${ })}$"+
               "${ } }$</ul>"+
               "{{ ath.ctx.isActor ? ' is pending' : '' }}."+
-              "<time class='#{ath.markup.timestamp}#' title='On "+
+              "<time class='@{ath.markup.timestamp}@' title='On "+
                 "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
                 "{{ts.fromNow()}}</time>"+
             "${ } else if(ath.story.state === 'CANCELLED') { }$"+
-              "<span class='#{ath.markup.actor}#'>"+
+              "<span class='@{ath.markup.actor}@'>"+
                 "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
               "</span>"+
               " cancelled the request to join "+
               "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
               "${ if (!ath.ctx.isItem) { }$"+
-                " <span class='#{ath.markup.object}#'>"+
+                " <span class='@{ath.markup.object}@'>"+
                   "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                   "ath.story.process.name || ath.story.process.id}}"+
                 "</span>"+
               "${ } }$."+
-              "<time class='#{ath.markup.timestamp}#' title='On "+
+              "<time class='@{ath.markup.timestamp}@' title='On "+
                 "{{(ts = moment(ath.story.cancelled_at)).format(\'llll\')}}'>"+
                 "{{ts.fromNow()}}</time>"+
             "${ } else if(ath.story.state === 'ACCEPTED') { }$"+
-              "<span class='#{ath.markup.actor}#'>"+
+              "<span class='@{ath.markup.actor}@'>"+
                 "{{ath.ctx.isActor ? 'Your' : (ath.story.actor.alias||ath.story.actor.id) + '\u2019s'}}"+
               "</span> request to join "+
               "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
               "${ if (!ath.ctx.isItem) { }$"+
-                " <span class='#{ath.markup.object}#'>"+
+                " <span class='@{ath.markup.object}@'>"+
                   "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                   "ath.story.process.name || ath.story.process.id}}"+
                 "</span>"+
               "${ } }$ has been accepted by "+
-              "<span class='#{ath.markup.target}#'>"+
+              "<span class='@{ath.markup.target}@'>"+
                 "{{ath.story.accepted_by.alias||ath.story.accepted_by.id}}"+
               "</span>."+
-              "<time class='#{ath.markup.timestamp}#' title='On "+
+              "<time class='@{ath.markup.timestamp}@' title='On "+
                 "{{(ts = moment(ath.story.accepted_at)).format(\'llll\')}}'>"+
                 "{{ts.fromNow()}}</time>"+
             "${ } else if(ath.story.state === 'REJECTED') { }$"+
-              "<span class='#{ath.markup.actor}#'>"+
+              "<span class='@{ath.markup.actor}@'>"+
                 "{{ath.ctx.isActor ? 'Your' : (ath.story.actor.alias||ath.story.actor.id) + '\u2019s'}}"+
               "</span> request to join "+
               "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
               "${ if (!ath.ctx.isItem) { }$"+
-                " <span class='#{ath.markup.object}#'>"+
+                " <span class='@{ath.markup.object}@'>"+
                   "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                   "ath.story.process.name || ath.story.process.id}}"+
                 "</span>"+
               "${ } }$ has been rejected by "+
-              "<span class='#{ath.markup.target}#'>"+
+              "<span class='@{ath.markup.target}@'>"+
                 "{{ath.story.rejected_by.alias||ath.story.rejected_by.id}}"+
               "</span>."+
-              "<time class='#{ath.markup.timestamp}#' title='On "+
+              "<time class='@{ath.markup.timestamp}@' title='On "+
                 "{{(ts = moment(ath.story.rejected_at)).format(\'llll\')}}'>"+
                 "{{ts.fromNow()}}</time>"+
             "${ } }$"
@@ -764,85 +776,86 @@ var Athena = (function() {
               "${ } }$.\n"+
               "[{{moment(ath.story.accepted_at||ath.story.rejected_at).format('llll')}}]"+
             "${ } }$",
+
       html: "${ if(ath.story.state === 'PENDING') { }$"+
               "${ if(ath.ctx.isActor) { }$"+
-                "<span class='#{ath.markup.actor}#'>Your</span> invitation to "+
-                "<span class='#{ath.markup.target}#'>{{ath.story.invitee.alias||ath.story.invitee.id}}</span>"+
+                "<span class='@{ath.markup.actor}@'>Your</span> invitation to "+
+                "<span class='@{ath.markup.target}@'>{{ath.story.invitee.alias||ath.story.invitee.id}}</span>"+
                 " to join "+
               "${ } else { }$"+
-                "<span class='#{ath.markup.actor}#'>{{ath.story.actor.alias||ath.story.actor.id}}</span> "+
-                "invited <span class='#{ath.markup.target}#'>you</span> to join "+
+                "<span class='@{ath.markup.actor}@'>{{ath.story.actor.alias||ath.story.actor.id}}</span> "+
+                "invited <span class='@{ath.markup.target}@'>you</span> to join "+
               "${ } }$"+
               "the {{ath.ctx.isTeam ? 'team' : 'process'}}"+
-                " <span class='#{ath.markup.object}#'>"+
+                " <span class='@{ath.markup.object}@'>"+
                   "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                   "ath.story.process.name || ath.story.process.id}}"+
                 "</span>"+
               " as "+
-              "<ul class='#{ath.markup.role_list}#'>"+
+              "<ul class='@{ath.markup.role_list}@'>"+
               "${ if (ath.ctx.isTeam) { }$"+
                 "${ _.forEach(ath.story.roles, function(enabled, role) { }$"+
-                  "<li class='#{ath.markup.role}#'>{{role}}</li>"+
+                  "<li class='@{ath.markup.role}@'>{{role}}</li>"+
                 "${ }) }$"+
               "${ } else if (ath.ctx.isProcess) { }$"+
                 "${ _.forEach(ath.story.roles, function(role, lane) { }$"+
                   "<li>"+
-                    "<span class='#{ath.markup.role}#'>{{role}}</span> in "+
-                    "<span class='#{ath.markup.lane}#'>"+
+                    "<span class='@{ath.markup.role}@'>{{role}}</span> in "+
+                    "<span class='@{ath.markup.lane}@'>"+
                       "{{lane === '*' ? 'All': lane }}"+
                     "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
                   "</li>"+
                 "${ })}$"+
               "${ } }$</ul>"+
               "{{ ath.ctx.isActor ? ' is pending' : '' }}."+
-              "<time class='#{ath.markup.timestamp}#' title='On "+
+              "<time class='@{ath.markup.timestamp}@' title='On "+
                 "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
                 "{{ts.fromNow()}}</time>"+
             "${ } else if(ath.story.state === 'CANCELLED') { }$"+
-              "<span class='#{ath.markup.actor}#'>"+
+              "<span class='@{ath.markup.actor}@'>"+
                 "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
               "</span>"+
               " cancelled the invitation for "+
-              "<span class='#{ath.markup.target}#'>"+
+              "<span class='@{ath.markup.target}@'>"+
                 "{{ath.ctx.isInvitee ? 'you' : ath.story.invitee.alias||ath.story.invitee.id}}"+
               "</span>"+
               " to join "+
               "the {{ath.ctx.isTeam ? 'team' : 'process'}}"+
-                " <span class='#{ath.markup.object}#'>"+
+                " <span class='@{ath.markup.object}@'>"+
                   "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                   "ath.story.process.name || ath.story.process.id}}"+
                 "</span>."+
-              "<time class='#{ath.markup.timestamp}#' title='On "+
+              "<time class='@{ath.markup.timestamp}@' title='On "+
                 "{{(ts = moment(ath.story.cancelled_at)).format(\'llll\')}}'>"+
                 "{{ts.fromNow()}}</time>"+
             "${ } else if(ath.story.state === 'ACCEPTED' || ath.story.state === 'REJECTED') { }$"+
-              "<span class='#{ath.markup.target}#'>"+
+              "<span class='@{ath.markup.target}@'>"+
                 "{{ath.story.invitee.alias||ath.story.invitee.id}}"+
               "</span> {{ath.story.accepted_at ? 'accepted' : 'rejected'}} "+
-              "<span class='#{ath.markup.actor}#'>your</span>"+
+              "<span class='@{ath.markup.actor}@'>your</span>"+
               " invitation to join "+
               "the {{ath.ctx.isTeam ? 'team' : 'process'}}"+
-                " <span class='#{ath.markup.object}#'>"+
+                " <span class='@{ath.markup.object}@'>"+
                   "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                   "ath.story.process.name || ath.story.process.id}}"+
                 "</span>"+
               " as "+
-              "<ul class='#{ath.markup.role_list}#'>"+
+              "<ul class='@{ath.markup.role_list}@'>"+
               "${ if (ath.ctx.isTeam) { }$"+
                 "${ _.forEach(ath.story.roles, function(enabled, role) { }$"+
-                  "<li class='#{ath.markup.role}#'>{{role}}</li>"+
+                  "<li class='@{ath.markup.role}@'>{{role}}</li>"+
                 "${ }) }$"+
               "${ } else if (ath.ctx.isProcess) { }$"+
                 "${ _.forEach(ath.story.roles, function(role, lane) { }$"+
                   "<li>"+
-                    "<span class='#{ath.markup.role}#'>{{role}}</span> in "+
-                    "<span class='#{ath.markup.lane}#'>"+
+                    "<span class='@{ath.markup.role}@'>{{role}}</span> in "+
+                    "<span class='@{ath.markup.lane}@'>"+
                       "{{lane === '*' ? 'All': lane }}"+
                     "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
                   "</li>"+
                 "${ })}$"+
               "${ } }$</ul>."+
-              "<time class='#{ath.markup.timestamp}#' title='On "+
+              "<time class='@{ath.markup.timestamp}@' title='On "+
                 "{{(ts = moment(ath.story.accepted_at||ath.story.rejected_at)).format(\'llll\')}}'>"+
                 "{{ts.fromNow()}}</time>"+
             "${ } }$"
@@ -905,229 +918,558 @@ var Athena = (function() {
 
       html: "${ if(ath.story.state === 'PENDING') { }$"+
               "${ if(ath.ctx.isActor) { }$"+
-                "<span class='#{ath.markup.actor}#'>Your</span> request for change of roles in "+
+                "<span class='@{ath.markup.actor}@'>Your</span> request for change of roles in "+
               "${ } else { }$"+
-                "<span class='#{ath.markup.actor}#'>"+
+                "<span class='@{ath.markup.actor}@'>"+
                   "{{ath.story.actor.alias||ath.story.actor.id}}"+
                 "</span> wants to change roles in "+
               "${ } }$"+
               "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
               "${ if (!ath.ctx.isItem) { }$"+
-                " <span class='#{ath.markup.object}#'>"+
+                " <span class='@{ath.markup.object}@'>"+
                   "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                   "ath.story.process.name || ath.story.process.id}}"+
                 "</span>"+
               "${ } }$"+
               "{{ ath.ctx.isActor ? ' is pending' : '' }}."+
-              "<ul class='#{ath.markup.role_list}#'>"+
-                "<li class='#{ath.markup.list_header}#'>New Roles</li>"+
+              "<ul class='@{ath.markup.role_list}@'>"+
+                "<li class='@{ath.markup.list_header}@'>New Roles</li>"+
               "${ if (ath.ctx.isTeam) {"+
                 "_.forEach(ath.story.roles, function(enabled, role) { }$"+
-                  "<li class='#{ath.markup.role}#'>{{role}}</li>"+
+                  "<li class='@{ath.markup.role}@'>{{role}}</li>"+
                 "${ })"+
               "} else if (ath.ctx.isProcess) {"+
                 "_.forEach(ath.story.roles, function(role, lane) { }$"+
                   "<li>"+
-                    "<span class='#{ath.markup.role}#'>{{role}}</span> in "+
-                    "<span class='#{ath.markup.lane}#'>"+
+                    "<span class='@{ath.markup.role}@'>{{role}}</span> in "+
+                    "<span class='@{ath.markup.lane}@'>"+
                       "{{lane === '*' ? 'All': lane }}"+
                     "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
                   "</li>"+
                 "${ })"+
               "} }$"+
               "</ul>"+
-              "<time class='#{ath.markup.timestamp}#' title='On "+
+              "<time class='@{ath.markup.timestamp}@' title='On "+
                 "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
                 "{{ts.fromNow()}}</time>"+
             "${ } else if(ath.story.state === 'CANCELLED') { }$"+
-              "<span class='#{ath.markup.actor}#'>"+
+              "<span class='@{ath.markup.actor}@'>"+
                 "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
               "</span>"+
               " cancelled the request for change of roles in "+
               "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
               "${ if (!ath.ctx.isItem) { }$"+
-                " <span class='#{ath.markup.object}#'>"+
+                " <span class='@{ath.markup.object}@'>"+
                   "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                   "ath.story.process.name || ath.story.process.id}}"+
                 "</span>"+
               "${ } }$."+
-              "<time class='#{ath.markup.timestamp}#' title='On "+
+              "<time class='@{ath.markup.timestamp}@' title='On "+
                 "{{(ts = moment(ath.story.cancelled_at)).format(\'llll\')}}'>"+
                 "{{ts.fromNow()}}</time>"+
             "${ } else if(ath.story.state === 'ACCEPTED') { }$"+
-              "<span class='#{ath.markup.actor}#'>"+
+              "<span class='@{ath.markup.actor}@'>"+
                 "{{ath.ctx.isActor ? 'Your' : (ath.story.actor.alias||ath.story.actor.id) + '\u2019s'}}"+
               "</span> request for change of roles in "+
               "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
               "${ if (!ath.ctx.isItem) { }$"+
-                " <span class='#{ath.markup.object}#'>"+
+                " <span class='@{ath.markup.object}@'>"+
                   "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                   "ath.story.process.name || ath.story.process.id}}"+
                 "</span>"+
               "${ } }$ has been accepted by "+
-              "<span class='#{ath.markup.target}#'>"+
+              "<span class='@{ath.markup.target}@'>"+
                 "{{ath.story.accepted_by.alias||ath.story.accepted_by.id}}"+
               "</span>."+
-              "<time class='#{ath.markup.timestamp}#' title='On "+
+              "<time class='@{ath.markup.timestamp}@' title='On "+
                 "{{(ts = moment(ath.story.accepted_at)).format(\'llll\')}}'>"+
                 "{{ts.fromNow()}}</time>"+
             "${ } else if(ath.story.state === 'REJECTED') { }$"+
-              "<span class='#{ath.markup.actor}#'>"+
+              "<span class='@{ath.markup.actor}@'>"+
                 "{{ath.ctx.isActor ? 'Your' : (ath.story.actor.alias||ath.story.actor.id) + '\u2019s'}}"+
               "</span> request for change of roles in "+
               "{{ath.ctx.isItem ? 'this' : 'the'}} {{ath.ctx.isTeam ? 'team' : 'process'}}"+
               "${ if (!ath.ctx.isItem) { }$"+
-                " <span class='#{ath.markup.object}#'>"+
+                " <span class='@{ath.markup.object}@'>"+
                   "{{ath.story.team ? ath.story.team.name || ath.story.team.id :"+
                   "ath.story.process.name || ath.story.process.id}}"+
                 "</span>"+
               "${ } }$ has been rejected by "+
-              "<span class='#{ath.markup.target}#'>"+
+              "<span class='@{ath.markup.target}@'>"+
                 "{{ath.story.rejected_by.alias||ath.story.rejected_by.id}}"+
               "</span>."+
-              "<time class='#{ath.markup.timestamp}#' title='On "+
+              "<time class='@{ath.markup.timestamp}@' title='On "+
                 "{{(ts = moment(ath.story.rejected_at)).format(\'llll\')}}'>"+
                 "{{ts.fromNow()}}</time>"+
             "${ } }$"
-    }
-  };
+    },
+    "progress": {
+      text: "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}} completed "+
+            "'{{ath.story.activity.name}}' in "+
+            "{{ath.ctx.isItem ? 'this' : 'the'}} process"+
+            "${ if(!ath.ctx.isItem) { }$"+
+              " '{{ath.story.process.name || ath.story.process.id}}'"+
+            "${ } }$.\n"+
+            "{{ath.story.changes ? 'Changes:' : '' }}"+
+            "${ _.forEach(ath.story.changes, function (change) {"+
+              "if(change.metric.type === 'point') {"+
+                 "diff = ONE.times(change.delta['new']).minus(change.delta['old']);"+
+                 "diff = (diff.gt(0) ? '+' : '') + diff.toString()"+
+              "}$"+
+                "\n  [*] {{diff}} {{change.metric.name}}"+
+              "${ } else if(change.metric.type === 'set') { }$"+
+                "\n[>] {{change.metric.name}}"+
+                "${ _.forEach(change.delta, function(delta, item) {"+
+                  "diff = delta['new'] - delta['old'];"+
+                  "diff = (diff > 0 ? '+' : '') + diff"+
+                "}$"+
+                  "\n  [*] {{diff}} {{item}}"+
+                "${ }); }$"+
+              "${ } else if(change.metric.type === 'state') { }$"+
+                "\n[>] {{change.metric.name}}"+
+                "\n  [+] {{change.delta['new']}}"+
+                "\n  [-] {{change.delta['old']}}"+
+              "${ }"+
+            "}) }$"+
+            "{{ath.story.changes ? '\\n' : '' }}"+
+            "[{{moment(ath.story.timestamp).format('llll')}}]",
 
-  Athena = function(options) {
-    options = options || {};
-    this.options = _.defaults(options, {
-      markup: default_markup,
+      html: "<span class='@{ath.markup.actor}@'>"+
+              "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
+            "</span> completed "+
+            "<span class='@{ath.markup.score_activity}@'>"+
+              "{{ath.story.activity.name}}"+
+            "</span>."+
+            "${ if(ath.story.changes) { }$"+
+              "<table class='@{ath.markup.score_table}@'>"+
+            "${ }"+
+            "_.forEach(ath.story.changes, function(change) {"+
+              "if (change.metric.type === 'point') {"+
+                 "diff = ONE.times(change.delta['new']).minus(change.delta['old']);"+
+                 "diff = (diff.gt(0) ? '+' : '') + diff.toString()"+
+              "}$"+
+                "<tbody class='@{ath.markup.score_table_header}@'>"+
+                "<tr>"+
+                  "<td>"+
+                    "<span class='@{ath.markup.score_metric}@'>"+
+                      "{{change.metric.name}}"+
+                    "</span>"+
+                  "</td>"+
+                  "<td>"+
+                    "<span class='@{ath.markup.score_delta_value}@'>"+
+                      "{{diff}}"+
+                    "</span>"+
+                  "</td>"+
+                "</tr>"+
+                "</tbody>"+
+              "${ } else if(change.metric.type === 'set') { }$"+
+                "<tbody class='@{ath.markup.score_table_header}@'>"+
+                "<tr>"+
+                  "<td colspan='2'>"+
+                    "<span class='@{ath.markup.score_metric}@'>"+
+                      "{{change.metric.name}}"+
+                    "</span>"+
+                  "</td>"+
+                "</tr>"+
+                "</tbody>"+
+                "<tbody class='@{ath.markup.score_table_body}@'>"+
+                "${ _.forEach(change.delta, function(delta, item) {"+
+                  "diff = ONE.times(delta['new']).minus(delta['old']);"+
+                  "diff = (diff.gt(0) ? '+' : '') + diff.toString()"+
+                "}$"+
+                  "<tr>"+
+                    "<td>"+
+                      "<span class='@{ath.markup.score_delta_item}@'>"+
+                        "{{item}}"+
+                      "</span>"+
+                    "</td>"+
+                    "<td>"+
+                      "<span class='@{ath.markup.score_delta_value}@'>"+
+                        "{{diff}}"+
+                      "</span>"+
+                    "</td>"+
+                  "</tr>"+
+                "${ }); }$"+
+                "</tbody>"+
+              "${ } else if(change.metric.type === 'state') { }$"+
+                "<tbody class='@{ath.markup.score_table_header}@'>"+
+                "<tr>"+
+                  "<td colspan='2'>"+
+                    "<span class='@{ath.markup.score_metric}@'>"+
+                      "{{change.metric.name}}"+
+                    "</span>"+
+                  "</td>"+
+                "</tr>"+
+                "</tbody>"+
+                "<tbody class='@{ath.markup.score_table_body}@'>"+
+                "<tr>"+
+                  "<td>"+
+                    "<span class='@{ath.markup.score_delta_value}@ @{ath.markup.diff_add}@'>"+
+                      "{{change.delta['new']}}"+
+                    "</span>"+
+                  "</td>"+
+                  "<td>"+
+                    "<span class='@{ath.markup.score_delta_value}@ @{ath.markup.diff_rem}@'>"+
+                      "{{change.delta['old']}}"+
+                    "</span>"+
+                  "</td>"+
+                "</tr>"+
+                "</tbody>"+
+              "${ }"+
+            "});"+
+            "if(ath.story.changes) { }$"+
+              "</table>"+
+            "${ }"+
+            "if(!ath.ctx.isItem) { }$"+
+              "<footer class='pl-footer'>"+
+                "<span class='@{ath.markup.object}@'>"+
+                  "{{ath.story.process.name||ath.story.process.id}}"+
+                "</span>"+
+              "</footer>"+
+            "${ } }$"+
+            "<time class='@{ath.markup.timestamp}@' title='On "+
+              "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
+              "{{ts.fromNow()}}</time>"
+    },
+    "resolution": {
+      text: "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}} completed "+
+            "'{{ath.story.activity.name}}' in "+
+            "{{ath.ctx.isItem ? 'this' : 'the'}} process"+
+            "${ if(!ath.ctx.isItem) { }$"+
+              " '{{ath.story.process.name || ath.story.process.id}}'"+
+            "${ } }$ and credited "+
+            "{{ath.ctx.isPlayer ? 'you' : ath.story.deferred.actor.alias||ath.story.deferred.actor.id}}"+
+            " for completing '{{ath.story.deferred.activity.name}}'.\n"+
+            "Changes:"+
+            "${ _.forEach(ath.story.deferred.changes, function (change) {"+
+              "if(change.metric.type === 'point') {"+
+                 "diff = ONE.times(change.delta['new']).minus(change.delta['old']);"+
+                 "diff = (diff.gt(0) ? '+' : '') + diff.toString()"+
+              "}$"+
+                "\n  [*] {{diff}} {{change.metric.name}}"+
+              "${ } else if(change.metric.type === 'set') { }$"+
+                "\n[>] {{change.metric.name}}"+
+                "${ _.forEach(change.delta, function(delta, item) {"+
+                  "diff = ONE.times(delta['new']).minus(delta['old']);"+
+                  "diff = (diff.gt(0) ? '+' : '') + diff.toString()"+
+                "}$"+
+                  "\n  [*] {{diff}} {{item}}"+
+                "${ }); }$"+
+              "${ } else if(change.metric.type === 'state') { }$"+
+                "\n[>] {{change.metric.name}}"+
+                "\n  [+] {{change.delta['new']}}"+
+                "\n  [-] {{change.delta['old']}}"+
+              "${ }"+
+            "}) }$\n"+
+            "[{{moment(ath.story.timestamp).format('llll')}}]",
+
+      html: "<span class='@{ath.markup.actor}@'>"+
+              "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
+            "</span> completed "+
+            "<span class='@{ath.markup.score_activity}@'>"+
+              "{{ath.story.activity.name}}"+
+            "</span> and credited "+
+            "<span class='@{ath.markup.target}@'>"+
+              "{{ath.ctx.isPlayer ? 'you' : ath.story.deferred.actor.alias||ath.story.deferred.actor.id}}"+
+            "</span> for completing "+
+            "<span class='@{ath.markup.score_activity}@'>"+
+              "{{ath.story.deferred.activity.name}}"+
+            "</span>."+
+            "<table class='@{ath.markup.score_table}@'>"+
+            "${ _.forEach(ath.story.deferred.changes, function(change) {"+
+              "if(change.metric.type === 'point') {"+
+                 "diff = ONE.times(change.delta['new']).minus(change.delta['old']);"+
+                 "diff = (diff.gt(0) ? '+' : '') + diff.toString()"+
+              "}$"+
+                "<tbody class='@{ath.markup.score_table_header}@'>"+
+                "<tr>"+
+                  "<td>"+
+                    "<span class='@{ath.markup.score_metric}@'>"+
+                      "{{change.metric.name}}"+
+                    "</span>"+
+                  "</td>"+
+                  "<td>"+
+                    "<span class='@{ath.markup.score_delta_value}@'>"+
+                      "{{diff}}"+
+                    "</span>"+
+                  "</td>"+
+                "</tr>"+
+                "</tbody>"+
+              "${ } else if(change.metric.type === 'set') { }$"+
+                "<tbody class='@{ath.markup.score_table_header}@'>"+
+                "<tr>"+
+                  "<td colspan='2'>"+
+                    "<span class='@{ath.markup.score_metric}@'>"+
+                      "{{change.metric.name}}"+
+                    "</span>"+
+                  "</td>"+
+                "</tr>"+
+                "</tbody>"+
+                "<tbody class='@{ath.markup.score_table_body}@'>"+
+                "${ _.forEach(change.delta, function(delta, item) {"+
+                  "diff = ONE.times(delta['new']).minus(delta['old']);"+
+                  "diff = (diff.gt(0) ? '+' : '') + diff.toString()"+
+                "}$"+
+                  "<tr>"+
+                    "<td>"+
+                      "<span class='@{ath.markup.score_delta_item}@'>"+
+                        "{{item}}"+
+                      "</span>"+
+                    "</td>"+
+                    "<td>"+
+                      "<span class='@{ath.markup.score_delta_value}@'>"+
+                        "{{diff}}"+
+                      "</span>"+
+                    "</td>"+
+                  "</tr>"+
+                "${ }); }$"+
+                "</tbody>"+
+              "${ } else if(change.metric.type === 'state') { }$"+
+                "<tbody class='@{ath.markup.score_table_header}@'>"+
+                "<tr>"+
+                  "<td colspan='2'>"+
+                    "<span class='@{ath.markup.score_metric}@'>"+
+                      "{{change.metric.name}}"+
+                    "</span>"+
+                  "</td>"+
+                "</tr>"+
+                "</tbody>"+
+                "<tbody class='@{ath.markup.score_table_body}@'>"+
+                "<tr>"+
+                  "<td>"+
+                    "<span class='@{ath.markup.score_delta_value}@ @{ath.markup.diff_add}@'>"+
+                      "{{change.delta['new']}}"+
+                    "</span>"+
+                  "</td>"+
+                  "<td>"+
+                    "<span class='@{ath.markup.score_delta_value}@ @{ath.markup.diff_rem}@'>"+
+                      "{{change.delta['old']}}"+
+                    "</span>"+
+                  "</td>"+
+                "</tr>"+
+                "</tbody>"+
+              "${ }"+
+            "}); }$"+
+            "</table>"+
+            "${ if(!ath.ctx.isItem) { }$"+
+              "<footer class='pl-footer'>"+
+                "<span class='@{ath.markup.object}@'>"+
+                  "{{ath.story.process.name||ath.story.process.id}}"+
+                "</span>"+
+              "</footer>"+
+            "${ } }$"+
+            "<time class='@{ath.markup.timestamp}@' title='On "+
+              "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
+              "{{ts.fromNow()}}</time>"
+    },
+    "level": {
+      text: "{{ath.ctx.isActor ? 'Your' : (ath.story.actor.alias||ath.story.actor.id) + '\u2019s'}} "+
+            "${ change = ath.story.changes[0]; }$"+
+            "'{{change.metric.name}}' level changed to "+
+            "'{{change.delta['new']}}' from '{{change.delta['old']}}'.\n"+
+            "[{{moment(ath.story.timestamp).format('llll')}}]",
+
+      html: "<span class='@{ath.markup.actor}@'>"+
+              "{{ath.ctx.isActor ? 'Your' : (ath.story.actor.alias||ath.story.actor.id) + '\u2019s'}}"+
+            "</span>"+
+            "${ change = ath.story.changes[0]; }$"+
+            " <span class='@{ath.markup.score_metric}@'>{{change.metric.name}}</span>"+
+            " level changed to "+
+            "<span class='@{ath.markup.score_delta_value}@ @{ath.markup.diff_add}@'>"+
+              "{{change.delta['new']}}"+
+            "</span> from "+
+            "<span class='@{ath.markup.score_delta_value}@ @{ath.markup.diff_rem}@'>"+
+              "{{change.delta['old']}}"+
+            "</span>."+
+            "<time class='@{ath.markup.timestamp}@' title='On "+
+              "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
+              "{{ts.fromNow()}}</time>"
+    },
+    "achievement": {
+      text: "{{ath.ctx.isActor ? 'Congratulations! You' : ath.story.actor.alias||ath.story.actor.id}}"+
+            " unlocked an achievement.\n"+
+            "Changes:"+
+            "${ _.forEach(ath.story.changes, function(change) { }$"+
+              "\n[>] {{change.metric.name}}"+
+              "${ _.forEach(change.delta, function(delta, item) {"+
+                "diff = ONE.times(delta['new']).minus(delta['old']);"+
+                "diff = (diff.gt(0) ? '+' : '') + diff.toString()"+
+              "}$"+
+              "\n  [*] {{diff}} {{item}}"+
+              "${ }); }$"+
+            "${ }); }$\n"+
+            "[{{moment(ath.story.timestamp).format('llll')}}]",
+
+      html: "{{ath.ctx.isActor ? 'Congratulations! ' : ''}}<span class='@{ath.markup.actor}@'>"+
+              "{{ath.ctx.isActor ? 'You' : ath.story.actor.alias||ath.story.actor.id}}"+
+            "</span>"+
+            " unlocked an achievement."+
+            "<table class='@{ath.markup.score_table}@ @{ath.markup.achievement_table}@'>"+
+            "${ _.forEach(ath.story.changes, function(change) { }$"+
+              "<tbody class='@{ath.markup.score_table_header}@'>"+
+              "<tr>"+
+                "<td colspan='2'>"+
+                  "<span class='@{ath.markup.score_metric}@'>"+
+                    "{{change.metric.name}}"+
+                  "</span>"+
+                "</td>"+
+              "</tr>"+
+              "</tbody>"+
+              "<tbody class='@{ath.markup.score_table_body}@'>"+
+                "${ _.forEach(change.delta, function(delta, item) {"+
+                  "diff = ONE.times(delta['new']).minus(delta['old']);"+
+                  "diff = (diff.gt(0) ? '+' : '') + diff.toString()"+
+                "}$"+
+                "<tr>"+
+                  "<td>"+
+                    "<span class='@{ath.markup.score_delta_item}@'>"+
+                      "{{item}}"+
+                    "</span>"+
+                  "</td>"+
+                  "<td>"+
+                    "<span class='@{ath.markup.score_delta_value}@'>"+
+                      "{{diff}}"+
+                    "</span>"+
+                  "</td>"+
+                "</tr>"+
+              "${ }); }$"+
+              "</tbody>"+
+            "${ }); }$"+
+            "</table>"+
+            "<time class='@{ath.markup.timestamp}@' title='On "+
+              "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
+              "{{ts.fromNow()}}</time>"
+    },
+    "escalation": {
+      text: "{{ath.story.message}}\n"+
+            "[{{moment(ath.story.timestamp).format('llll')}}]",
+
+      html: "{{ath.story.message}}"+
+            "<time class='@{ath.markup.timestamp}@' title='On "+
+              "{{(ts = moment(ath.story.timestamp)).format(\'llll\')}}'>"+
+              "{{ts.fromNow()}}</time>"
+    }
+  }
+
+  constructor: (options) ->
+    options = options or {}
+    @options = _.defaults options, {
+      markup: default_markup
       external: {}
-    });
-  };
+    }
 
-  Athena.prototype.buildContext = function(story, ext) {
-    ctx = {};
+  Athena::buildContext = (story, ext) ->
+    ctx = {}
+    ctx.isItem = ext.context?
 
-    // Determine the object in the story
-    if (_.contains([
-        'create',
-        'delete',
-        'leave',
-        'kick',
-        'join',
-        'join:request',
-        'join:request:accept',
-        'join:request:reject',
-        'invite',
-        'invite:accept',
-        'invite:reject',
-        'role:request',
-        'role:request:accept',
-        'role:request:reject',
-        'role:change',
-        'role:assign'
-      ], story.event)) {
-
-      // Determine whether the current story is for a team or process
-      // to simplify template code.
-      if (story.team != null || ext.context === 'team') {
-        ctx.isTeam = true;
-      } else if (story.process != null || ext.context === 'process') {
+    # Determine the object in the story.
+    if story.event in [
+      'create',
+      'delete',
+      'leave',
+      'kick',
+      'join',
+      'join:request',
+      'join:request:accept',
+      'join:request:reject',
+      'invite',
+      'invite:accept',
+      'invite:reject',
+      'role:request',
+      'role:request:accept',
+      'role:request:reject',
+      'role:change',
+      'role:assign',
+      'resolution'
+    ]
+      # Determine whether the current story is for a team or process
+      # to simplify template code.
+      if story.team? or ext.context is 'team'
+        ctx.isTeam = true
+      else if story.process? or ext.context is 'process'
         ctx.isProcess = true;
-      }
-      ctx.isItem = ext.context != null;
-    }
 
-    // Determine whether the actor is the current player
-    if (_.contains([
-        'create',
-        'delete',
-        'join',
-        'leave',
-        'kick',
-        'join:request',
-        'join:request:accept',
-        'join:request:reject',
-        'invite',
-        'invite:accept',
-        'invite:reject',
-        'role:change',
-        'role:request',
-        'role:request:accept',
-        'role:request:reject',
-        'role:assign'
-      ], story.event)) {
-      // Determine whether the current player is the actor
-      if (story.actor == null || ext.profile && ext.profile.id === story.actor) {
-        ctx.isActor = true;
-      }
-    }
+    # Determine whether the actor is the current player
+    if story.event in [
+      'create',
+      'delete',
+      'join'
+      'leave',
+      'kick',
+      'join:request',
+      'join:request:accept',
+      'join:request:reject',
+      'invite',
+      'invite:accept',
+      'invite:reject',
+      'role:change',
+      'role:request',
+      'role:request:accept',
+      'role:request:reject',
+      'role:assign',
+      'progress',
+      'level',
+      'achievement',
+      'resolution'
+    ]
+      # Determine whether the current player is the actor
+      if not story.actor? or (ext.profile and ext.profile.id is story.actor.id)
+        ctx.isActor = true
 
-    // Determine whether the target is the current player
-    if (_.contains([
-        'kick',
-        'join:request',
-        'join:request:accept',
-        'join:request:reject',
-        'role:request',
-        'role:request:accept',
-        'role:request:reject',
-        'role:assign'
-      ], story.event)) {
-      if (story.player == null || ext.profile && ext.profile.id === story.player) {
-        ctx.isPlayer = true;
-      }
-    } else if (_.contains(['invite:accept', 'invite:reject'], story.event)) {
-      if (story.inviter == null || ext.profile && ext.profile.id === story.inviter) {
-        ctx.isInviter = true;
-      }
-    } else if (_.contains(['invite'], story.event)) {
-      if (story.invitee == null || ext.profile && ext.profile.id === story.invitee) {
-        ctx.isInvitee = true;
-      }
-    }
-    // Finally, return the config object
-    return ctx;
-  };
+    # Determine whether the target is the current player
+    if story.event in [
+      'kick',
+      'join:request',
+      'join:request:accept',
+      'join:request:reject',
+      'role:request',
+      'role:request:accept',
+      'role:request:reject',
+      'role:assign'
+    ]
+      if not story.player? or (ext.profile and ext.profile.id is story.player.id)
+        ctx.isPlayer = true
+    else if story.event in ['invite:accept', 'invite:reject']
+      if not story.inviter? or (ext.profile and ext.profile.id is story.inviter.id)
+        ctx.isInviter = true
+    else if story.event is 'invite'
+      if not story.invitee? or (ext.profile and ext.profile.id is story.invitee.id)
+        ctx.isInvitee = true
+    else if story.event is 'resolution'
+      if not story.deferred.actor? or (ext.profile and ext.profile.id is story.deferred.actor.id)
+        ctx.isPlayer = true
 
-  Athena.prototype.compile = function(evt, type) {
-    var tpl, tpl_collection;
-    if ((tpl_collection = stored_templates[evt]) == null) {
-      throw("The "+ evt +" event is not supported");
-    }
-    if ((tpl = tpl_collection[type]) == null) {
-      throw("The "+ type +" template for "+ evt +" event cannot be found");
-    }
-    // console.log("TEE PEE EL", _.template(tpl).source);
-    return _.template(tpl);
-  };
+    # Finally, return the config object
+    return ctx
 
-  Athena.prototype.toString = function(story, external_data) {
-    var template;
-    external_data || (external_data = {});
-    if (story == null) {
-      throw("The story is not available");
-    }
-    template = this.compile(story.event, 'text');
-    context = this.buildContext(story, external_data);
-    return template({
-      story: story,
-      ext: external_data,
+  compile: (evt, type) ->
+    unless (tpl_collection = stored_templates[evt])?
+      throw("The #{evt} event is not supported")
+    unless (tpl = tpl_collection[type])?
+      throw("The #{type} template for #{evt} event cannot be found")
+    _.template tpl
+
+  toString: (story, external_data = {}) ->
+    unless story?
+      throw 'The story is not available'
+    template = @compile story.event, 'text'
+    context = @buildContext story, external_data
+    template({
+      story: story
+      ext: external_data
       ctx: context
-    });
-  };
+    })
 
-  Athena.prototype.toHTML = function(story, external_data) {
-    var template;
-    external_data || (external_data = {});
-    if (story == null) {
-      throw("The story is not available");
-    }
-    template = this.compile(story.event, 'html');
-    context = this.buildContext(story, external_data);
-    return template({
+  toHTML: (story, external_data = {}) ->
+    unless story?
+      throw 'The story is not available'
+    template = @compile story.event, 'html'
+    context = @buildContext story, external_data
+    template({
       story: story,
       ext: external_data,
       ctx: context,
       markup: this.options.markup
-    });
-  };
-  return Athena;
-})();
+    })
 
-module.exports = Athena
+module.exports = Athena;

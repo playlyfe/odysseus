@@ -15,9 +15,7 @@ Athena can be used as a node module, or as a *bower module* (todo)
 
     Athena = require('athena');
     athena = new Athena(config);
-    .
-    .
-    .
+    ...
 
 For getting proper messages in HTML format, you can supply a list of markup classes you want to assign different parts of the sentence. This markup class list will be in a key-value format like so:
 
@@ -50,7 +48,6 @@ The meaning of the markup tags are listed below:
 ## Authors
 
 ##### Kumar Harsh ([Github](https://github.com/kumarharsh))
-##### Johny Jose  ([Github](https://github.com/atrniv))
 
 ## License
 

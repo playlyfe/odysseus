@@ -2,9 +2,10 @@
   "name": "athena",
   "version": "0.1.0",
   "description": "A notification story compiler based on Playlyfe events",
-  "main": "index.js",
+  "main": "./index",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "prepublish": "./node_modules/.bin/coffee -o lib -b -c src/index.coffee"
   },
   "keywords": [
     "playlyfe",
@@ -12,7 +13,6 @@
     "event",
     "string compiler"
   ],
-  "main": "./index",
   "author": {
     "name": "Kumar Harsh",
     "email": "khs@playlyfe.com"
@@ -32,7 +32,8 @@
   ],
   "dependencies": {
     "lodash": "~2.4.1",
-    "moment": "~2.5.1"
+    "moment": "~2.5.1",
+    "bignumber.js": "~1.3.0"
   },
   "devDependencies": {
     "mocha": "~1.17.1",

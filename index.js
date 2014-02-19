@@ -1,2 +1,2 @@
-var index = require('./src/index.js');
+var index = require('./lib/index');
 module.exports = index;
