@@ -6,7 +6,7 @@ global.expect = chai.expect
 global.sinon = require 'sinon'
 global.sinonChai = require 'sinon-chai'
 
-date = new Date()
+global.date = new Date()
 global.iso_date = @iso_date = date.toISOString()
 global.text_date = @text_date = moment(date).format('llll')
 global.relative_date = @relative_date = moment(date).fromNow()
@@ -33,5 +33,8 @@ global.config =
     score_delta_value: "pl-score-delta-value"
     achievement_table: "pl-achievement-table"
     timestamp: "pl-ts"
+    content: "pl-content"
+    image: "pl-image"
+    dummy_icon: "pl-icon-dummy"
 
 chai.use sinonChai
