@@ -2685,8 +2685,8 @@ describe 'The Activity Story Builder', ->
 
     describe 'for "point" metric changes', ->
       before (next) ->
-        @progress_story = _.clone @story, true
-        @progress_story.deferred.changes = [
+        @res_story = _.clone @story, true
+        @res_story.deferred.changes = [
           {
             metric: {
               name: "GBP"
@@ -2702,7 +2702,7 @@ describe 'The Activity Story Builder', ->
         next()
 
       it 'builds the progress story (text)', (next) ->
-        expect(@odysseus.toString(@progress_story)).to.equal """
+        expect(@odysseus.toString(@res_story)).to.equal """
           [#{@text_date}] - David Moyes completed 'A Candid Interview' \
           in the process 'UEFA Champions League' and credited Juan Mata \
           for completing 'Score a Brace in UEFA Champions League Finals'.
@@ -2712,7 +2712,7 @@ describe 'The Activity Story Builder', ->
         next()
 
       it 'builds the progress story (html)', (next) ->
-        expect(@odysseus.toHTML(@progress_story)).to.equal """
+        expect(@odysseus.toHTML(@res_story)).to.equal """
           <div class='pl-content'>\
             <span class='pl-actor'>David Moyes</span> \
             completed <span class='pl-activity'>A Candid Interview</span> \
@@ -2739,8 +2739,8 @@ describe 'The Activity Story Builder', ->
 
     describe 'for "set" metric changes', ->
       before (next) ->
-        @progress_story = _.clone @story, true
-        @progress_story.deferred.changes = [
+        @res_story = _.clone @story, true
+        @res_story.deferred.changes = [
           {
             metric: {
               name: "UEFA Awards"
@@ -2766,7 +2766,7 @@ describe 'The Activity Story Builder', ->
         next()
 
       it 'builds the progress story (text)', (next) ->
-        expect(@odysseus.toString(@progress_story)).to.equal """
+        expect(@odysseus.toString(@res_story)).to.equal """
           [#{@text_date}] - David Moyes completed 'A Candid Interview' in \
           the process 'UEFA Champions League' and credited Juan Mata for \
           completing 'Score a Brace in UEFA Champions League Finals'.
@@ -2779,15 +2779,15 @@ describe 'The Activity Story Builder', ->
         next()
 
       it 'builds the progress story (html)', (next) ->
-        expect(@odysseus.toHTML(@progress_story)).to.equal """
+        expect(@odysseus.toHTML(@res_story)).to.equal """
           <div class='pl-content'><span class='pl-actor'>David Moyes</span> completed <span class='pl-activity'>A Candid Interview</span> and credited <span class='pl-target'>Juan Mata</span> for completing <span class='pl-activity'>Score a Brace in UEFA Champions League Finals</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Champion</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Suspensions</span></td><td><span class='pl-score-delta-value'>-1</span></td></tr></tbody></table><footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer></div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
 
     describe 'for "state" metric changes', ->
       before (next) ->
-        @progress_story = _.clone @story, true
-        @progress_story.deferred.changes = [
+        @res_story = _.clone @story, true
+        @res_story.deferred.changes = [
           {
             metric: {
               name: "Transfer Market Standing"
@@ -2803,7 +2803,7 @@ describe 'The Activity Story Builder', ->
         next()
 
       it 'builds the progress story (text)', (next) ->
-        expect(@odysseus.toString(@progress_story)).to.equal """
+        expect(@odysseus.toString(@res_story)).to.equal """
           [#{@text_date}] - David Moyes completed 'A Candid Interview' in \
           the process 'UEFA Champions League' and credited Juan Mata \
           for completing 'Score a Brace in UEFA Champions League Finals'.
@@ -2815,7 +2815,7 @@ describe 'The Activity Story Builder', ->
         next()
 
       it 'builds the progress story (html)', (next) ->
-        expect(@odysseus.toHTML(@progress_story)).to.equal """
+        expect(@odysseus.toHTML(@res_story)).to.equal """
           <div class='pl-content'>\
             <span class='pl-actor'>David Moyes</span> \
             completed <span class='pl-activity'>A Candid Interview</span> \
@@ -2852,12 +2852,12 @@ describe 'The Activity Story Builder', ->
 
     describe 'in process context', ->
       before (next) ->
-        @progress_story = _.omit @story, 'process'
+        @res_story = _.omit @story, 'process'
         @externals = {context: 'process'}
         next()
 
       it 'builds the progress story (text)', (next) ->
-        expect(@odysseus.toString(@progress_story, @externals)).to.equal """
+        expect(@odysseus.toString(@res_story, @externals)).to.equal """
           [#{@text_date}] - David Moyes completed 'A Candid Interview' \
           in this process and credited Juan Mata for completing \
           'Score a Brace in UEFA Champions League Finals'.
@@ -2871,7 +2871,7 @@ describe 'The Activity Story Builder', ->
         next()
 
       it 'builds the progress story (html)', (next) ->
-        expect(@odysseus.toHTML(@progress_story, @externals)).to.equal """
+        expect(@odysseus.toHTML(@res_story, @externals)).to.equal """
           <div class='pl-content'><span class='pl-actor'>David Moyes</span> completed <span class='pl-activity'>A Candid Interview</span> and credited <span class='pl-target'>Juan Mata</span> for completing <span class='pl-activity'>Score a Brace in UEFA Champions League Finals</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td><span class='pl-score-metric'>GBP</span></td><td><span class='pl-score-delta-value'>+50000</span></td></tr></tbody><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Champion</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Suspensions</span></td><td><span class='pl-score-delta-value'>-1</span></td></tr></tbody></table></div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
@@ -2879,12 +2879,12 @@ describe 'The Activity Story Builder', ->
     describe "in actor's context", ->
       describe "when the target player is someone else", ->
         before (next) ->
-          @progress_story = _.omit @story, 'actor'
+          @res_story = _.omit @story, 'actor'
           @externals = { profile: {id: 'david', alias: 'David Moyes'} }
           next()
 
         it 'builds the progress story (text)', (next) ->
-          expect(@odysseus.toString(@progress_story, @externals)).to.equal """
+          expect(@odysseus.toString(@res_story, @externals)).to.equal """
             [#{@text_date}] - You completed 'A Candid Interview' in the \
             process 'UEFA Champions League' and credited Juan Mata for \
             completing 'Score a Brace in UEFA Champions League Finals'.
@@ -2898,7 +2898,7 @@ describe 'The Activity Story Builder', ->
           next()
 
         it 'builds the progress story (html)', (next) ->
-          expect(@odysseus.toHTML(@progress_story, @externals)).to.equal """
+          expect(@odysseus.toHTML(@res_story, @externals)).to.equal """
             <div class='pl-content'>\
               <span class='pl-actor'>You</span> completed \
               <span class='pl-activity'>A Candid Interview</span> and credited \
@@ -2945,12 +2945,12 @@ describe 'The Activity Story Builder', ->
 
       describe "when the target player is the actor themself", ->
         before (next) ->
-          @progress_story = _.clone @story
-          @progress_story.deferred.actor = { id: 'david', alias: 'David Moyes' }
+          @res_story = _.clone @story, true
+          @res_story.deferred.actor = { id: 'david', alias: 'David Moyes' }
           next()
 
         it 'builds the progress story (text)', (next) ->
-          expect(@odysseus.toString(@progress_story, @externals)).to.equal """
+          expect(@odysseus.toString(@res_story, @externals)).to.equal """
             [#{@text_date}] - You completed 'A Candid Interview' in the \
             process 'UEFA Champions League' and credited yourself for \
             completing 'Score a Brace in UEFA Champions League Finals'.
@@ -2964,7 +2964,7 @@ describe 'The Activity Story Builder', ->
           next()
 
         it 'builds the progress story (html)', (next) ->
-          expect(@odysseus.toHTML(@progress_story, @externals)).to.equal """
+          expect(@odysseus.toHTML(@res_story, @externals)).to.equal """
             <div class='pl-content'>\
               <span class='pl-actor'>You</span> completed \
               <span class='pl-activity'>A Candid Interview</span> \
@@ -3010,69 +3010,138 @@ describe 'The Activity Story Builder', ->
 
     describe "in target player's context", ->
       before (next) ->
-        @progress_story = _.clone @story, true
-        delete @progress_story.deferred.actor
+        @res_story = _.clone @story, true
         @externals = { profile: {id: 'juan', alias: 'Juan Mata'} }
         next()
 
-      it 'builds the progress story (text)', (next) ->
-        expect(@odysseus.toString(@progress_story, @externals)).to.equal """
-          [#{@text_date}] - David Moyes completed 'A Candid Interview' \
-          in the process 'UEFA Champions League' and credited you for \
-          completing 'Score a Brace in UEFA Champions League Finals'.
-            Changes:
-              [*] +50000 GBP
-            [>] UEFA Awards
-              [*] +1 Golden Boot
-              [*] +1 Champion
-              [*] -1 Suspensions
-        """
-        next()
+      describe 'when the actor key is present in the deferred object', ->
+        it 'builds the progress story (text)', (next) ->
+          expect(@odysseus.toString(@res_story, @externals)).to.equal """
+            [#{@text_date}] - David Moyes completed 'A Candid Interview' \
+            in the process 'UEFA Champions League' and credited you for \
+            completing 'Score a Brace in UEFA Champions League Finals'.
+              Changes:
+                [*] +50000 GBP
+              [>] UEFA Awards
+                [*] +1 Golden Boot
+                [*] +1 Champion
+                [*] -1 Suspensions
+          """
+          next()
 
-      it 'builds the progress story (html)', (next) ->
-        expect(@odysseus.toHTML(@progress_story, @externals)).to.equal """
-          <div class='pl-content'>\
-            <span class='pl-actor'>David Moyes</span> \
-            completed <span class='pl-activity'>A Candid Interview</span> \
-            and credited <span class='pl-target'>you</span> for completing \
-            <span class='pl-activity'>\
-              Score a Brace in UEFA Champions League Finals\
-            </span>.\
-            <table class='pl-score-table'>\
-              <tbody class='pl-score-header'>\
-                <tr>\
-                  <td><span class='pl-score-metric'>GBP</span></td>\
-                  <td><span class='pl-score-delta-value'>+50000</span></td>\
-                </tr>\
-              </tbody>\
-              <tbody class='pl-score-header'>\
-                <tr>\
-                  <td colspan='2'><span class='pl-score-metric'>UEFA Awards\
-                    </span></td>\
-                </tr>\
-              </tbody>\
-              <tbody class='pl-score-body'>\
-                <tr>\
-                  <td><span class='pl-score-delta-item'>Golden Boot</span></td>\
-                  <td><span class='pl-score-delta-value'>+1</span></td>\
-                </tr>\
-                <tr>\
-                  <td><span class='pl-score-delta-item'>Champion</span></td>\
-                  <td><span class='pl-score-delta-value'>+1</span></td>\
-                </tr>\
-                <tr>\
-                  <td><span class='pl-score-delta-item'>Suspensions</span></td>\
-                  <td><span class='pl-score-delta-value'>-1</span></td>\
-                </tr>\
-              </tbody>\
-            </table>\
-            <footer class='pl-footer'>\
-              <span class='pl-object'>UEFA Champions League</span>\
-            </footer>\
-          </div>\
-          <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
-        """
-        next()
+        it 'builds the progress story (html)', (next) ->
+          expect(@odysseus.toHTML(@res_story, @externals)).to.equal """
+            <div class='pl-content'>\
+              <span class='pl-actor'>David Moyes</span> \
+              completed <span class='pl-activity'>A Candid Interview</span> \
+              and credited <span class='pl-target'>you</span> for completing \
+              <span class='pl-activity'>\
+                Score a Brace in UEFA Champions League Finals\
+              </span>.\
+              <table class='pl-score-table'>\
+                <tbody class='pl-score-header'>\
+                  <tr>\
+                    <td><span class='pl-score-metric'>GBP</span></td>\
+                    <td><span class='pl-score-delta-value'>+50000</span></td>\
+                  </tr>\
+                </tbody>\
+                <tbody class='pl-score-header'>\
+                  <tr>\
+                    <td colspan='2'><span class='pl-score-metric'>UEFA Awards\
+                      </span></td>\
+                  </tr>\
+                </tbody>\
+                <tbody class='pl-score-body'>\
+                  <tr>\
+                    <td><span class='pl-score-delta-item'>Golden Boot</span>\
+                      </td>\
+                    <td><span class='pl-score-delta-value'>+1</span></td>\
+                  </tr>\
+                  <tr>\
+                    <td><span class='pl-score-delta-item'>Champion</span></td>\
+                    <td><span class='pl-score-delta-value'>+1</span></td>\
+                  </tr>\
+                  <tr>\
+                    <td><span class='pl-score-delta-item'>Suspensions</span>\
+                      </td>\
+                    <td><span class='pl-score-delta-value'>-1</span></td>\
+                  </tr>\
+                </tbody>\
+              </table>\
+              <footer class='pl-footer'>\
+                <span class='pl-object'>UEFA Champions League</span>\
+              </footer>\
+            </div>\
+            <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
+          """
+          next()
+
+      describe 'when the actor key is absent from the deferred object', ->
+        before (next) ->
+          @new_story = _.clone @story, true
+          @new_story.deferred = _.omit @new_story.deferred, 'actor'
+          next()
+
+        it 'builds the progress story (text)', (next) ->
+          expect(@odysseus.toString(@new_story, @externals)).to.equal """
+            [#{@text_date}] - David Moyes completed 'A Candid Interview' \
+            in the process 'UEFA Champions League' and credited you for \
+            completing 'Score a Brace in UEFA Champions League Finals'.
+              Changes:
+                [*] +50000 GBP
+              [>] UEFA Awards
+                [*] +1 Golden Boot
+                [*] +1 Champion
+                [*] -1 Suspensions
+          """
+          next()
+
+        it 'builds the progress story (html)', (next) ->
+          expect(@odysseus.toHTML(@new_story, @externals)).to.equal """
+            <div class='pl-content'>\
+              <span class='pl-actor'>David Moyes</span> \
+              completed <span class='pl-activity'>A Candid Interview</span> \
+              and credited <span class='pl-target'>you</span> for completing \
+              <span class='pl-activity'>\
+                Score a Brace in UEFA Champions League Finals\
+              </span>.\
+              <table class='pl-score-table'>\
+                <tbody class='pl-score-header'>\
+                  <tr>\
+                    <td><span class='pl-score-metric'>GBP</span></td>\
+                    <td><span class='pl-score-delta-value'>+50000</span></td>\
+                  </tr>\
+                </tbody>\
+                <tbody class='pl-score-header'>\
+                  <tr>\
+                    <td colspan='2'><span class='pl-score-metric'>UEFA Awards\
+                      </span></td>\
+                  </tr>\
+                </tbody>\
+                <tbody class='pl-score-body'>\
+                  <tr>\
+                    <td><span class='pl-score-delta-item'>Golden Boot</span>\
+                      </td>\
+                    <td><span class='pl-score-delta-value'>+1</span></td>\
+                  </tr>\
+                  <tr>\
+                    <td><span class='pl-score-delta-item'>Champion</span></td>\
+                    <td><span class='pl-score-delta-value'>+1</span></td>\
+                  </tr>\
+                  <tr>\
+                    <td><span class='pl-score-delta-item'>Suspensions</span>\
+                      </td>\
+                    <td><span class='pl-score-delta-value'>-1</span></td>\
+                  </tr>\
+                </tbody>\
+              </table>\
+              <footer class='pl-footer'>\
+                <span class='pl-object'>UEFA Champions League</span>\
+              </footer>\
+            </div>\
+            <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
+          """
+          next()
 
 
   ###*
