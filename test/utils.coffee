@@ -41,3 +41,7 @@ before (next) ->
   global.text_date = moment(date).format('llll')
   global.rel_date = moment(date).fromNow()
   next()
+
+after (next) ->
+  @fakeClock.restore()
+  next()
