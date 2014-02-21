@@ -6,7 +6,7 @@ describe 'The Odysseus Module', ->
     @odysseus = new Odysseus(global.config)
     @iso_date = global.iso_date
     @text_date = global.text_date
-    @relative_date = global.relative_date
+    @rel_date = global.rel_date
     next()
 
   describe 'initialization', ->
@@ -39,7 +39,7 @@ describe 'The Odysseus Module', ->
             <li><span class='od-role'>board_member</span></li>\
           </ul>.\
         </div>\
-        <time class='od-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        <time class='od-ts' title='On #{@text_date}'>#{@rel_date}</time>
       """
       next()
 
@@ -87,8 +87,8 @@ describe 'The Odysseus Module', ->
     it 'builds the correct plain-text version of the story', (next) ->
       odysseus = new Odysseus()
       expect(odysseus.toString(@story)).to.equal """
-        Satya joined the team 'Microsoft Inc.' as ceo, board_member.
-        [#{@text_date}]
+        [#{@text_date}] - Satya joined the team 'Microsoft Inc.' \
+        as ceo, board_member.
       """
       next()
 
@@ -126,7 +126,7 @@ describe 'The Odysseus Module', ->
     it 'shows an image if a valid story is passed', (next) ->
       odysseus = new Odysseus()
       expect(@odysseus.getImage(@story, @externals)).to.equal """
-        <img src='/assets/players/snadella' alt='Satya'>
+        <img src='/assets/players/snadella'>
       """
       next()
 
@@ -177,7 +177,7 @@ describe 'The Odysseus Module', ->
             <li><span class='od-role'>board_member</span></li>\
           </ul>.\
         </div>\
-        <time class='od-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        <time class='od-ts' title='On #{@text_date}'>#{@rel_date}</time>
       """
       next()
 
@@ -194,7 +194,7 @@ describe 'The Odysseus Module', ->
             <li><span class='od-role'>board_member</span></li>\
           </ul>.\
         </div>\
-        <time class='od-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        <time class='od-ts' title='On #{@text_date}'>#{@rel_date}</time>
       """
       expect(odysseus.toHTML(@story, @externals)).to.equal """
         <div class='od-content'>\
@@ -207,7 +207,7 @@ describe 'The Odysseus Module', ->
             <li><span class='od-role'>board_member</span></li>\
           </ul>.\
         </div>\
-        <time class='od-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        <time class='od-ts' title='On #{@text_date}'>#{@rel_date}</time>
       """
       next()
 
@@ -215,7 +215,7 @@ describe 'The Odysseus Module', ->
       odysseus = new Odysseus()
       expect(odysseus.toHTML(@story, @externals, {image: true})).to.equal """
         <div class='od-image'>\
-          <img src='/assets/players/snadella' alt='Satya'>\
+          <img src='/assets/players/snadella'>\
         </div>\
         <div class='od-content'>\
           <span class='od-actor'>Satya</span> \
@@ -227,7 +227,7 @@ describe 'The Odysseus Module', ->
             <li><span class='od-role'>board_member</span></li>\
           </ul>.\
         </div>\
-        <time class='od-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        <time class='od-ts' title='On #{@text_date}'>#{@rel_date}</time>
       """
       next()
 

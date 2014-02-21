@@ -6,7 +6,7 @@ describe 'The Activity Story Builder', ->
     @odysseus = new Odysseus(global.config)
     @iso_date = global.iso_date
     @text_date = global.text_date
-    @relative_date = global.relative_date
+    @rel_date = global.rel_date
     next()
 
   ###*
@@ -23,7 +23,7 @@ describe 'The Activity Story Builder', ->
           },
           team: {
             id: 'msft',
-            name: 'Microsoft Inc.'
+            name: 'Microsoft Inc'
           },
           timestamp: @iso_date
         }
@@ -32,14 +32,17 @@ describe 'The Activity Story Builder', ->
       describe 'in global context', ->
         it 'builds the team creation story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            Mr. Gates created the team 'Microsoft Inc.'.
-            [#{@text_date}]
+            [#{@text_date}] - Mr. Gates created the team 'Microsoft Inc'.
           """
           next()
 
         it 'builds the team creation story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Mr. Gates</span> created the team <span class='pl-object'>Microsoft Inc.</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'>\
+              <span class='pl-actor'>Mr. Gates</span> created the team \
+              <span class='pl-object'>Microsoft Inc</span>.\
+            </div>\
+            <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -51,14 +54,13 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the team creation story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            You created the team 'Microsoft Inc.'.
-            [#{@text_date}]
+            [#{@text_date}] - You created the team 'Microsoft Inc'.
           """
           next()
 
         it 'builds the team creation story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>You</span> created the team <span class='pl-object'>Microsoft Inc.</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>You</span> created the team <span class='pl-object'>Microsoft Inc</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -81,14 +83,18 @@ describe 'The Activity Story Builder', ->
       describe 'in global context', ->
         it 'builds the process creation story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            Mr. Gates created the process 'The Microsoft Creation'.
-            [#{@text_date}]
+            [#{@text_date}] - Mr. Gates created the process \
+            'The Microsoft Creation'.
           """
           next()
 
         it 'builds the process creation story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Mr. Gates</span> created the process <span class='pl-object'>The Microsoft Creation</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'>\
+              <span class='pl-actor'>Mr. Gates</span> created the process \
+              <span class='pl-object'>The Microsoft Creation</span>.\
+            </div>\
+            <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -100,14 +106,17 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the process creation story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            You created the process 'The Microsoft Creation'.
-            [#{@text_date}]
+            [#{@text_date}] - You created the process 'The Microsoft Creation'.
           """
           next()
 
         it 'builds the process creation story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>You</span> created the process <span class='pl-object'>The Microsoft Creation</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'>\
+              <span class='pl-actor'>You</span> created the process \
+              <span class='pl-object'>The Microsoft Creation</span>.\
+            </div>\
+            <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -125,7 +134,7 @@ describe 'The Activity Story Builder', ->
           },
           team: {
             id: 'msft',
-            name: 'Microsoft Inc.'
+            name: 'Microsoft Inc'
           },
           timestamp: @iso_date
         }
@@ -134,14 +143,13 @@ describe 'The Activity Story Builder', ->
       describe 'in global context', ->
         it 'builds the team deletion story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            Mr. Gates deleted the team 'Microsoft Inc.'.
-            [#{@text_date}]
+            [#{@text_date}] - Mr. Gates deleted the team 'Microsoft Inc'.
           """
           next()
 
         it 'builds the team deletion story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Mr. Gates</span> deleted the team <span class='pl-object'>Microsoft Inc.</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Mr. Gates</span> deleted the team <span class='pl-object'>Microsoft Inc</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -153,14 +161,13 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the team deletion story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            You deleted the team 'Microsoft Inc.'.
-            [#{@text_date}]
+            [#{@text_date}] - You deleted the team 'Microsoft Inc'.
           """
           next()
 
         it 'builds the team deletion story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>You</span> deleted the team <span class='pl-object'>Microsoft Inc.</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>You</span> deleted the team <span class='pl-object'>Microsoft Inc</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -183,14 +190,13 @@ describe 'The Activity Story Builder', ->
       describe 'in global context', ->
         it 'builds the process deletion story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            Mr. Gates deleted the process 'The Microsoft Creation'.
-            [#{@text_date}]
+            [#{@text_date}] - Mr. Gates deleted the process 'The Microsoft Creation'.
           """
           next()
 
         it 'builds the process deletion story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Mr. Gates</span> deleted the process <span class='pl-object'>The Microsoft Creation</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Mr. Gates</span> deleted the process <span class='pl-object'>The Microsoft Creation</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -202,14 +208,13 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the process deletion story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            You deleted the process 'The Microsoft Creation'.
-            [#{@text_date}]
+            [#{@text_date}] - You deleted the process 'The Microsoft Creation'.
           """
           next()
 
         it 'builds the process deletion story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>You</span> deleted the process <span class='pl-object'>The Microsoft Creation</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>You</span> deleted the process <span class='pl-object'>The Microsoft Creation</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -228,7 +233,7 @@ describe 'The Activity Story Builder', ->
           },
           team: {
             id: 'msft',
-            name: 'Microsoft Inc.'
+            name: 'Microsoft Inc'
           },
           roles: {
             ceo: true,
@@ -242,21 +247,20 @@ describe 'The Activity Story Builder', ->
       describe 'in global context', ->
         it 'builds the team joining story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            Satya joined the team 'Microsoft Inc.' as ceo, board_member.
-            [#{@text_date}]
+            [#{@text_date}] - Satya joined the team 'Microsoft Inc' as ceo, board_member.
           """
           next()
 
         it 'builds the team joining story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Satya</span> joined the team <span class='pl-object'>Microsoft Inc.</span> as <ul class='pl-role-list'><li><span class='pl-role'>ceo</span></li><li><span class='pl-role'>board_member</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Satya</span> joined the team <span class='pl-object'>Microsoft Inc</span> as <ul class='pl-role-list'><li><span class='pl-role'>ceo</span></li><li><span class='pl-role'>board_member</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
         it "gets the creator's avatar", (next) ->
           externals = {base_url: @base_url}
           expect(@odysseus.getImage(@story, externals)).to.equal """
-            <img src='/assets/players/snadella' alt='Satya'>
+            <img src='/assets/players/snadella'>
           """
           next()
 
@@ -268,20 +272,19 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the team joining story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Satya joined this team as ceo, board_member.
-            [#{@text_date}]
+            [#{@text_date}] - Satya joined this team as ceo, board_member.
           """
           next()
 
         it 'builds the team joining story (html)', (next) ->
           expect(@odysseus.toHTML(@story, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Satya</span> joined this team as <ul class='pl-role-list'><li><span class='pl-role'>ceo</span></li><li><span class='pl-role'>board_member</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Satya</span> joined this team as <ul class='pl-role-list'><li><span class='pl-role'>ceo</span></li><li><span class='pl-role'>board_member</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
         it "gets the creator's avatar", (next) ->
           expect(@odysseus.getImage(@story, @externals)).to.equal """
-            <img src='/assets/players/snadella' alt='Satya'>
+            <img src='/assets/players/snadella'>
           """
           next()
 
@@ -296,20 +299,19 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the team joining story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            You joined the team 'Microsoft Inc.' as ceo, board_member.
-            [#{@text_date}]
+            [#{@text_date}] - You joined the team 'Microsoft Inc' as ceo, board_member.
           """
           next()
 
         it 'builds the team joining story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>You</span> joined the team <span class='pl-object'>Microsoft Inc.</span> as <ul class='pl-role-list'><li><span class='pl-role'>ceo</span></li><li><span class='pl-role'>board_member</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>You</span> joined the team <span class='pl-object'>Microsoft Inc</span> as <ul class='pl-role-list'><li><span class='pl-role'>ceo</span></li><li><span class='pl-role'>board_member</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
         it "gets the creator's avatar", (next) ->
           expect(@odysseus.getImage(@story, @externals)).to.equal """
-            <img src='/assets/players/snadella' alt='Satya'>
+            <img src='/assets/players/snadella'>
           """
           next()
 
@@ -337,21 +339,38 @@ describe 'The Activity Story Builder', ->
       describe 'in global context', ->
         it 'builds the process joining story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            Satya joined the process 'The Revamping of Microsoft' as ceo in All lanes, super_admin in management lane.
-            [#{@text_date}]
+            [#{@text_date}] - Satya joined the process 'The Revamping of \
+            Microsoft' as ceo in All lanes, super_admin in management lane.
           """
           next()
 
         it 'builds the process joining story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Satya</span> joined the process <span class='pl-object'>The Revamping of Microsoft</span> as <ul class='pl-role-list'><li><span class='pl-role'>ceo</span> in <span class='pl-lane'>All</span> lanes</li><li><span class='pl-role'>super_admin</span> in <span class='pl-lane'>management</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'>\
+              <span class='pl-actor'>Satya</span> \
+              joined the process \
+              <span class='pl-object'>The Revamping of Microsoft</span> as \
+              <ul class='pl-role-list'>\
+                <li>\
+                  <span class='pl-role'>ceo</span> in \
+                  <span class='pl-lane'>All</span> lanes\
+                </li>\
+                <li>\
+                  <span class='pl-role'>super_admin</span> in \
+                  <span class='pl-lane'>management</span> lane\
+                </li>\
+              </ul>.\
+            </div>\
+            <time class='pl-ts' title='On #{@text_date}'>\
+              #{@rel_date}\
+            </time>
           """
           next()
 
         it "gets the creator's avatar", (next) ->
           externals = {base_url: @base_url}
           expect(@odysseus.getImage(@story, externals)).to.equal """
-            <img src='/assets/players/snadella' alt='Satya'>
+            <img src='/assets/players/snadella'>
           """
           next()
 
@@ -363,20 +382,20 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the process joining story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Satya joined this process as ceo in All lanes, super_admin in management lane.
-            [#{@text_date}]
+            [#{@text_date}] - Satya joined this process as \
+            ceo in All lanes, super_admin in management lane.
           """
           next()
 
         it 'builds the process joining story (html)', (next) ->
           expect(@odysseus.toHTML(@story, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Satya</span> joined this process as <ul class='pl-role-list'><li><span class='pl-role'>ceo</span> in <span class='pl-lane'>All</span> lanes</li><li><span class='pl-role'>super_admin</span> in <span class='pl-lane'>management</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Satya</span> joined this process as <ul class='pl-role-list'><li><span class='pl-role'>ceo</span> in <span class='pl-lane'>All</span> lanes</li><li><span class='pl-role'>super_admin</span> in <span class='pl-lane'>management</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
         it "gets the creator's avatar", (next) ->
           expect(@odysseus.getImage(@story, @externals)).to.equal """
-            <img src='/assets/players/snadella' alt='Satya'>
+            <img src='/assets/players/snadella'>
           """
           next()
 
@@ -391,20 +410,20 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the process joining story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            You joined the process 'The Revamping of Microsoft' as ceo in All lanes, super_admin in management lane.
-            [#{@text_date}]
+            [#{@text_date}] - You joined the process 'The Revamping of \
+            Microsoft' as ceo in All lanes, super_admin in management lane.
           """
           next()
 
         it 'builds the process joining story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>You</span> joined the process <span class='pl-object'>The Revamping of Microsoft</span> as <ul class='pl-role-list'><li><span class='pl-role'>ceo</span> in <span class='pl-lane'>All</span> lanes</li><li><span class='pl-role'>super_admin</span> in <span class='pl-lane'>management</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>You</span> joined the process <span class='pl-object'>The Revamping of Microsoft</span> as <ul class='pl-role-list'><li><span class='pl-role'>ceo</span> in <span class='pl-lane'>All</span> lanes</li><li><span class='pl-role'>super_admin</span> in <span class='pl-lane'>management</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
         it "gets the creator's avatar", (next) ->
           expect(@odysseus.getImage(@story, @externals)).to.equal """
-            <img src='/assets/players/snadella' alt='Satya'>
+            <img src='/assets/players/snadella'>
           """
           next()
 
@@ -423,7 +442,7 @@ describe 'The Activity Story Builder', ->
           },
           team: {
             id: 'msft',
-            name: 'Microsoft Inc.'
+            name: 'Microsoft Inc'
           },
           timestamp: @iso_date
         }
@@ -432,14 +451,13 @@ describe 'The Activity Story Builder', ->
       describe 'in global context', ->
         it 'builds the team leaving story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            Steve Ballmer left the team 'Microsoft Inc.'.
-            [#{@text_date}]
+            [#{@text_date}] - Steve Ballmer left the team 'Microsoft Inc'.
           """
           next()
 
         it 'builds the team leaving story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Steve Ballmer</span> left the team <span class='pl-object'>Microsoft Inc.</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Steve Ballmer</span> left the team <span class='pl-object'>Microsoft Inc</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -451,14 +469,16 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the team leaving story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Steve Ballmer left this team.
-            [#{@text_date}]
+            [#{@text_date}] - Steve Ballmer left this team.
           """
           next()
 
         it 'builds the team leaving story (html)', (next) ->
           expect(@odysseus.toHTML(@story, @externals)).to.equal """
-<div class='pl-content'><span class='pl-actor'>Steve Ballmer</span> left this team.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'>\
+              <span class='pl-actor'>Steve Ballmer</span> left this team.\
+            </div>\
+            <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -470,14 +490,13 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the team leaving story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            You left the team 'Microsoft Inc.'.
-            [#{@text_date}]
+            [#{@text_date}] - You left the team 'Microsoft Inc'.
           """
           next()
 
         it 'builds the team leaving story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>You</span> left the team <span class='pl-object'>Microsoft Inc.</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>You</span> left the team <span class='pl-object'>Microsoft Inc</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -500,14 +519,14 @@ describe 'The Activity Story Builder', ->
       describe 'in global context', ->
         it 'builds the process leaving story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            Steve Ballmer left the process 'The Revamping of Microsoft'.
-            [#{@text_date}]
+            [#{@text_date}] - Steve Ballmer left the process 'The Revamping \
+            of Microsoft'.
           """
           next()
 
         it 'builds the process leaving story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Steve Ballmer</span> left the process <span class='pl-object'>The Revamping of Microsoft</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Steve Ballmer</span> left the process <span class='pl-object'>The Revamping of Microsoft</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -519,14 +538,13 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the process leaving story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Steve Ballmer left this process.
-            [#{@text_date}]
+            [#{@text_date}] - Steve Ballmer left this process.
           """
           next()
 
         it 'builds the process leaving story (html)', (next) ->
           expect(@odysseus.toHTML(@story, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Steve Ballmer</span> left this process.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Steve Ballmer</span> left this process.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -538,14 +556,13 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the process leaving story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            You left the process 'The Revamping of Microsoft'.
-            [#{@text_date}]
+            [#{@text_date}] - You left the process 'The Revamping of Microsoft'.
           """
           next()
 
         it 'builds the process leaving story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>You</span> left the process <span class='pl-object'>The Revamping of Microsoft</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>You</span> left the process <span class='pl-object'>The Revamping of Microsoft</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -568,7 +585,7 @@ describe 'The Activity Story Builder', ->
           }
           team: {
             id: 'msft',
-            name: 'Microsoft Inc.'
+            name: 'Microsoft Inc'
           },
           timestamp: @iso_date
         }
@@ -577,14 +594,19 @@ describe 'The Activity Story Builder', ->
       describe 'in global context', ->
         it 'builds the member kick story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            Steve Ballmer kicked Steven Sinofsky from the team 'Microsoft Inc.'.
-            [#{@text_date}]
+            [#{@text_date}] - Steve Ballmer kicked Steven Sinofsky from the \
+            team 'Microsoft Inc'.
           """
           next()
 
         it 'builds the member kick story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Steve Ballmer</span> kicked <span class='pl-target'>Steven Sinofsky</span> from the team <span class='pl-object'>Microsoft Inc.</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'>\
+              <span class='pl-actor'>Steve Ballmer</span> kicked \
+              <span class='pl-target'>Steven Sinofsky</span> from the team \
+              <span class='pl-object'>Microsoft Inc</span>.\
+            </div>\
+            <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -596,14 +618,18 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the member kick story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Steve Ballmer kicked Steven Sinofsky from this team.
-            [#{@text_date}]
+            [#{@text_date}] - Steve Ballmer kicked Steven Sinofsky from \
+            this team.
           """
           next()
 
         it 'builds the member kick story (html)', (next) ->
           expect(@odysseus.toHTML(@story, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Steve Ballmer</span> kicked <span class='pl-target'>Steven Sinofsky</span> from this team.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'>\
+              <span class='pl-actor'>Steve Ballmer</span> kicked \
+              <span class='pl-target'>Steven Sinofsky</span> from this team.\
+            </div>\
+            <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -615,14 +641,14 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the member kick story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            You kicked Steven Sinofsky from the team 'Microsoft Inc.'.
-            [#{@text_date}]
+            [#{@text_date}] - You kicked Steven Sinofsky from the team \
+            'Microsoft Inc'.
           """
           next()
 
         it 'builds the member kick story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>You</span> kicked <span class='pl-target'>Steven Sinofsky</span> from the team <span class='pl-object'>Microsoft Inc.</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>You</span> kicked <span class='pl-target'>Steven Sinofsky</span> from the team <span class='pl-object'>Microsoft Inc</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -634,14 +660,14 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the member kick story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Steve Ballmer kicked you from the team 'Microsoft Inc.'.
-            [#{@text_date}]
+            [#{@text_date}] - Steve Ballmer kicked you from the team \
+            'Microsoft Inc'.
           """
           next()
 
         it 'builds the member kick story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Steve Ballmer</span> kicked <span class='pl-target'>you</span> from the team <span class='pl-object'>Microsoft Inc.</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Steve Ballmer</span> kicked <span class='pl-target'>you</span> from the team <span class='pl-object'>Microsoft Inc</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -668,14 +694,14 @@ describe 'The Activity Story Builder', ->
       describe 'in global context', ->
         it 'builds the performer kick story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            Steve Ballmer kicked Elop from the process 'Office Redesign'.
-            [#{@text_date}]
+            [#{@text_date}] - Steve Ballmer kicked Elop from the process \
+            'Office Redesign'.
           """
           next()
 
         it 'builds the performer kick story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Steve Ballmer</span> kicked <span class='pl-target'>Elop</span> from the process <span class='pl-object'>Office Redesign</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Steve Ballmer</span> kicked <span class='pl-target'>Elop</span> from the process <span class='pl-object'>Office Redesign</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -687,14 +713,13 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the performer kick story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Steve Ballmer kicked Elop from this process.
-            [#{@text_date}]
+            [#{@text_date}] - Steve Ballmer kicked Elop from this process.
           """
           next()
 
         it 'builds the performer kick story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Steve Ballmer</span> kicked <span class='pl-target'>Elop</span> from this process.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Steve Ballmer</span> kicked <span class='pl-target'>Elop</span> from this process.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -706,14 +731,14 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the performer kick story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            You kicked Elop from the process 'Office Redesign'.
-            [#{@text_date}]
+            [#{@text_date}] - You kicked Elop from the process \
+            'Office Redesign'.
           """
           next()
 
         it 'builds the performer kick story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>You</span> kicked <span class='pl-target'>Elop</span> from the process <span class='pl-object'>Office Redesign</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>You</span> kicked <span class='pl-target'>Elop</span> from the process <span class='pl-object'>Office Redesign</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -725,14 +750,14 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the performer kick story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Steve Ballmer kicked you from the process 'Office Redesign'.
-            [#{@text_date}]
+            [#{@text_date}] - Steve Ballmer kicked you from the process \
+            'Office Redesign'.
           """
           next()
 
         it 'builds the performer kick story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Steve Ballmer</span> kicked <span class='pl-target'>you</span> from the process <span class='pl-object'>Office Redesign</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Steve Ballmer</span> kicked <span class='pl-target'>you</span> from the process <span class='pl-object'>Office Redesign</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -764,14 +789,14 @@ describe 'The Activity Story Builder', ->
       describe 'in global context', ->
         it 'builds the join request accept story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            Juan Mata\u2019s request to join the team 'Manchester United' has been accepted by David Moyes.
-            [#{@text_date}]
+            [#{@text_date}] - Juan Mata\u2019s request to join the team \
+            'Manchester United' has been accepted by David Moyes.
           """
           next()
 
         it 'builds the join request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Juan Mata\u2019s</span> request to join the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-actor'>David Moyes</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Juan Mata\u2019s</span> request to join the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-actor'>David Moyes</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -783,14 +808,14 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the join request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Juan Mata\u2019s request to join this team has been accepted by David Moyes.
-            [#{@text_date}]
+            [#{@text_date}] - Juan Mata\u2019s request to join this team has \
+            been accepted by David Moyes.
           """
           next()
 
         it 'builds the join request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Juan Mata\u2019s</span> request to join this team has been accepted by <span class='pl-actor'>David Moyes</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Juan Mata\u2019s</span> request to join this team has been accepted by <span class='pl-actor'>David Moyes</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -802,14 +827,14 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the join request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Your request to join the team 'Manchester United' has been accepted by David Moyes.
-            [#{@text_date}]
+            [#{@text_date}] - Your request to join the team \
+            'Manchester United' has been accepted by David Moyes.
           """
           next()
 
         it 'builds the join request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Your</span> request to join the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-actor'>David Moyes</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Your</span> request to join the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-actor'>David Moyes</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -836,14 +861,15 @@ describe 'The Activity Story Builder', ->
       describe 'in global context', ->
         it 'builds the join request accept story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            David Moyes\u2019s request to join the process 'Qualify for UEFA Champions League 2014' has been accepted by Sir Alex Ferguson.
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes\u2019s request to join the process \
+            'Qualify for UEFA Champions League 2014' has been accepted by \
+            Sir Alex Ferguson.
           """
           next()
 
         it 'builds the join request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -855,14 +881,14 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the join request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            David Moyes\u2019s request to join this process has been accepted by Sir Alex Ferguson.
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes\u2019s request to join this process \
+            has been accepted by Sir Alex Ferguson.
           """
           next()
 
         it 'builds the join request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request to join this process has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request to join this process has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -874,14 +900,15 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the join request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Your request to join the process 'Qualify for UEFA Champions League 2014' has been accepted by Sir Alex Ferguson.
-            [#{@text_date}]
+            [#{@text_date}] - Your request to join the process \
+            'Qualify for UEFA Champions League 2014' has been accepted \
+            by Sir Alex Ferguson.
           """
           next()
 
         it 'builds the join request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Your</span> request to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Your</span> request to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -923,14 +950,14 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@special_story)).to.equal """
-            Juan Mata accepted David Moyes\u2019s invitation to join the team 'Manchester United' as midfielder.
-            [#{@text_date}]
+            [#{@text_date}] - Juan Mata accepted David Moyes\u2019s \
+            invitation to join the team 'Manchester United' as midfielder.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@special_story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> accepted <span class='pl-target'>David Moyes\u2019s</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> accepted <span class='pl-target'>David Moyes\u2019s</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -943,28 +970,30 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@special_story)).to.equal """
-            Juan Mata accepted David Moyes\u2019s invitation to join the team 'Manchester United' as midfielder, playmaker.
-            [#{@text_date}]
+            [#{@text_date}] - Juan Mata accepted David Moyes\u2019s \
+            invitation to join the team 'Manchester United' as \
+            midfielder, playmaker.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@special_story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> accepted <span class='pl-target'>David Moyes\u2019s</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> accepted <span class='pl-target'>David Moyes\u2019s</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
       describe 'in global context', ->
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            Juan Mata accepted David Moyes\u2019s invitation to join the team 'Manchester United' as midfielder, playmaker.
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Juan Mata accepted David Moyes\u2019s \
+            invitation to join the team 'Manchester United' as \
+            midfielder, playmaker.
+            """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> accepted <span class='pl-target'>David Moyes\u2019s</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> accepted <span class='pl-target'>David Moyes\u2019s</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -976,14 +1005,14 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Juan Mata accepted David Moyes\u2019s invitation to join this team as midfielder, playmaker.
-            [#{@text_date}]
+            [#{@text_date}] - Juan Mata accepted David Moyes\u2019s \
+            invitation to join this team as midfielder, playmaker.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> accepted <span class='pl-target'>David Moyes\u2019s</span> invitation to join this team as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> accepted <span class='pl-target'>David Moyes\u2019s</span> invitation to join this team as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -995,14 +1024,14 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            You accepted David Moyes\u2019s invitation to join the team 'Manchester United' as midfielder, playmaker.
-            [#{@text_date}]
+            [#{@text_date}] - You accepted David Moyes\u2019s invitation \
+            to join the team 'Manchester United' as midfielder, playmaker.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>You</span> accepted <span class='pl-target'>David Moyes\u2019s</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>You</span> accepted <span class='pl-target'>David Moyes\u2019s</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1014,14 +1043,14 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Juan Mata accepted your invitation to join the team 'Manchester United' as midfielder, playmaker.
-            [#{@text_date}]
+            [#{@text_date}] - Juan Mata accepted your invitation to join \
+            the team 'Manchester United' as midfielder, playmaker.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> accepted <span class='pl-target'>your</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> accepted <span class='pl-target'>your</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1058,14 +1087,15 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@special_story)).to.equal """
-            David Moyes accepted Sir Alex Ferguson\u2019s invitation to join the process 'Qualify for UEFA Champions League 2014' as admin in team lane.
-            [#{@text_date}]
-          """
+            [#{@text_date}] - David Moyes accepted Sir Alex Ferguson\u2019s \
+            invitation to join the process 'Qualify for UEFA Champions \
+            League 2014' as admin in team lane.
+            """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@special_story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>David Moyes</span> accepted <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>David Moyes</span> accepted <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1078,28 +1108,30 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@special_story)).to.equal """
-            David Moyes accepted Sir Alex Ferguson\u2019s invitation to join the process 'Qualify for UEFA Champions League 2014' as admin in team lane, player in board lane.
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes accepted Sir Alex Ferguson\u2019s \
+            invitation to join the process 'Qualify for UEFA Champions \
+            League 2014' as admin in team lane, player in board lane.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@special_story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>David Moyes</span> accepted <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>David Moyes</span> accepted <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
       describe 'in global context', ->
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            David Moyes accepted Sir Alex Ferguson\u2019s invitation to join the process 'Qualify for UEFA Champions League 2014' as admin in team lane, player in board lane.
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes accepted Sir Alex Ferguson\u2019s \
+            invitation to join the process 'Qualify for UEFA Champions \
+            League 2014' as admin in team lane, player in board lane.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>David Moyes</span> accepted <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>David Moyes</span> accepted <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1111,14 +1143,15 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            David Moyes accepted Sir Alex Ferguson\u2019s invitation to join this process as admin in team lane, player in board lane.
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes accepted Sir Alex Ferguson\u2019s \
+            invitation to join this process as \
+            admin in team lane, player in board lane.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>David Moyes</span> accepted <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join this process as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>David Moyes</span> accepted <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join this process as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1130,14 +1163,15 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            You accepted Sir Alex Ferguson\u2019s invitation to join the process 'Qualify for UEFA Champions League 2014' as admin in team lane, player in board lane.
-            [#{@text_date}]
+            [#{@text_date}] - You accepted Sir Alex Ferguson\u2019s \
+            invitation to join the process 'Qualify for UEFA Champions \
+            League 2014' as admin in team lane, player in board lane.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>You</span> accepted <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>You</span> accepted <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1149,14 +1183,15 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            David Moyes accepted your invitation to join the process 'Qualify for UEFA Champions League 2014' as admin in team lane, player in board lane.
-            [#{@text_date}]
-          """
+            [#{@text_date}] - David Moyes accepted your invitation to join \
+            the process 'Qualify for UEFA Champions League 2014' as \
+            admin in team lane, player in board lane.
+            """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>David Moyes</span> accepted <span class='pl-target'>your</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>David Moyes</span> accepted <span class='pl-target'>your</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1198,16 +1233,17 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            Nemanja Vidic\u2019s request for a change of roles in the team 'Manchester United' has been accepted by David Moyes.
-            Changes:
-              [+] captain
-            [#{@text_date}]
+            [#{@text_date}] - Nemanja Vidic\u2019s request for a change \
+            of roles in the team 'Manchester United' has been \
+            accepted by David Moyes.
+              Changes:
+                [+] captain
           """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Nemanja Vidic\u2019s</span> request for a change of roles in the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-add'>captain</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Nemanja Vidic\u2019s</span> request for a change of roles in the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>captain</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1221,16 +1257,17 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            Nemanja Vidic\u2019s request for a change of roles in the team 'Manchester United' has been accepted by David Moyes.
-            Changes:
-              [-] player
-            [#{@text_date}]
+            [#{@text_date}] - Nemanja Vidic\u2019s request for a change \
+            of roles in the team 'Manchester United' has been \
+            accepted by David Moyes.
+              Changes:
+                [-] player
           """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Nemanja Vidic\u2019s</span> request for a change of roles in the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-rem'>player</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Nemanja Vidic\u2019s</span> request for a change of roles in the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-rem'><span class='pl-role'>player</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1245,34 +1282,36 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            Nemanja Vidic\u2019s request for a change of roles in the team 'Manchester United' has been accepted by David Moyes.
-            Changes:
-              [+] captain
-              [-] player
-            [#{@text_date}]
+            [#{@text_date}] - Nemanja Vidic\u2019s request for a change \
+            of roles in the team 'Manchester United' has been \
+            accepted by David Moyes.
+              Changes:
+                [+] captain
+                [-] player
           """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Nemanja Vidic\u2019s</span> request for a change of roles in the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-add'>captain</li><li class='pl-role pl-diff-rem'>player</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Nemanja Vidic\u2019s</span> request for a change of roles in the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>captain</span></li><li class='pl-diff-rem'><span class='pl-role'>player</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
       describe 'in global context', ->
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            Nemanja Vidic\u2019s request for a change of roles in the team 'Manchester United' has been accepted by David Moyes.
-            Changes:
-              [+] captain
-              [-] player
-            [#{@text_date}]
+            [#{@text_date}] - Nemanja Vidic\u2019s request for a change \
+            of roles in the team 'Manchester United' has been accepted \
+            by David Moyes.
+              Changes:
+                [+] captain
+                [-] player
           """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Nemanja Vidic\u2019s</span> request for a change of roles in the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-add'>captain</li><li class='pl-role pl-diff-rem'>player</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Nemanja Vidic\u2019s</span> request for a change of roles in the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>captain</span></li><li class='pl-diff-rem'><span class='pl-role'>player</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1284,17 +1323,17 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Nemanja Vidic\u2019s request for a change of roles in this team has been accepted by David Moyes.
-            Changes:
-              [+] captain
-              [-] player
-            [#{@text_date}]
+            [#{@text_date}] - Nemanja Vidic\u2019s request for a change \
+            of roles in this team has been accepted by David Moyes.
+              Changes:
+                [+] captain
+                [-] player
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Nemanja Vidic\u2019s</span> request for a change of roles in this team has been accepted by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-add'>captain</li><li class='pl-role pl-diff-rem'>player</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Nemanja Vidic\u2019s</span> request for a change of roles in this team has been accepted by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>captain</span></li><li class='pl-diff-rem'><span class='pl-role'>player</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1306,17 +1345,17 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Nemanja Vidic\u2019s request for a change of roles in the team 'Manchester United' has been accepted by you.
-            Changes:
-              [+] captain
-              [-] player
-            [#{@text_date}]
+            [#{@text_date}] - Nemanja Vidic\u2019s request for a change \
+            of roles in the team 'Manchester United' has been accepted by you.
+              Changes:
+                [+] captain
+                [-] player
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Nemanja Vidic\u2019s</span> request for a change of roles in the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-actor'>you</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-add'>captain</li><li class='pl-role pl-diff-rem'>player</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Nemanja Vidic\u2019s</span> request for a change of roles in the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-actor'>you</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>captain</span></li><li class='pl-diff-rem'><span class='pl-role'>player</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1328,17 +1367,17 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Your request for a change of roles in the team 'Manchester United' has been accepted by David Moyes.
-            Changes:
-              [+] captain
-              [-] player
-            [#{@text_date}]
+            [#{@text_date}] - Your request for a change of roles in \
+            the team 'Manchester United' has been accepted by David Moyes.
+              Changes:
+                [+] captain
+                [-] player
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Your</span> request for a change of roles in the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-add'>captain</li><li class='pl-role pl-diff-rem'>player</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Your</span> request for a change of roles in the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>captain</span></li><li class='pl-diff-rem'><span class='pl-role'>player</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1377,16 +1416,17 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            David Moyes\u2019s request for a change of roles in the process 'Qualify for UEFA Champions League 2014' has been accepted by Sir Alex Ferguson.
-            Changes:
-              [+] player in board lane
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes\u2019s request for a change \
+            of roles in the process 'Qualify for UEFA Champions League 2014' \
+            has been accepted by Sir Alex Ferguson.
+              Changes:
+                [+] player in board lane
           """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1400,16 +1440,17 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            David Moyes\u2019s request for a change of roles in the process 'Qualify for UEFA Champions League 2014' has been accepted by Sir Alex Ferguson.
-            Changes:
-              [-] observer in external lane
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes\u2019s request for a change \
+            of roles in the process 'Qualify for UEFA Champions League 2014' \
+            has been accepted by Sir Alex Ferguson.
+              Changes:
+                [-] observer in external lane
           """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-rem'><span class='pl-role'>observer</span> in <span class='pl-lane'>external</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-rem'><span class='pl-role'>observer</span> in <span class='pl-lane'>external</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1423,17 +1464,18 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            David Moyes\u2019s request for a change of roles in the process 'Qualify for UEFA Champions League 2014' has been accepted by Sir Alex Ferguson.
-            Changes:
-              [+] super_admin in team lane
-              [-] admin in team lane
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes\u2019s request for a change of \
+            roles in the process 'Qualify for UEFA Champions League 2014' \
+            has been accepted by Sir Alex Ferguson.
+              Changes:
+                [+] super_admin in team lane
+                [-] admin in team lane
           """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>super_admin</span> from <span class='pl-role pl-diff-rem'>admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>super_admin</span> from <span class='pl-role pl-diff-rem'>admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1449,38 +1491,40 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            David Moyes\u2019s request for a change of roles in the process 'Qualify for UEFA Champions League 2014' has been accepted by Sir Alex Ferguson.
-            Changes:
-              [+] player in board lane
-              [+] super_admin in team lane
-              [-] admin in team lane
-              [-] observer in external lane
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes\u2019s request for a change of \
+            roles in the process 'Qualify for UEFA Champions League 2014' \
+            has been accepted by Sir Alex Ferguson.
+              Changes:
+                [+] player in board lane
+                [+] super_admin in team lane
+                [-] admin in team lane
+                [-] observer in external lane
           """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>super_admin</span> from <span class='pl-role pl-diff-rem'>admin</span> in <span class='pl-lane'>team</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>observer</span> in <span class='pl-lane'>external</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>super_admin</span> from <span class='pl-role pl-diff-rem'>admin</span> in <span class='pl-lane'>team</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>observer</span> in <span class='pl-lane'>external</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
       describe 'in global context', ->
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            David Moyes\u2019s request for a change of roles in the process 'Qualify for UEFA Champions League 2014' has been accepted by Sir Alex Ferguson.
-            Changes:
-              [+] player in board lane
-              [+] super_admin in team lane
-              [-] admin in team lane
-              [-] observer in external lane
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes\u2019s request for a change of \
+            roles in the process 'Qualify for UEFA Champions League 2014' \
+            has been accepted by Sir Alex Ferguson.
+              Changes:
+                [+] player in board lane
+                [+] super_admin in team lane
+                [-] admin in team lane
+                [-] observer in external lane
           """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>super_admin</span> from <span class='pl-role pl-diff-rem'>admin</span> in <span class='pl-lane'>team</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>observer</span> in <span class='pl-lane'>external</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>super_admin</span> from <span class='pl-role pl-diff-rem'>admin</span> in <span class='pl-lane'>team</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>observer</span> in <span class='pl-lane'>external</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1492,19 +1536,19 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            David Moyes\u2019s request for a change of roles in this process has been accepted by Sir Alex Ferguson.
-            Changes:
-              [+] player in board lane
-              [+] super_admin in team lane
-              [-] admin in team lane
-              [-] observer in external lane
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes\u2019s request for a change \
+            of roles in this process has been accepted by Sir Alex Ferguson.
+              Changes:
+                [+] player in board lane
+                [+] super_admin in team lane
+                [-] admin in team lane
+                [-] observer in external lane
           """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request for a change of roles in this process has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>super_admin</span> from <span class='pl-role pl-diff-rem'>admin</span> in <span class='pl-lane'>team</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>observer</span> in <span class='pl-lane'>external</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request for a change of roles in this process has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>super_admin</span> from <span class='pl-role pl-diff-rem'>admin</span> in <span class='pl-lane'>team</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>observer</span> in <span class='pl-lane'>external</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1516,19 +1560,20 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            David Moyes\u2019s request for a change of roles in the process 'Qualify for UEFA Champions League 2014' has been accepted by you.
-            Changes:
-              [+] player in board lane
-              [+] super_admin in team lane
-              [-] admin in team lane
-              [-] observer in external lane
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes\u2019s request for a change \
+            of roles in the process 'Qualify for UEFA Champions League 2014' \
+            has been accepted by you.
+              Changes:
+                [+] player in board lane
+                [+] super_admin in team lane
+                [-] admin in team lane
+                [-] observer in external lane
           """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>you</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>super_admin</span> from <span class='pl-role pl-diff-rem'>admin</span> in <span class='pl-lane'>team</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>observer</span> in <span class='pl-lane'>external</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>you</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>super_admin</span> from <span class='pl-role pl-diff-rem'>admin</span> in <span class='pl-lane'>team</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>observer</span> in <span class='pl-lane'>external</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1540,19 +1585,20 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Your request for a change of roles in the process 'Qualify for UEFA Champions League 2014' has been accepted by Sir Alex Ferguson.
-            Changes:
-              [+] player in board lane
-              [+] super_admin in team lane
-              [-] admin in team lane
-              [-] observer in external lane
-            [#{@text_date}]
+            [#{@text_date}] - Your request for a change of roles in the \
+            process 'Qualify for UEFA Champions League 2014' has been \
+            accepted by Sir Alex Ferguson.
+              Changes:
+                [+] player in board lane
+                [+] super_admin in team lane
+                [-] admin in team lane
+                [-] observer in external lane
           """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Your</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>super_admin</span> from <span class='pl-role pl-diff-rem'>admin</span> in <span class='pl-lane'>team</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>observer</span> in <span class='pl-lane'>external</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Your</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been accepted by <span class='pl-actor'>Sir Alex Ferguson</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>super_admin</span> from <span class='pl-role pl-diff-rem'>admin</span> in <span class='pl-lane'>team</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>observer</span> in <span class='pl-lane'>external</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1591,16 +1637,16 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            David Moyes has changed roles in the team 'Manchester United'.
-            Changes:
-              [+] manager
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes has changed roles in the team \
+            'Manchester United'.
+              Changes:
+                [+] manager
           """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>David Moyes</span> has changed roles in the team <span class='pl-object'>Manchester United</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-add'>manager</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>David Moyes</span> has changed roles in the team <span class='pl-object'>Manchester United</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>manager</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1614,16 +1660,16 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            David Moyes has changed roles in the team 'Manchester United'.
-            Changes:
-              [-] watcher
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes has changed roles in the team \
+            'Manchester United'.
+              Changes:
+                [-] watcher
           """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>David Moyes</span> has changed roles in the team <span class='pl-object'>Manchester United</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-rem'>watcher</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>David Moyes</span> has changed roles in the team <span class='pl-object'>Manchester United</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-rem'><span class='pl-role'>watcher</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1638,34 +1684,34 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            David Moyes has changed roles in the team 'Manchester United'.
-            Changes:
-              [+] manager
-              [-] watcher
-            [#{@text_date}]
-          """
+            [#{@text_date}] - David Moyes has changed roles in the \
+            team 'Manchester United'.
+              Changes:
+                [+] manager
+                [-] watcher
+            """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>David Moyes</span> has changed roles in the team <span class='pl-object'>Manchester United</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-add'>manager</li><li class='pl-role pl-diff-rem'>watcher</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>David Moyes</span> has changed roles in the team <span class='pl-object'>Manchester United</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>manager</span></li><li class='pl-diff-rem'><span class='pl-role'>watcher</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
       describe 'in global context', ->
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            David Moyes has changed roles in the team 'Manchester United'.
-            Changes:
-              [+] manager
-              [-] watcher
-            [#{@text_date}]
-          """
+            [#{@text_date}] - David Moyes has changed roles in the team \
+            'Manchester United'.
+              Changes:
+                [+] manager
+                [-] watcher
+            """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>David Moyes</span> has changed roles in the team <span class='pl-object'>Manchester United</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-add'>manager</li><li class='pl-role pl-diff-rem'>watcher</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>David Moyes</span> has changed roles in the team <span class='pl-object'>Manchester United</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>manager</span></li><li class='pl-diff-rem'><span class='pl-role'>watcher</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1677,17 +1723,16 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            David Moyes has changed roles in this team.
-            Changes:
-              [+] manager
-              [-] watcher
-            [#{@text_date}]
-          """
+            [#{@text_date}] - David Moyes has changed roles in this team.
+              Changes:
+                [+] manager
+                [-] watcher
+            """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>David Moyes</span> has changed roles in this team.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-add'>manager</li><li class='pl-role pl-diff-rem'>watcher</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>David Moyes</span> has changed roles in this team.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>manager</span></li><li class='pl-diff-rem'><span class='pl-role'>watcher</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1699,17 +1744,17 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            You have changed roles in the team 'Manchester United'.
-            Changes:
-              [+] manager
-              [-] watcher
-            [#{@text_date}]
-          """
+            [#{@text_date}] - You have changed roles in the team \
+            'Manchester United'.
+              Changes:
+                [+] manager
+                [-] watcher
+            """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>You</span> have changed roles in the team <span class='pl-object'>Manchester United</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-add'>manager</li><li class='pl-role pl-diff-rem'>watcher</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>You</span> have changed roles in the team <span class='pl-object'>Manchester United</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>manager</span></li><li class='pl-diff-rem'><span class='pl-role'>watcher</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1744,16 +1789,16 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            Sir Alex Ferguson has changed roles in the process 'Qualify for UEFA Champions League 2014'.
-            Changes:
-              [+] player in ex lane
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Sir Alex Ferguson has changed roles in the \
+            process 'Qualify for UEFA Champions League 2014'.
+              Changes:
+                [+] player in ex lane
+            """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Sir Alex Ferguson</span> has changed roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Sir Alex Ferguson</span> has changed roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1767,16 +1812,16 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            Sir Alex Ferguson has changed roles in the process 'Qualify for UEFA Champions League 2014'.
-            Changes:
-              [-] super_admin in team lane
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Sir Alex Ferguson has changed roles in the \
+            process 'Qualify for UEFA Champions League 2014'.
+              Changes:
+                [-] super_admin in team lane
+            """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Sir Alex Ferguson</span> has changed roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Sir Alex Ferguson</span> has changed roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1790,17 +1835,17 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            Sir Alex Ferguson has changed roles in the process 'Qualify for UEFA Champions League 2014'.
-            Changes:
-              [+] admin in board lane
-              [-] player in board lane
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Sir Alex Ferguson has changed roles in the \
+            process 'Qualify for UEFA Champions League 2014'.
+              Changes:
+                [+] admin in board lane
+                [-] player in board lane
+            """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Sir Alex Ferguson</span> has changed roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Sir Alex Ferguson</span> has changed roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1816,38 +1861,38 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            Sir Alex Ferguson has changed roles in the process 'Qualify for UEFA Champions League 2014'.
-            Changes:
-              [+] admin in board lane
-              [-] player in board lane
-              [+] player in ex lane
-              [-] super_admin in team lane
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Sir Alex Ferguson has changed roles in the \
+            process 'Qualify for UEFA Champions League 2014'.
+              Changes:
+                [+] admin in board lane
+                [-] player in board lane
+                [+] player in ex lane
+                [-] super_admin in team lane
+            """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Sir Alex Ferguson</span> has changed roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Sir Alex Ferguson</span> has changed roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
       describe 'in global context', ->
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            Sir Alex Ferguson has changed roles in the process 'Qualify for UEFA Champions League 2014'.
-            Changes:
-              [+] admin in board lane
-              [-] player in board lane
-              [+] player in ex lane
-              [-] super_admin in team lane
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Sir Alex Ferguson has changed roles in the \
+            process 'Qualify for UEFA Champions League 2014'.
+              Changes:
+                [+] admin in board lane
+                [-] player in board lane
+                [+] player in ex lane
+                [-] super_admin in team lane
+            """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Sir Alex Ferguson</span> has changed roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Sir Alex Ferguson</span> has changed roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1859,19 +1904,19 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Sir Alex Ferguson has changed roles in this process.
-            Changes:
-              [+] admin in board lane
-              [-] player in board lane
-              [+] player in ex lane
-              [-] super_admin in team lane
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Sir Alex Ferguson has changed roles in \
+            this process.
+              Changes:
+                [+] admin in board lane
+                [-] player in board lane
+                [+] player in ex lane
+                [-] super_admin in team lane
+            """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Sir Alex Ferguson</span> has changed roles in this process.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Sir Alex Ferguson</span> has changed roles in this process.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1883,19 +1928,19 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            You have changed roles in the process 'Qualify for UEFA Champions League 2014'.
-            Changes:
-              [+] admin in board lane
-              [-] player in board lane
-              [+] player in ex lane
-              [-] super_admin in team lane
-            [#{@text_date}]
-          """
+            [#{@text_date}] - You have changed roles in the process \
+            'Qualify for UEFA Champions League 2014'.
+              Changes:
+                [+] admin in board lane
+                [-] player in board lane
+                [+] player in ex lane
+                [-] super_admin in team lane
+            """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>You</span> have changed roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>You</span> have changed roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1937,16 +1982,16 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            Rooney\u2019s roles in the team 'Manchester United' have been changed by David Moyes.
-            Changes:
-              [+] striker
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Rooney\u2019s roles in the team \
+            'Manchester United' have been changed by David Moyes.
+              Changes:
+                [+] striker
+            """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Rooney\u2019s</span> roles in the team <span class='pl-object'>Manchester United</span> have been changed by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-add'>striker</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Rooney\u2019s</span> roles in the team <span class='pl-object'>Manchester United</span> have been changed by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>striker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1960,16 +2005,16 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            Rooney\u2019s roles in the team 'Manchester United' have been changed by David Moyes.
-            Changes:
-              [-] roamer
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Rooney\u2019s roles in the team \
+            'Manchester United' have been changed by David Moyes.
+              Changes:
+                [-] roamer
+            """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Rooney\u2019s</span> roles in the team <span class='pl-object'>Manchester United</span> have been changed by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-rem'>roamer</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Rooney\u2019s</span> roles in the team <span class='pl-object'>Manchester United</span> have been changed by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-rem'><span class='pl-role'>roamer</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1984,34 +2029,33 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            Rooney\u2019s roles in the team 'Manchester United' have been changed by David Moyes.
-            Changes:
-              [+] striker
-              [-] roamer
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Rooney\u2019s roles in the team 'Manchester United' have been changed by David Moyes.
+              Changes:
+                [+] striker
+                [-] roamer
+            """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Rooney\u2019s</span> roles in the team <span class='pl-object'>Manchester United</span> have been changed by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-add'>striker</li><li class='pl-role pl-diff-rem'>roamer</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Rooney\u2019s</span> roles in the team <span class='pl-object'>Manchester United</span> have been changed by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>striker</span></li><li class='pl-diff-rem'><span class='pl-role'>roamer</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
       describe 'in global context', ->
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            Rooney\u2019s roles in the team 'Manchester United' have been changed by David Moyes.
-            Changes:
-              [+] striker
-              [-] roamer
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Rooney\u2019s roles in the team \
+            'Manchester United' have been changed by David Moyes.
+              Changes:
+                [+] striker
+                [-] roamer
+            """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Rooney\u2019s</span> roles in the team <span class='pl-object'>Manchester United</span> have been changed by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-add'>striker</li><li class='pl-role pl-diff-rem'>roamer</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Rooney\u2019s</span> roles in the team <span class='pl-object'>Manchester United</span> have been changed by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>striker</span></li><li class='pl-diff-rem'><span class='pl-role'>roamer</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -2023,17 +2067,17 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Rooney\u2019s roles in this team have been changed by David Moyes.
-            Changes:
-              [+] striker
-              [-] roamer
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Rooney\u2019s roles in this team have been \
+            changed by David Moyes.
+              Changes:
+                [+] striker
+                [-] roamer
+            """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Rooney\u2019s</span> roles in this team have been changed by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-add'>striker</li><li class='pl-role pl-diff-rem'>roamer</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Rooney\u2019s</span> roles in this team have been changed by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>striker</span></li><li class='pl-diff-rem'><span class='pl-role'>roamer</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -2045,17 +2089,17 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Rooney\u2019s roles in the team 'Manchester United' have been changed by you.
-            Changes:
-              [+] striker
-              [-] roamer
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Rooney\u2019s roles in the team \
+            'Manchester United' have been changed by you.
+              Changes:
+                [+] striker
+                [-] roamer
+            """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Rooney\u2019s</span> roles in the team <span class='pl-object'>Manchester United</span> have been changed by <span class='pl-actor'>you</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-add'>striker</li><li class='pl-role pl-diff-rem'>roamer</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Rooney\u2019s</span> roles in the team <span class='pl-object'>Manchester United</span> have been changed by <span class='pl-actor'>you</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>striker</span></li><li class='pl-diff-rem'><span class='pl-role'>roamer</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -2067,17 +2111,17 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Your roles in the team 'Manchester United' have been changed by David Moyes.
-            Changes:
-              [+] striker
-              [-] roamer
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Your roles in the team 'Manchester United' \
+            have been changed by David Moyes.
+              Changes:
+                [+] striker
+                [-] roamer
+            """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Your</span> roles in the team <span class='pl-object'>Manchester United</span> have been changed by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-role pl-diff-add'>striker</li><li class='pl-role pl-diff-rem'>roamer</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Your</span> roles in the team <span class='pl-object'>Manchester United</span> have been changed by <span class='pl-actor'>David Moyes</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>striker</span></li><li class='pl-diff-rem'><span class='pl-role'>roamer</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -2116,16 +2160,15 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            Sir Alex Ferguson\u2019s roles in the process 'Qualify for UEFA Champions League 2014' have been changed by Mr. Glazer.
-            Changes:
-              [+] player in ex lane
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Sir Alex Ferguson\u2019s roles in the process 'Qualify for UEFA Champions League 2014' have been changed by Mr. Glazer.
+              Changes:
+                [+] player in ex lane
+            """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Sir Alex Ferguson\u2019s</span> roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> have been changed by <span class='pl-actor'>Mr. Glazer</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Sir Alex Ferguson\u2019s</span> roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> have been changed by <span class='pl-actor'>Mr. Glazer</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -2139,16 +2182,15 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            Sir Alex Ferguson\u2019s roles in the process 'Qualify for UEFA Champions League 2014' have been changed by Mr. Glazer.
-            Changes:
-              [-] super_admin in team lane
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Sir Alex Ferguson\u2019s roles in the process 'Qualify for UEFA Champions League 2014' have been changed by Mr. Glazer.
+              Changes:
+                [-] super_admin in team lane
+            """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Sir Alex Ferguson\u2019s</span> roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> have been changed by <span class='pl-actor'>Mr. Glazer</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Sir Alex Ferguson\u2019s</span> roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> have been changed by <span class='pl-actor'>Mr. Glazer</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -2162,17 +2204,16 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            Sir Alex Ferguson\u2019s roles in the process 'Qualify for UEFA Champions League 2014' have been changed by Mr. Glazer.
-            Changes:
-              [+] admin in board lane
-              [-] player in board lane
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Sir Alex Ferguson\u2019s roles in the process 'Qualify for UEFA Champions League 2014' have been changed by Mr. Glazer.
+              Changes:
+                [+] admin in board lane
+                [-] player in board lane
+            """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Sir Alex Ferguson\u2019s</span> roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> have been changed by <span class='pl-actor'>Mr. Glazer</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Sir Alex Ferguson\u2019s</span> roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> have been changed by <span class='pl-actor'>Mr. Glazer</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -2188,38 +2229,40 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx)).to.equal """
-            Sir Alex Ferguson\u2019s roles in the process 'Qualify for UEFA Champions League 2014' have been changed by Mr. Glazer.
-            Changes:
-              [+] admin in board lane
-              [-] player in board lane
-              [+] player in ex lane
-              [-] super_admin in team lane
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Sir Alex Ferguson\u2019s roles in the process \
+            'Qualify for UEFA Champions League 2014' have been changed \
+            by Mr. Glazer.
+              Changes:
+                [+] admin in board lane
+                [-] player in board lane
+                [+] player in ex lane
+                [-] super_admin in team lane
+            """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Sir Alex Ferguson\u2019s</span> roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> have been changed by <span class='pl-actor'>Mr. Glazer</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Sir Alex Ferguson\u2019s</span> roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> have been changed by <span class='pl-actor'>Mr. Glazer</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
       describe 'in global context', ->
         it 'builds the role request accept story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            Sir Alex Ferguson\u2019s roles in the process 'Qualify for UEFA Champions League 2014' have been changed by Mr. Glazer.
-            Changes:
-              [+] admin in board lane
-              [-] player in board lane
-              [+] player in ex lane
-              [-] super_admin in team lane
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Sir Alex Ferguson\u2019s roles in the process \
+            'Qualify for UEFA Champions League 2014' have been changed by \
+            Mr. Glazer.
+              Changes:
+                [+] admin in board lane
+                [-] player in board lane
+                [+] player in ex lane
+                [-] super_admin in team lane
+            """
           next()
 
         it 'builds the role request accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Sir Alex Ferguson\u2019s</span> roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> have been changed by <span class='pl-actor'>Mr. Glazer</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Sir Alex Ferguson\u2019s</span> roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> have been changed by <span class='pl-actor'>Mr. Glazer</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -2231,19 +2274,19 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Sir Alex Ferguson\u2019s roles in this process have been changed by Mr. Glazer.
-            Changes:
-              [+] admin in board lane
-              [-] player in board lane
-              [+] player in ex lane
-              [-] super_admin in team lane
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Sir Alex Ferguson\u2019s roles in this process \
+            have been changed by Mr. Glazer.
+              Changes:
+                [+] admin in board lane
+                [-] player in board lane
+                [+] player in ex lane
+                [-] super_admin in team lane
+            """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Sir Alex Ferguson\u2019s</span> roles in this process have been changed by <span class='pl-actor'>Mr. Glazer</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Sir Alex Ferguson\u2019s</span> roles in this process have been changed by <span class='pl-actor'>Mr. Glazer</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -2255,19 +2298,19 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Sir Alex Ferguson\u2019s roles in the process 'Qualify for UEFA Champions League 2014' have been changed by you.
-            Changes:
-              [+] admin in board lane
-              [-] player in board lane
-              [+] player in ex lane
-              [-] super_admin in team lane
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Sir Alex Ferguson\u2019s roles in the process \
+            'Qualify for UEFA Champions League 2014' have been changed by you.
+              Changes:
+                [+] admin in board lane
+                [-] player in board lane
+                [+] player in ex lane
+                [-] super_admin in team lane
+            """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Sir Alex Ferguson\u2019s</span> roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> have been changed by <span class='pl-actor'>you</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Sir Alex Ferguson\u2019s</span> roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> have been changed by <span class='pl-actor'>you</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -2279,19 +2322,20 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Your roles in the process 'Qualify for UEFA Champions League 2014' have been changed by Mr. Glazer.
-            Changes:
-              [+] admin in board lane
-              [-] player in board lane
-              [+] player in ex lane
-              [-] super_admin in team lane
-            [#{@text_date}]
-          """
+            [#{@text_date}] - Your roles in the process \
+            'Qualify for UEFA Champions League 2014' have been changed \
+            by Mr. Glazer.
+              Changes:
+                [+] admin in board lane
+                [-] player in board lane
+                [+] player in ex lane
+                [-] super_admin in team lane
+            """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Your</span> roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> have been changed by <span class='pl-actor'>Mr. Glazer</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Your</span> roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> have been changed by <span class='pl-actor'>Mr. Glazer</span>.<ul class='pl-role-list pl-diff-list'><li class='pl-list-header'>Changes</li><li class='pl-diff-change'><span class='pl-role pl-diff-add'>admin</span> from <span class='pl-role pl-diff-rem'>player</span> in <span class='pl-lane'>board</span> lane</li><li class='pl-diff-add'><span class='pl-role'>player</span> in <span class='pl-lane'>ex</span> lane</li><li class='pl-diff-rem'><span class='pl-role'>super_admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -2322,14 +2366,21 @@ describe 'The Activity Story Builder', ->
     describe 'without any score changes', ->
       it 'builds the progress story (text)', (next) ->
         expect(@odysseus.toString(@story)).to.equal """
-          Juan Mata completed 'Round of 16' in the process 'UEFA Champions League'.
-          [#{@text_date}]
+          [#{@text_date}] - Juan Mata completed 'Round of 16' in the \
+          process 'UEFA Champions League'.
         """
         next()
 
       it 'builds the progress story (html)', (next) ->
         expect(@odysseus.toHTML(@story)).to.equal """
-          <div class='pl-content'><span class='pl-actor'>Juan Mata</span> completed <span class='pl-activity'>Round of 16</span>.<footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+          <div class='pl-content'>\
+            <span class='pl-actor'>Juan Mata</span> completed \
+            <span class='pl-activity'>Round of 16</span>.\
+            <footer class='pl-footer'>\
+              <span class='pl-object'>UEFA Champions League</span>\
+            </footer>\
+          </div>\
+          <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
 
@@ -2354,16 +2405,31 @@ describe 'The Activity Story Builder', ->
 
       it 'builds the progress story (text)', (next) ->
         expect(@odysseus.toString(@progress_story)).to.equal """
-          Juan Mata completed 'Round of 16' in the process 'UEFA Champions League'.
-          Changes:
-            [*] +2 Goals
-          [#{@text_date}]
+          [#{@text_date}] - Juan Mata completed 'Round of 16' in the process \
+          'UEFA Champions League'.
+            Changes:
+              [*] +2 Goals
         """
         next()
 
       it 'builds the progress story (html)', (next) ->
         expect(@odysseus.toHTML(@progress_story)).to.equal """
-          <div class='pl-content'><span class='pl-actor'>Juan Mata</span> completed <span class='pl-activity'>Round of 16</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td><span class='pl-score-metric'>Goals</span></td><td><span class='pl-score-delta-value'>+2</span></td></tr></tbody></table><footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+          <div class='pl-content'>\
+            <span class='pl-actor'>Juan Mata</span> completed \
+            <span class='pl-activity'>Round of 16</span>.\
+            <table class='pl-score-table'>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td><span class='pl-score-metric'>Goals</span></td>\
+                  <td><span class='pl-score-delta-value'>+2</span></td>\
+                </tr>\
+              </tbody>\
+            </table>\
+            <footer class='pl-footer'>\
+              <span class='pl-object'>UEFA Champions League</span>\
+            </footer>\
+          </div>\
+          <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
 
@@ -2398,19 +2464,48 @@ describe 'The Activity Story Builder', ->
 
       it 'builds the progress story (text)', (next) ->
         expect(@odysseus.toString(@progress_story)).to.equal """
-          Juan Mata completed 'Round of 16' in the process 'UEFA Champions League'.
-          Changes:
-          [>] UEFA Awards
-            [*] +1 Golden Boot
-            [*] +1 Champion
-            [*] -1 Suspensions
-          [#{@text_date}]
+          [#{@text_date}] - Juan Mata completed 'Round of 16' in the \
+          process 'UEFA Champions League'.
+            Changes:
+            [>] UEFA Awards
+              [*] +1 Golden Boot
+              [*] +1 Champion
+              [*] -1 Suspensions
         """
         next()
 
       it 'builds the progress story (html)', (next) ->
         expect(@odysseus.toHTML(@progress_story)).to.equal """
-          <div class='pl-content'><span class='pl-actor'>Juan Mata</span> completed <span class='pl-activity'>Round of 16</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Champion</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Suspensions</span></td><td><span class='pl-score-delta-value'>-1</span></td></tr></tbody></table><footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+          <div class='pl-content'>\
+            <span class='pl-actor'>Juan Mata</span> completed \
+            <span class='pl-activity'>Round of 16</span>.\
+            <table class='pl-score-table'>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td colspan='2'><span class='pl-score-metric'>\
+                    UEFA Awards</span></td>\
+                </tr>\
+              </tbody>\
+              <tbody class='pl-score-body'>\
+                <tr>\
+                  <td><span class='pl-score-delta-item'>Golden Boot</span></td>\
+                  <td><span class='pl-score-delta-value'>+1</span></td>\
+                </tr>\
+                <tr>\
+                  <td><span class='pl-score-delta-item'>Champion</span></td>\
+                  <td><span class='pl-score-delta-value'>+1</span></td>\
+                </tr>\
+                <tr>\
+                  <td><span class='pl-score-delta-item'>Suspensions</span></td>\
+                  <td><span class='pl-score-delta-value'>-1</span></td>\
+                </tr>\
+              </tbody>\
+            </table>\
+            <footer class='pl-footer'>\
+              <span class='pl-object'>UEFA Champions League</span>\
+            </footer>\
+          </div>\
+          <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
 
@@ -2435,18 +2530,41 @@ describe 'The Activity Story Builder', ->
 
       it 'builds the progress story (text)', (next) ->
         expect(@odysseus.toString(@progress_story)).to.equal """
-          Juan Mata completed 'Round of 16' in the process 'UEFA Champions League'.
-          Changes:
-          [>] Transfer Market Standing
-            [+] Hot Property
-            [-] Meh
-          [#{@text_date}]
+          [#{@text_date}] - Juan Mata completed 'Round of 16' \
+          in the process 'UEFA Champions League'.
+            Changes:
+            [>] Transfer Market Standing
+              [+] Hot Property
+              [-] Meh
         """
         next()
 
       it 'builds the progress story (html)', (next) ->
         expect(@odysseus.toHTML(@progress_story)).to.equal """
-          <div class='pl-content'><span class='pl-actor'>Juan Mata</span> completed <span class='pl-activity'>Round of 16</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>Transfer Market Standing</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-value pl-diff-add'>Hot Property</span></td><td><span class='pl-score-delta-value pl-diff-rem'>Meh</span></td></tr></tbody></table><footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+          <div class='pl-content'>\
+            <span class='pl-actor'>Juan Mata</span> completed \
+            <span class='pl-activity'>Round of 16</span>.\
+            <table class='pl-score-table'>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td colspan='2'><span class='pl-score-metric'>Transfer \
+                    Market Standing</span></td>\
+                </tr>\
+              </tbody>\
+              <tbody class='pl-score-body'>\
+                <tr>\
+                  <td><span class='pl-score-delta-value pl-diff-add'>\
+                    Hot Property</span></td>\
+                  <td><span class='pl-score-delta-value pl-diff-rem'>\
+                    Meh</span></td>\
+                </tr>\
+              </tbody>\
+            </table>\
+            <footer class='pl-footer'>\
+              <span class='pl-object'>UEFA Champions League</span>\
+            </footer>\
+          </div>\
+          <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
 
@@ -2458,14 +2576,17 @@ describe 'The Activity Story Builder', ->
 
       it 'builds the progress story (text)', (next) ->
         expect(@odysseus.toString(@progress_story, @externals)).to.equal """
-          Juan Mata completed 'Round of 16' in this process.
-          [#{@text_date}]
+          [#{@text_date}] - Juan Mata completed 'Round of 16' in this process.
         """
         next()
 
       it 'builds the progress story (html)', (next) ->
         expect(@odysseus.toHTML(@progress_story, @externals)).to.equal """
-          <div class='pl-content'><span class='pl-actor'>Juan Mata</span> completed <span class='pl-activity'>Round of 16</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+          <div class='pl-content'>\
+            <span class='pl-actor'>Juan Mata</span> completed \
+            <span class='pl-activity'>Round of 16</span>.\
+          </div>\
+          <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
 
@@ -2477,14 +2598,21 @@ describe 'The Activity Story Builder', ->
 
       it 'builds the progress story (text)', (next) ->
         expect(@odysseus.toString(@progress_story, @externals)).to.equal """
-          You completed 'Round of 16' in the process 'UEFA Champions League'.
-          [#{@text_date}]
+          [#{@text_date}] - You completed 'Round of 16' in the process \
+          'UEFA Champions League'.
         """
         next()
 
       it 'builds the progress story (html)', (next) ->
         expect(@odysseus.toHTML(@progress_story, @externals)).to.equal """
-          <div class='pl-content'><span class='pl-actor'>You</span> completed <span class='pl-activity'>Round of 16</span>.<footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+          <div class='pl-content'>\
+            <span class='pl-actor'>You</span> completed \
+            <span class='pl-activity'>Round of 16</span>.\
+            <footer class='pl-footer'>\
+              <span class='pl-object'>UEFA Champions League</span>\
+            </footer>\
+          </div>\
+          <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
 
@@ -2575,16 +2703,37 @@ describe 'The Activity Story Builder', ->
 
       it 'builds the progress story (text)', (next) ->
         expect(@odysseus.toString(@progress_story)).to.equal """
-          David Moyes completed 'A Candid Interview' in the process 'UEFA Champions League' and credited Juan Mata for completing 'Score a Brace in UEFA Champions League Finals'.
-          Changes:
-            [*] +50000 GBP
-          [#{@text_date}]
+          [#{@text_date}] - David Moyes completed 'A Candid Interview' \
+          in the process 'UEFA Champions League' and credited Juan Mata \
+          for completing 'Score a Brace in UEFA Champions League Finals'.
+            Changes:
+              [*] +50000 GBP
         """
         next()
 
       it 'builds the progress story (html)', (next) ->
         expect(@odysseus.toHTML(@progress_story)).to.equal """
-          <div class='pl-content'><span class='pl-actor'>David Moyes</span> completed <span class='pl-activity'>A Candid Interview</span> and credited <span class='pl-target'>Juan Mata</span> for completing <span class='pl-activity'>Score a Brace in UEFA Champions League Finals</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td><span class='pl-score-metric'>GBP</span></td><td><span class='pl-score-delta-value'>+50000</span></td></tr></tbody></table><footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+          <div class='pl-content'>\
+            <span class='pl-actor'>David Moyes</span> \
+            completed <span class='pl-activity'>A Candid Interview</span> \
+            and credited <span class='pl-target'>Juan Mata</span> \
+            for completing \
+            <span class='pl-activity'>\
+              Score a Brace in UEFA Champions League Finals\
+            </span>.\
+            <table class='pl-score-table'>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td><span class='pl-score-metric'>GBP</span></td>\
+                  <td><span class='pl-score-delta-value'>+50000</span></td>\
+                </tr>\
+              </tbody>\
+            </table>\
+            <footer class='pl-footer'>\
+              <span class='pl-object'>UEFA Champions League</span>\
+            </footer>\
+          </div>\
+          <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
 
@@ -2618,19 +2767,20 @@ describe 'The Activity Story Builder', ->
 
       it 'builds the progress story (text)', (next) ->
         expect(@odysseus.toString(@progress_story)).to.equal """
-          David Moyes completed 'A Candid Interview' in the process 'UEFA Champions League' and credited Juan Mata for completing 'Score a Brace in UEFA Champions League Finals'.
-          Changes:
-          [>] UEFA Awards
-            [*] +1 Golden Boot
-            [*] +1 Champion
-            [*] -1 Suspensions
-          [#{@text_date}]
+          [#{@text_date}] - David Moyes completed 'A Candid Interview' in \
+          the process 'UEFA Champions League' and credited Juan Mata for \
+          completing 'Score a Brace in UEFA Champions League Finals'.
+            Changes:
+            [>] UEFA Awards
+              [*] +1 Golden Boot
+              [*] +1 Champion
+              [*] -1 Suspensions
         """
         next()
 
       it 'builds the progress story (html)', (next) ->
         expect(@odysseus.toHTML(@progress_story)).to.equal """
-          <div class='pl-content'><span class='pl-actor'>David Moyes</span> completed <span class='pl-activity'>A Candid Interview</span> and credited <span class='pl-target'>Juan Mata</span> for completing <span class='pl-activity'>Score a Brace in UEFA Champions League Finals</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Champion</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Suspensions</span></td><td><span class='pl-score-delta-value'>-1</span></td></tr></tbody></table><footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+          <div class='pl-content'><span class='pl-actor'>David Moyes</span> completed <span class='pl-activity'>A Candid Interview</span> and credited <span class='pl-target'>Juan Mata</span> for completing <span class='pl-activity'>Score a Brace in UEFA Champions League Finals</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Champion</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Suspensions</span></td><td><span class='pl-score-delta-value'>-1</span></td></tr></tbody></table><footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer></div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
 
@@ -2654,18 +2804,49 @@ describe 'The Activity Story Builder', ->
 
       it 'builds the progress story (text)', (next) ->
         expect(@odysseus.toString(@progress_story)).to.equal """
-          David Moyes completed 'A Candid Interview' in the process 'UEFA Champions League' and credited Juan Mata for completing 'Score a Brace in UEFA Champions League Finals'.
-          Changes:
-          [>] Transfer Market Standing
-            [+] Hot Property
-            [-] Meh
-          [#{@text_date}]
+          [#{@text_date}] - David Moyes completed 'A Candid Interview' in \
+          the process 'UEFA Champions League' and credited Juan Mata \
+          for completing 'Score a Brace in UEFA Champions League Finals'.
+            Changes:
+            [>] Transfer Market Standing
+              [+] Hot Property
+              [-] Meh
         """
         next()
 
       it 'builds the progress story (html)', (next) ->
         expect(@odysseus.toHTML(@progress_story)).to.equal """
-          <div class='pl-content'><span class='pl-actor'>David Moyes</span> completed <span class='pl-activity'>A Candid Interview</span> and credited <span class='pl-target'>Juan Mata</span> for completing <span class='pl-activity'>Score a Brace in UEFA Champions League Finals</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>Transfer Market Standing</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-value pl-diff-add'>Hot Property</span></td><td><span class='pl-score-delta-value pl-diff-rem'>Meh</span></td></tr></tbody></table><footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+          <div class='pl-content'>\
+            <span class='pl-actor'>David Moyes</span> \
+            completed <span class='pl-activity'>A Candid Interview</span> \
+            and credited <span class='pl-target'>Juan Mata</span> \
+            for completing \
+            <span class='pl-activity'>\
+              Score a Brace in UEFA Champions League Finals\
+            </span>.\
+            <table class='pl-score-table'>\
+              <tbody class='pl-score-header'>\
+              <tr>\
+                <td colspan='2'>\
+                  <span class='pl-score-metric'>Transfer Market Standing</span>\
+                </td>\
+              </tr>\
+              </tbody>\
+              <tbody class='pl-score-body'>\
+                <tr>\
+                  <td>\
+                    <span class='pl-score-delta-value pl-diff-add'>Hot Property\
+                      </span></td>\
+                  <td><span class='pl-score-delta-value pl-diff-rem'>Meh\
+                    </span></td>\
+                </tr>\
+              </tbody>\
+            </table>\
+            <footer class='pl-footer'>\
+              <span class='pl-object'>UEFA Champions League</span>\
+            </footer>\
+          </div>\
+          <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
 
@@ -2677,20 +2858,21 @@ describe 'The Activity Story Builder', ->
 
       it 'builds the progress story (text)', (next) ->
         expect(@odysseus.toString(@progress_story, @externals)).to.equal """
-          David Moyes completed 'A Candid Interview' in this process and credited Juan Mata for completing 'Score a Brace in UEFA Champions League Finals'.
-          Changes:
-            [*] +50000 GBP
-          [>] UEFA Awards
-            [*] +1 Golden Boot
-            [*] +1 Champion
-            [*] -1 Suspensions
-          [#{@text_date}]
+          [#{@text_date}] - David Moyes completed 'A Candid Interview' \
+          in this process and credited Juan Mata for completing \
+          'Score a Brace in UEFA Champions League Finals'.
+            Changes:
+              [*] +50000 GBP
+            [>] UEFA Awards
+              [*] +1 Golden Boot
+              [*] +1 Champion
+              [*] -1 Suspensions
         """
         next()
 
       it 'builds the progress story (html)', (next) ->
         expect(@odysseus.toHTML(@progress_story, @externals)).to.equal """
-          <div class='pl-content'><span class='pl-actor'>David Moyes</span> completed <span class='pl-activity'>A Candid Interview</span> and credited <span class='pl-target'>Juan Mata</span> for completing <span class='pl-activity'>Score a Brace in UEFA Champions League Finals</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td><span class='pl-score-metric'>GBP</span></td><td><span class='pl-score-delta-value'>+50000</span></td></tr></tbody><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Champion</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Suspensions</span></td><td><span class='pl-score-delta-value'>-1</span></td></tr></tbody></table></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+          <div class='pl-content'><span class='pl-actor'>David Moyes</span> completed <span class='pl-activity'>A Candid Interview</span> and credited <span class='pl-target'>Juan Mata</span> for completing <span class='pl-activity'>Score a Brace in UEFA Champions League Finals</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td><span class='pl-score-metric'>GBP</span></td><td><span class='pl-score-delta-value'>+50000</span></td></tr></tbody><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Champion</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Suspensions</span></td><td><span class='pl-score-delta-value'>-1</span></td></tr></tbody></table></div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
 
@@ -2703,20 +2885,61 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the progress story (text)', (next) ->
           expect(@odysseus.toString(@progress_story, @externals)).to.equal """
-            You completed 'A Candid Interview' in the process 'UEFA Champions League' and credited Juan Mata for completing 'Score a Brace in UEFA Champions League Finals'.
-            Changes:
-              [*] +50000 GBP
-            [>] UEFA Awards
-              [*] +1 Golden Boot
-              [*] +1 Champion
-              [*] -1 Suspensions
-            [#{@text_date}]
-          """
+            [#{@text_date}] - You completed 'A Candid Interview' in the \
+            process 'UEFA Champions League' and credited Juan Mata for \
+            completing 'Score a Brace in UEFA Champions League Finals'.
+              Changes:
+                [*] +50000 GBP
+              [>] UEFA Awards
+                [*] +1 Golden Boot
+                [*] +1 Champion
+                [*] -1 Suspensions
+            """
           next()
 
         it 'builds the progress story (html)', (next) ->
           expect(@odysseus.toHTML(@progress_story, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>You</span> completed <span class='pl-activity'>A Candid Interview</span> and credited <span class='pl-target'>Juan Mata</span> for completing <span class='pl-activity'>Score a Brace in UEFA Champions League Finals</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td><span class='pl-score-metric'>GBP</span></td><td><span class='pl-score-delta-value'>+50000</span></td></tr></tbody><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Champion</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Suspensions</span></td><td><span class='pl-score-delta-value'>-1</span></td></tr></tbody></table><footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'>\
+              <span class='pl-actor'>You</span> completed \
+              <span class='pl-activity'>A Candid Interview</span> and credited \
+              <span class='pl-target'>Juan Mata</span> for completing \
+              <span class='pl-activity'>Score a Brace in UEFA Champions League \
+              Finals</span>.\
+              <table class='pl-score-table'>\
+                <tbody class='pl-score-header'>\
+                  <tr>\
+                    <td><span class='pl-score-metric'>GBP</span></td>\
+                    <td><span class='pl-score-delta-value'>+50000</span></td>\
+                  </tr>\
+                </tbody>\
+                <tbody class='pl-score-header'>\
+                  <tr>\
+                    <td colspan='2'><span class='pl-score-metric'>UEFA Awards\
+                      </span></td>\
+                  </tr>\
+                </tbody>\
+                <tbody class='pl-score-body'>\
+                  <tr>\
+                    <td><span class='pl-score-delta-item'>Golden Boot\
+                      </span></td>\
+                    <td><span class='pl-score-delta-value'>+1</span></td>\
+                  </tr>\
+                  <tr>\
+                    <td><span class='pl-score-delta-item'>Champion</span></td>\
+                    <td><span class='pl-score-delta-value'>+1</span></td>\
+                  </tr>\
+                  <tr>\
+                    <td><span class='pl-score-delta-item'>Suspensions\
+                      </span></td>\
+                    <td><span class='pl-score-delta-value'>-1</span></td>\
+                  </tr>\
+                </tbody>\
+              </table>\
+              <footer class='pl-footer'>\
+                <span class='pl-object'>UEFA Champions League</span>\
+              </footer>\
+              </div>\
+              <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -2728,20 +2951,60 @@ describe 'The Activity Story Builder', ->
 
         it 'builds the progress story (text)', (next) ->
           expect(@odysseus.toString(@progress_story, @externals)).to.equal """
-            You completed 'A Candid Interview' in the process 'UEFA Champions League' and credited yourself for completing 'Score a Brace in UEFA Champions League Finals'.
-            Changes:
-              [*] +50000 GBP
-            [>] UEFA Awards
-              [*] +1 Golden Boot
-              [*] +1 Champion
-              [*] -1 Suspensions
-            [#{@text_date}]
-          """
+            [#{@text_date}] - You completed 'A Candid Interview' in the \
+            process 'UEFA Champions League' and credited yourself for \
+            completing 'Score a Brace in UEFA Champions League Finals'.
+              Changes:
+                [*] +50000 GBP
+              [>] UEFA Awards
+                [*] +1 Golden Boot
+                [*] +1 Champion
+                [*] -1 Suspensions
+            """
           next()
 
         it 'builds the progress story (html)', (next) ->
           expect(@odysseus.toHTML(@progress_story, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>You</span> completed <span class='pl-activity'>A Candid Interview</span> and credited <span class='pl-target'>yourself</span> for completing <span class='pl-activity'>Score a Brace in UEFA Champions League Finals</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td><span class='pl-score-metric'>GBP</span></td><td><span class='pl-score-delta-value'>+50000</span></td></tr></tbody><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Champion</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Suspensions</span></td><td><span class='pl-score-delta-value'>-1</span></td></tr></tbody></table><footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'>\
+              <span class='pl-actor'>You</span> completed \
+              <span class='pl-activity'>A Candid Interview</span> \
+              and credited <span class='pl-target'>yourself</span> for \
+              completing <span class='pl-activity'>\
+              Score a Brace in UEFA Champions League Finals</span>.\
+              <table class='pl-score-table'>\
+                <tbody class='pl-score-header'>\
+                  <tr>\
+                    <td><span class='pl-score-metric'>GBP</span></td>\
+                    <td><span class='pl-score-delta-value'>+50000</span></td>\
+                  </tr>\
+                </tbody>\
+                <tbody class='pl-score-header'>\
+                  <tr>\
+                    <td colspan='2'><span class='pl-score-metric'>UEFA Awards\
+                      </span></td>\
+                  </tr>\
+                </tbody>\
+                <tbody class='pl-score-body'>\
+                  <tr>\
+                    <td><span class='pl-score-delta-item'>Golden Boot\
+                      </span></td>\
+                    <td><span class='pl-score-delta-value'>+1</span></td>\
+                  </tr>\
+                  <tr>\
+                    <td><span class='pl-score-delta-item'>Champion</span></td>\
+                    <td><span class='pl-score-delta-value'>+1</span></td></tr>\
+                  <tr>\
+                    <td><span class='pl-score-delta-item'>Suspensions\
+                      </span></td>\
+                    <td><span class='pl-score-delta-value'>-1</span></td>\
+                  </tr>\
+                </tbody>\
+              </table>\
+              <footer class='pl-footer'>\
+                <span class='pl-object'>UEFA Champions League</span>\
+              </footer>\
+            </div>\
+            <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -2754,23 +3017,62 @@ describe 'The Activity Story Builder', ->
 
       it 'builds the progress story (text)', (next) ->
         expect(@odysseus.toString(@progress_story, @externals)).to.equal """
-          David Moyes completed 'A Candid Interview' in the process 'UEFA Champions League' and credited you for completing 'Score a Brace in UEFA Champions League Finals'.
-          Changes:
-            [*] +50000 GBP
-          [>] UEFA Awards
-            [*] +1 Golden Boot
-            [*] +1 Champion
-            [*] -1 Suspensions
-          [#{@text_date}]
+          [#{@text_date}] - David Moyes completed 'A Candid Interview' \
+          in the process 'UEFA Champions League' and credited you for \
+          completing 'Score a Brace in UEFA Champions League Finals'.
+            Changes:
+              [*] +50000 GBP
+            [>] UEFA Awards
+              [*] +1 Golden Boot
+              [*] +1 Champion
+              [*] -1 Suspensions
         """
         next()
 
       it 'builds the progress story (html)', (next) ->
         expect(@odysseus.toHTML(@progress_story, @externals)).to.equal """
-          <div class='pl-content'><span class='pl-actor'>David Moyes</span> completed <span class='pl-activity'>A Candid Interview</span> and credited <span class='pl-target'>you</span> for completing <span class='pl-activity'>Score a Brace in UEFA Champions League Finals</span>.<table class='pl-score-table'><tbody class='pl-score-header'><tr><td><span class='pl-score-metric'>GBP</span></td><td><span class='pl-score-delta-value'>+50000</span></td></tr></tbody><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Champion</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr><tr><td><span class='pl-score-delta-item'>Suspensions</span></td><td><span class='pl-score-delta-value'>-1</span></td></tr></tbody></table><footer class='pl-footer'><span class='pl-object'>UEFA Champions League</span></footer></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+          <div class='pl-content'>\
+            <span class='pl-actor'>David Moyes</span> \
+            completed <span class='pl-activity'>A Candid Interview</span> \
+            and credited <span class='pl-target'>you</span> for completing \
+            <span class='pl-activity'>\
+              Score a Brace in UEFA Champions League Finals\
+            </span>.\
+            <table class='pl-score-table'>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td><span class='pl-score-metric'>GBP</span></td>\
+                  <td><span class='pl-score-delta-value'>+50000</span></td>\
+                </tr>\
+              </tbody>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td colspan='2'><span class='pl-score-metric'>UEFA Awards\
+                    </span></td>\
+                </tr>\
+              </tbody>\
+              <tbody class='pl-score-body'>\
+                <tr>\
+                  <td><span class='pl-score-delta-item'>Golden Boot</span></td>\
+                  <td><span class='pl-score-delta-value'>+1</span></td>\
+                </tr>\
+                <tr>\
+                  <td><span class='pl-score-delta-item'>Champion</span></td>\
+                  <td><span class='pl-score-delta-value'>+1</span></td>\
+                </tr>\
+                <tr>\
+                  <td><span class='pl-score-delta-item'>Suspensions</span></td>\
+                  <td><span class='pl-score-delta-value'>-1</span></td>\
+                </tr>\
+              </tbody>\
+            </table>\
+            <footer class='pl-footer'>\
+              <span class='pl-object'>UEFA Champions League</span>\
+            </footer>\
+          </div>\
+          <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
-
 
 
   ###*
@@ -2804,30 +3106,30 @@ describe 'The Activity Story Builder', ->
         @externals = { profile: {id: 'juan', alias: 'Juan Mata'} }
         next()
 
-      it 'builds the progress story (text)', (next) ->
+      it 'builds the levelling story (text)', (next) ->
         expect(@odysseus.toString(@story, @externals)).to.equal """
-          Your 'Transfer Market Standing' level changed to 'Hot Property' from 'Meh'.
-          [#{@text_date}]
+          [#{@text_date}] - Your 'Transfer Market Standing' level \
+          changed to 'Hot Property' from 'Meh'.
         """
         next()
 
-      it 'builds the progress story (html)', (next) ->
+      it 'builds the levelling story (html)', (next) ->
         expect(@odysseus.toHTML(@story, @externals)).to.equal """
-          <div class='pl-content'><span class='pl-actor'>Your</span> <span class='pl-score-metric'>Transfer Market Standing</span> level changed to <span class='pl-score-delta-value pl-diff-add'>Hot Property</span> from <span class='pl-score-delta-value pl-diff-rem'>Meh</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+          <div class='pl-content'><span class='pl-actor'>Your</span> <span class='pl-score-metric'>Transfer Market Standing</span> level changed to <span class='pl-score-delta-value pl-diff-add'>Hot Property</span> from <span class='pl-score-delta-value pl-diff-rem'>Meh</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
 
     describe "in global context", ->
-      it 'builds the progress story (text)', (next) ->
+      it 'builds the levelling story (text)', (next) ->
         expect(@odysseus.toString(@story)).to.equal """
-          Juan Mata\u2019s 'Transfer Market Standing' level changed to 'Hot Property' from 'Meh'.
-          [#{@text_date}]
+          [#{@text_date}] - Juan Mata\u2019s 'Transfer Market Standing' level \
+          changed to 'Hot Property' from 'Meh'.
         """
         next()
 
-      it 'builds the progress story (html)', (next) ->
+      it 'builds the levelling story (html)', (next) ->
         expect(@odysseus.toHTML(@story)).to.equal """
-          <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> <span class='pl-score-metric'>Transfer Market Standing</span> level changed to <span class='pl-score-delta-value pl-diff-add'>Hot Property</span> from <span class='pl-score-delta-value pl-diff-rem'>Meh</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+          <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> <span class='pl-score-metric'>Transfer Market Standing</span> level changed to <span class='pl-score-delta-value pl-diff-add'>Hot Property</span> from <span class='pl-score-delta-value pl-diff-rem'>Meh</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
 
@@ -2867,35 +3169,33 @@ describe 'The Activity Story Builder', ->
         @externals = { profile: {id: 'juan', alias: 'Juan Mata'} }
         next()
 
-      it 'builds the progress story (text)', (next) ->
+      it 'builds the achievement story (text)', (next) ->
         expect(@odysseus.toString(@story, @externals)).to.equal """
-          Congratulations! You unlocked an achievement.
-          Changes:
-          [>] UEFA Awards
-            [*] +1 Golden Boot
-          [#{@text_date}]
+          [#{@text_date}] - Congratulations! You unlocked an achievement.
+            Changes:
+            [>] UEFA Awards
+              [*] +1 Golden Boot
         """
         next()
 
-      it 'builds the progress story (html)', (next) ->
+      it 'builds the achievement story (html)', (next) ->
         expect(@odysseus.toHTML(@story, @externals)).to.equal """
-          <div class='pl-content'>Congratulations! <span class='pl-actor'>You</span> unlocked an achievement.<table class='pl-score-table pl-achievement-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr></tbody></table></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+          <div class='pl-content'>Congratulations! <span class='pl-actor'>You</span> unlocked an achievement.<table class='pl-score-table pl-achievement-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr></tbody></table></div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
 
     describe "in global context", ->
-      it 'builds the progress story (text)', (next) ->
+      it 'builds the achievement story (text)', (next) ->
         expect(@odysseus.toString(@story)).to.equal """
-          Juan Mata unlocked an achievement.
-          Changes:
-          [>] UEFA Awards
-            [*] +1 Golden Boot
-          [#{@text_date}]
+          [#{@text_date}] - Juan Mata unlocked an achievement.
+            Changes:
+            [>] UEFA Awards
+              [*] +1 Golden Boot
         """
         next()
 
-      it 'builds the progress story (html)', (next) ->
+      it 'builds the achievement story (html)', (next) ->
         expect(@odysseus.toHTML(@story)).to.equal """
-          <div class='pl-content'><span class='pl-actor'>Juan Mata</span> unlocked an achievement.<table class='pl-score-table pl-achievement-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr></tbody></table></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+          <div class='pl-content'><span class='pl-actor'>Juan Mata</span> unlocked an achievement.<table class='pl-score-table pl-achievement-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr></tbody></table></div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()

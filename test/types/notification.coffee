@@ -7,7 +7,7 @@ describe 'The Notification Story Builder', ->
     @odysseus = new Odysseus(global.config)
     @iso_date = global.iso_date
     @text_date = global.text_date
-    @relative_date = global.relative_date
+    @rel_date = global.rel_date
     next()
 
   ###*
@@ -42,14 +42,14 @@ describe 'The Notification Story Builder', ->
         describe 'in global context', ->
           it 'builds the join request story (text)', (next) ->
             expect(@odysseus.toString(@story_state)).to.equal """
-              Juan Mata wants to join the team 'Manchester United' as midfielder.
-              [#{@text_date}]
+              [#{@text_date}] - Juan Mata wants to join the team \
+              'Manchester United' as midfielder.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_state)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> wants to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> wants to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
             """
             next()
 
@@ -61,14 +61,13 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the join request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata wants to join this team as midfielder.
-              [#{@text_date}]
+              [#{@text_date}] - Juan Mata wants to join this team as midfielder.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> wants to join this team as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> wants to join this team as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
             """
             next()
 
@@ -80,14 +79,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the join request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Your request to join the team 'Manchester United' as midfielder is pending.
-              [#{@text_date}]
+              [#{@text_date}] - Your request to join the team \
+              'Manchester United' as midfielder is pending.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Your</span> request to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul> is pending.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Your</span> request to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul> is pending.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
             """
             next()
 
@@ -95,7 +94,7 @@ describe 'The Notification Story Builder', ->
         before (next) ->
           date = new Date(+global.date + 6e5).toISOString()
           @cancel_date = moment(date).format('llll')
-          @cancel_relative_date = moment(date).fromNow()
+          @cancel_rel_date = moment(date).fromNow()
           @story_state = _.extend {}, @story, {
             state: 'CANCELLED'
             cancelled_at: date
@@ -105,14 +104,14 @@ describe 'The Notification Story Builder', ->
         describe 'in global context', ->
           it 'builds the join request cancel story (text)', (next) ->
             expect(@odysseus.toString(@story_state)).to.equal """
-              Juan Mata cancelled the request to join the team 'Manchester United'.
-              [#{@cancel_date}]
+              [#{@cancel_date}] - Juan Mata cancelled the request to join \
+              the team 'Manchester United'.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_state)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> cancelled the request to join the team <span class='pl-object'>Manchester United</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> cancelled the request to join the team <span class='pl-object'>Manchester United</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
             """
             next()
 
@@ -124,14 +123,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the join request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata cancelled the request to join this team.
-              [#{@cancel_date}]
+              [#{@cancel_date}] - Juan Mata cancelled the request to \
+              join this team.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> cancelled the request to join this team.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> cancelled the request to join this team.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
             """
             next()
 
@@ -143,14 +142,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the join request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              You cancelled the request to join the team 'Manchester United'.
-              [#{@cancel_date}]
+              [#{@cancel_date}] - You cancelled the request to join \
+              the team 'Manchester United'.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>You</span> cancelled the request to join the team <span class='pl-object'>Manchester United</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>You</span> cancelled the request to join the team <span class='pl-object'>Manchester United</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
             """
             next()
 
@@ -158,7 +157,7 @@ describe 'The Notification Story Builder', ->
         before (next) ->
           date = new Date(+global.date + 6e5).toISOString()
           @accept_date = moment(date).format('llll')
-          @accept_relative_date = moment(date).fromNow()
+          @accept_rel_date = moment(date).fromNow()
           @story_state = _.extend {}, @story, {
             state: 'ACCEPTED'
             accepted_by: {
@@ -172,14 +171,14 @@ describe 'The Notification Story Builder', ->
         describe 'in global context', ->
           it 'builds the join request cancel story (text)', (next) ->
             expect(@odysseus.toString(@story_state)).to.equal """
-              Juan Mata\u2019s request to join the team 'Manchester United' has been accepted by Jose Mourinho.
-              [#{@accept_date}]
+              [#{@accept_date}] - Juan Mata\u2019s request to join the team \
+              'Manchester United' has been accepted by Jose Mourinho.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_state)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request to join the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request to join the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
             """
             next()
 
@@ -191,14 +190,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the join request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata\u2019s request to join this team has been accepted by Jose Mourinho.
-              [#{@accept_date}]
+              [#{@accept_date}] - Juan Mata\u2019s request to join this team \
+              has been accepted by Jose Mourinho.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request to join this team has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request to join this team has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
             """
             next()
 
@@ -210,14 +209,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the join request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Your request to join the team 'Manchester United' has been accepted by Jose Mourinho.
-              [#{@accept_date}]
+              [#{@accept_date}] - Your request to join the team \
+              'Manchester United' has been accepted by Jose Mourinho.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Your</span> request to join the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Your</span> request to join the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
             """
             next()
 
@@ -225,7 +224,7 @@ describe 'The Notification Story Builder', ->
         before (next) ->
           date = new Date(+global.date + 6e5).toISOString()
           @reject_date = moment(date).format('llll')
-          @reject_relative_date = moment(date).fromNow()
+          @reject_rel_date = moment(date).fromNow()
           @story_state = _.extend {}, @story, {
             state: 'REJECTED'
             rejected_by: {
@@ -239,14 +238,14 @@ describe 'The Notification Story Builder', ->
         describe 'in global context', ->
           it 'builds the join request cancel story (text)', (next) ->
             expect(@odysseus.toString(@story_state)).to.equal """
-              Juan Mata\u2019s request to join the team 'Manchester United' has been rejected by Jose Mourinho.
-              [#{@reject_date}]
+              [#{@reject_date}] - Juan Mata\u2019s request to join the \
+              team 'Manchester United' has been rejected by Jose Mourinho.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_state)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request to join the team <span class='pl-object'>Manchester United</span> has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request to join the team <span class='pl-object'>Manchester United</span> has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_rel_date}</time>
             """
             next()
 
@@ -258,14 +257,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the join request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata\u2019s request to join this team has been rejected by Jose Mourinho.
-              [#{@reject_date}]
+              [#{@reject_date}] - Juan Mata\u2019s request to join this \
+              team has been rejected by Jose Mourinho.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request to join this team has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request to join this team has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_rel_date}</time>
             """
             next()
 
@@ -277,14 +276,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the join request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Your request to join the team 'Manchester United' has been rejected by Jose Mourinho.
-              [#{@reject_date}]
+              [#{@reject_date}] - Your request to join the team \
+              'Manchester United' has been rejected by Jose Mourinho.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Your</span> request to join the team <span class='pl-object'>Manchester United</span> has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Your</span> request to join the team <span class='pl-object'>Manchester United</span> has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_rel_date}</time>
             """
             next()
 
@@ -315,14 +314,14 @@ describe 'The Notification Story Builder', ->
         describe 'in global context', ->
           it 'builds the join request story (text)', (next) ->
             expect(@odysseus.toString(@story_state)).to.equal """
-              Juan Mata wants to join the process 'Strengthen Midfield' as player in midfield lane.
-              [#{@text_date}]
+              [#{@text_date}] - Juan Mata wants to join the process \
+              'Strengthen Midfield' as player in midfield lane.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_state)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> wants to join the process <span class='pl-object'>Strengthen Midfield</span> as <ul class='pl-role-list'><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfield</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> wants to join the process <span class='pl-object'>Strengthen Midfield</span> as <ul class='pl-role-list'><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfield</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
             """
             next()
 
@@ -334,14 +333,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the join request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata wants to join this process as player in midfield lane.
-              [#{@text_date}]
+              [#{@text_date}] - Juan Mata wants to join this process \
+              as player in midfield lane.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> wants to join this process as <ul class='pl-role-list'><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfield</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> wants to join this process as <ul class='pl-role-list'><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfield</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
             """
             next()
 
@@ -353,33 +352,39 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the join request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Your request to join the process 'Strengthen Midfield' as player in midfield lane is pending.
-              [#{@text_date}]
+              [#{@text_date}] - Your request to join the process \
+              'Strengthen Midfield' as player in midfield lane is pending.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Your</span> request to join the process <span class='pl-object'>Strengthen Midfield</span> as <ul class='pl-role-list'><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfield</span> lane</li></ul> is pending.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Your</span> request to join the process <span class='pl-object'>Strengthen Midfield</span> as <ul class='pl-role-list'><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfield</span> lane</li></ul> is pending.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
             """
             next()
 
       describe 'when state is CANCELLED', ->
         before (next) ->
-          @story_state = _.extend {}, @story, { state: 'CANCELLED' }
+          date = new Date(+global.date + 6e5).toISOString()
+          @cancel_date = moment(date).format('llll')
+          @cancel_rel_date = moment(date).fromNow()
+          @story_state = _.extend {}, @story, {
+            state: 'CANCELLED'
+            cancelled_at: date
+          }
           next()
 
         describe 'in global context', ->
           it 'builds the join request cancel story (text)', (next) ->
             expect(@odysseus.toString(@story_state)).to.equal """
-              Juan Mata cancelled the request to join the process 'Strengthen Midfield'.
-              [#{@text_date}]
+              [#{@cancel_date}] - Juan Mata cancelled the request to join \
+              the process 'Strengthen Midfield'.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_state)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> cancelled the request to join the process <span class='pl-object'>Strengthen Midfield</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> cancelled the request to join the process <span class='pl-object'>Strengthen Midfield</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
             """
             next()
 
@@ -391,14 +396,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the join request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata cancelled the request to join this process.
-              [#{@text_date}]
+              [#{@cancel_date}] - Juan Mata cancelled the request to join \
+              this process.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> cancelled the request to join this process.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> cancelled the request to join this process.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
             """
             next()
 
@@ -410,39 +415,43 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the join request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              You cancelled the request to join the process 'Strengthen Midfield'.
-              [#{@text_date}]
+              [#{@cancel_date}] - You cancelled the request to join the \
+              process 'Strengthen Midfield'.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>You</span> cancelled the request to join the process <span class='pl-object'>Strengthen Midfield</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>You</span> cancelled the request to join the process <span class='pl-object'>Strengthen Midfield</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
             """
             next()
 
       describe 'when state is ACCEPTED', ->
         before (next) ->
+          date = new Date(+global.date + 6e5).toISOString()
+          @accept_date = moment(date).format('llll')
+          @accept_rel_date = moment(date).fromNow()
           @story_state = _.extend {}, @story, {
             state: 'ACCEPTED'
             accepted_by: {
               id: 'jose'
               alias: 'Jose Mourinho'
             }
+            accepted_at: date
           }
           next()
 
         describe 'in global context', ->
           it 'builds the join request cancel story (text)', (next) ->
             expect(@odysseus.toString(@story_state)).to.equal """
-              Juan Mata\u2019s request to join the process 'Strengthen Midfield' has been accepted by Jose Mourinho.
-              [#{@text_date}]
+              [#{@accept_date}] - Juan Mata\u2019s request to join the process \
+              'Strengthen Midfield' has been accepted by Jose Mourinho.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_state)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request to join the process <span class='pl-object'>Strengthen Midfield</span> has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request to join the process <span class='pl-object'>Strengthen Midfield</span> has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
             """
             next()
 
@@ -454,14 +463,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the join request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata\u2019s request to join this process has been accepted by Jose Mourinho.
-              [#{@text_date}]
+              [#{@accept_date}] - Juan Mata\u2019s request to join this \
+              process has been accepted by Jose Mourinho.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request to join this process has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request to join this process has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
             """
             next()
 
@@ -473,39 +482,43 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the join request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Your request to join the process 'Strengthen Midfield' has been accepted by Jose Mourinho.
-              [#{@text_date}]
+              [#{@accept_date}] - Your request to join the process \
+              'Strengthen Midfield' has been accepted by Jose Mourinho.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Your</span> request to join the process <span class='pl-object'>Strengthen Midfield</span> has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Your</span> request to join the process <span class='pl-object'>Strengthen Midfield</span> has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
             """
             next()
 
       describe 'when state is REJECTED', ->
         before (next) ->
+          date = new Date(+global.date + 6e5).toISOString()
+          @reject_date = moment(date).format('llll')
+          @reject_rel_date = moment(date).fromNow()
           @story_state = _.extend {}, @story, {
             state: 'REJECTED'
             rejected_by: {
               id: 'jose'
               alias: 'Jose Mourinho'
             }
+            rejected_at: date
           }
           next()
 
         describe 'in global context', ->
           it 'builds the join request cancel story (text)', (next) ->
             expect(@odysseus.toString(@story_state)).to.equal """
-              Juan Mata\u2019s request to join the process 'Strengthen Midfield' has been rejected by Jose Mourinho.
-              [#{@text_date}]
+              [#{@reject_date}] - Juan Mata\u2019s request to join the \
+              process 'Strengthen Midfield' has been rejected by Jose Mourinho.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_state)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request to join the process <span class='pl-object'>Strengthen Midfield</span> has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request to join the process <span class='pl-object'>Strengthen Midfield</span> has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_rel_date}</time>
             """
             next()
 
@@ -517,14 +530,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the join request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata\u2019s request to join this process has been rejected by Jose Mourinho.
-              [#{@text_date}]
+              [#{@accept_date}] - Juan Mata\u2019s request to join this \
+              process has been rejected by Jose Mourinho.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request to join this process has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request to join this process has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_rel_date}</time>
             """
             next()
 
@@ -536,14 +549,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the join request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Your request to join the process 'Strengthen Midfield' has been rejected by Jose Mourinho.
-              [#{@text_date}]
+              [#{@accept_date}] - Your request to join the process \
+              'Strengthen Midfield' has been rejected by Jose Mourinho.
             """
             next()
 
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Your</span> request to join the process <span class='pl-object'>Strengthen Midfield</span> has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Your</span> request to join the process <span class='pl-object'>Strengthen Midfield</span> has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_rel_date}</time>
             """
             next()
 
@@ -575,14 +588,14 @@ describe 'The Notification Story Builder', ->
       describe 'in global context', ->
         it 'builds the join request reject story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            Juan Mata\u2019s request to join the team 'Manchester United' has been rejected by David Moyes.
-            [#{@text_date}]
+            [#{@text_date}] - Juan Mata\u2019s request to join the team \
+            'Manchester United' has been rejected by David Moyes.
           """
           next()
 
         it 'builds the join request reject story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Juan Mata\u2019s</span> request to join the team <span class='pl-object'>Manchester United</span> has been rejected by <span class='pl-actor'>David Moyes</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Juan Mata\u2019s</span> request to join the team <span class='pl-object'>Manchester United</span> has been rejected by <span class='pl-actor'>David Moyes</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -594,14 +607,14 @@ describe 'The Notification Story Builder', ->
 
         it 'builds the join request reject story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Juan Mata\u2019s request to join this team has been rejected by David Moyes.
-            [#{@text_date}]
+            [#{@text_date}] - Juan Mata\u2019s request to join this team \
+            has been rejected by David Moyes.
           """
           next()
 
         it 'builds the join request reject story (html)', (next) ->
           expect(@odysseus.toHTML(@story, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Juan Mata\u2019s</span> request to join this team has been rejected by <span class='pl-actor'>David Moyes</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Juan Mata\u2019s</span> request to join this team has been rejected by <span class='pl-actor'>David Moyes</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -613,14 +626,14 @@ describe 'The Notification Story Builder', ->
 
         it 'builds the join request reject story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Your request to join the team 'Manchester United' has been rejected by David Moyes.
-            [#{@text_date}]
+            [#{@text_date}] - Your request to join the team \
+            'Manchester United' has been rejected by David Moyes.
           """
           next()
 
         it 'builds the join request reject story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Your</span> request to join the team <span class='pl-object'>Manchester United</span> has been rejected by <span class='pl-actor'>David Moyes</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Your</span> request to join the team <span class='pl-object'>Manchester United</span> has been rejected by <span class='pl-actor'>David Moyes</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -647,14 +660,15 @@ describe 'The Notification Story Builder', ->
       describe 'in global context', ->
         it 'builds the join request reject story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            David Moyes\u2019s request to join the process 'Qualify for UEFA Champions League 2014' has been rejected by Sir Alex Ferguson.
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes\u2019s request to join the \
+            process 'Qualify for UEFA Champions League 2014' has been \
+            rejected by Sir Alex Ferguson.
           """
           next()
 
         it 'builds the join request reject story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been rejected by <span class='pl-actor'>Sir Alex Ferguson</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been rejected by <span class='pl-actor'>Sir Alex Ferguson</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -666,14 +680,14 @@ describe 'The Notification Story Builder', ->
 
         it 'builds the join request reject story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            David Moyes\u2019s request to join this process has been rejected by Sir Alex Ferguson.
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes\u2019s request to join this process \
+            has been rejected by Sir Alex Ferguson.
           """
           next()
 
         it 'builds the join request reject story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request to join this process has been rejected by <span class='pl-actor'>Sir Alex Ferguson</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request to join this process has been rejected by <span class='pl-actor'>Sir Alex Ferguson</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -685,14 +699,15 @@ describe 'The Notification Story Builder', ->
 
         it 'builds the join request reject story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Your request to join the process 'Qualify for UEFA Champions League 2014' has been rejected by Sir Alex Ferguson.
-            [#{@text_date}]
+            [#{@text_date}] - Your request to join the process \
+            'Qualify for UEFA Champions League 2014' has been \
+            rejected by Sir Alex Ferguson.
           """
           next()
 
         it 'builds the join request reject story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Your</span> request to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been rejected by <span class='pl-actor'>Sir Alex Ferguson</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Your</span> request to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been rejected by <span class='pl-actor'>Sir Alex Ferguson</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -729,16 +744,16 @@ describe 'The Notification Story Builder', ->
         describe 'in global context', ->
           it 'builds the role request story (text)', (next) ->
             expect(@odysseus.toString(@story_state)).to.equal """
-              Juan Mata wants to change roles in the team 'Manchester United'.
-              New Roles:
-                [*] midfielder
-              [#{@text_date}]
+              [#{@text_date}] - Juan Mata wants to change roles in \
+              the team 'Manchester United'.
+                New Roles:
+                  [*] midfielder
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_state)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> wants to change roles in the team <span class='pl-object'>Manchester United</span>.<ul class='pl-role-list'><li class='pl-list-header'>New Roles</li><li><span class='pl-role'>midfielder</span></li></ul></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> wants to change roles in the team <span class='pl-object'>Manchester United</span>.<ul class='pl-role-list'><li class='pl-list-header'>New Roles</li><li><span class='pl-role'>midfielder</span></li></ul></div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
             """
             next()
 
@@ -750,16 +765,15 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the role request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata wants to change roles in this team.
-              New Roles:
-                [*] midfielder
-              [#{@text_date}]
+              [#{@text_date}] - Juan Mata wants to change roles in this team.
+                New Roles:
+                  [*] midfielder
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> wants to change roles in this team.<ul class='pl-role-list'><li class='pl-list-header'>New Roles</li><li><span class='pl-role'>midfielder</span></li></ul></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> wants to change roles in this team.<ul class='pl-role-list'><li class='pl-list-header'>New Roles</li><li><span class='pl-role'>midfielder</span></li></ul></div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
             """
             next()
 
@@ -771,16 +785,16 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the role request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Your request for change of roles in the team 'Manchester United' is pending.
-              New Roles:
-                [*] midfielder
-              [#{@text_date}]
+              [#{@text_date}] - Your request for change of roles in \
+              the team 'Manchester United' is pending.
+                New Roles:
+                  [*] midfielder
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Your</span> request for change of roles in the team <span class='pl-object'>Manchester United</span> is pending.<ul class='pl-role-list'><li class='pl-list-header'>New Roles</li><li><span class='pl-role'>midfielder</span></li></ul></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Your</span> request for change of roles in the team <span class='pl-object'>Manchester United</span> is pending.<ul class='pl-role-list'><li class='pl-list-header'>New Roles</li><li><span class='pl-role'>midfielder</span></li></ul></div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
             """
             next()
 
@@ -788,7 +802,7 @@ describe 'The Notification Story Builder', ->
         before (next) ->
           date = new Date(+global.date + 6e5).toISOString()
           @cancel_date = moment(date).format('llll')
-          @cancel_relative_date = moment(date).fromNow()
+          @cancel_rel_date = moment(date).fromNow()
           @story_state = _.extend {}, @story, {
             state: 'CANCELLED'
             cancelled_at: date
@@ -798,14 +812,14 @@ describe 'The Notification Story Builder', ->
         describe 'in global context', ->
           it 'builds the join request cancel story (text)', (next) ->
             expect(@odysseus.toString(@story_state)).to.equal """
-              Juan Mata cancelled the request for change of roles in the team 'Manchester United'.
-              [#{@cancel_date}]
+              [#{@cancel_date}] - Juan Mata cancelled the request for \
+              change of roles in the team 'Manchester United'.
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_state)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> cancelled the request for change of roles in the team <span class='pl-object'>Manchester United</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> cancelled the request for change of roles in the team <span class='pl-object'>Manchester United</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
             """
             next()
 
@@ -817,14 +831,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the role request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata cancelled the request for change of roles in this team.
-              [#{@cancel_date}]
+              [#{@cancel_date}] - Juan Mata cancelled the request for \
+              change of roles in this team.
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> cancelled the request for change of roles in this team.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> cancelled the request for change of roles in this team.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
             """
             next()
 
@@ -836,14 +850,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the role request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              You cancelled the request for change of roles in the team 'Manchester United'.
-              [#{@cancel_date}]
+              [#{@cancel_date}] - You cancelled the request for \
+              change of roles in the team 'Manchester United'.
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>You</span> cancelled the request for change of roles in the team <span class='pl-object'>Manchester United</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>You</span> cancelled the request for change of roles in the team <span class='pl-object'>Manchester United</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
             """
             next()
 
@@ -851,7 +865,7 @@ describe 'The Notification Story Builder', ->
         before (next) ->
           date = new Date(+global.date + 6e5).toISOString()
           @accept_date = moment(date).format('llll')
-          @accept_relative_date = moment(date).fromNow()
+          @accept_rel_date = moment(date).fromNow()
           @story_state = _.extend {}, @story, {
             state: 'ACCEPTED'
             accepted_by: {
@@ -865,14 +879,15 @@ describe 'The Notification Story Builder', ->
         describe 'in global context', ->
           it 'builds the join request cancel story (text)', (next) ->
             expect(@odysseus.toString(@story_state)).to.equal """
-              Juan Mata\u2019s request for change of roles in the team 'Manchester United' has been accepted by Jose Mourinho.
-              [#{@accept_date}]
+              [#{@accept_date}] - Juan Mata\u2019s request for \
+              change of roles in the team 'Manchester United' has \
+              been accepted by Jose Mourinho.
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_state)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request for change of roles in the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request for change of roles in the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
             """
             next()
 
@@ -884,14 +899,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the role request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata\u2019s request for change of roles in this team has been accepted by Jose Mourinho.
-              [#{@accept_date}]
+              [#{@accept_date}] - Juan Mata\u2019s request for change of \
+              roles in this team has been accepted by Jose Mourinho.
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request for change of roles in this team has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request for change of roles in this team has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
             """
             next()
 
@@ -903,14 +918,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the role request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Your request for change of roles in the team 'Manchester United' has been accepted by Jose Mourinho.
-              [#{@accept_date}]
+              [#{@accept_date}] - Your request for change of roles in the \
+              team 'Manchester United' has been accepted by Jose Mourinho.
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Your</span> request for change of roles in the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Your</span> request for change of roles in the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
             """
             next()
 
@@ -918,7 +933,7 @@ describe 'The Notification Story Builder', ->
         before (next) ->
           date = new Date(+global.date + 6e5).toISOString()
           @reject_date = moment(date).format('llll')
-          @reject_relative_date = moment(date).fromNow()
+          @reject_rel_date = moment(date).fromNow()
           @story_state = _.extend {}, @story, {
             state: 'REJECTED'
             rejected_by: {
@@ -932,14 +947,15 @@ describe 'The Notification Story Builder', ->
         describe 'in global context', ->
           it 'builds the join request cancel story (text)', (next) ->
             expect(@odysseus.toString(@story_state)).to.equal """
-              Juan Mata\u2019s request for change of roles in the team 'Manchester United' has been rejected by Jose Mourinho.
-              [#{@reject_date}]
+              [#{@reject_date}] - Juan Mata\u2019s request for change of \
+              roles in the team 'Manchester United' has been \
+              rejected by Jose Mourinho.
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_state)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request for change of roles in the team <span class='pl-object'>Manchester United</span> has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request for change of roles in the team <span class='pl-object'>Manchester United</span> has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_rel_date}</time>
             """
             next()
 
@@ -951,14 +967,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the role request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata\u2019s request for change of roles in this team has been rejected by Jose Mourinho.
-              [#{@reject_date}]
+              [#{@reject_date}] - Juan Mata\u2019s request for change of \
+              roles in this team has been rejected by Jose Mourinho.
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request for change of roles in this team has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request for change of roles in this team has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_rel_date}</time>
             """
             next()
 
@@ -970,14 +986,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the role request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Your request for change of roles in the team 'Manchester United' has been rejected by Jose Mourinho.
-              [#{@reject_date}]
+              [#{@reject_date}] - Your request for change of roles in the \
+              team 'Manchester United' has been rejected by Jose Mourinho.
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Your</span> request for change of roles in the team <span class='pl-object'>Manchester United</span> has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Your</span> request for change of roles in the team <span class='pl-object'>Manchester United</span> has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_rel_date}</time>
             """
             next()
 
@@ -1008,16 +1024,16 @@ describe 'The Notification Story Builder', ->
         describe 'in global context', ->
           it 'builds the role request story (text)', (next) ->
             expect(@odysseus.toString(@story_state)).to.equal """
-              Juan Mata wants to change roles in the process 'Strengthen Midfield'.
-              New Roles:
-                [*] player in midfield lane
-              [#{@text_date}]
+              [#{@text_date}] - Juan Mata wants to change roles in the \
+              process 'Strengthen Midfield'.
+                New Roles:
+                  [*] player in midfield lane
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_state)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> wants to change roles in the process <span class='pl-object'>Strengthen Midfield</span>.<ul class='pl-role-list'><li class='pl-list-header'>New Roles</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfield</span> lane</li></ul></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> wants to change roles in the process <span class='pl-object'>Strengthen Midfield</span>.<ul class='pl-role-list'><li class='pl-list-header'>New Roles</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfield</span> lane</li></ul></div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
             """
             next()
 
@@ -1029,16 +1045,15 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the role request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata wants to change roles in this process.
-              New Roles:
-                [*] player in midfield lane
-              [#{@text_date}]
+              [#{@text_date}] - Juan Mata wants to change roles in this process.
+                New Roles:
+                  [*] player in midfield lane
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> wants to change roles in this process.<ul class='pl-role-list'><li class='pl-list-header'>New Roles</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfield</span> lane</li></ul></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> wants to change roles in this process.<ul class='pl-role-list'><li class='pl-list-header'>New Roles</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfield</span> lane</li></ul></div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
             """
             next()
 
@@ -1050,35 +1065,41 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the role request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Your request for change of roles in the process 'Strengthen Midfield' is pending.
-              New Roles:
-                [*] player in midfield lane
-              [#{@text_date}]
+              [#{@text_date}] - Your request for change of roles in the \
+              process 'Strengthen Midfield' is pending.
+                New Roles:
+                  [*] player in midfield lane
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Your</span> request for change of roles in the process <span class='pl-object'>Strengthen Midfield</span> is pending.<ul class='pl-role-list'><li class='pl-list-header'>New Roles</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfield</span> lane</li></ul></div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Your</span> request for change of roles in the process <span class='pl-object'>Strengthen Midfield</span> is pending.<ul class='pl-role-list'><li class='pl-list-header'>New Roles</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfield</span> lane</li></ul></div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
             """
             next()
 
       describe 'when state is CANCELLED', ->
         before (next) ->
-          @story_state = _.extend {}, @story, { state: 'CANCELLED' }
+          date = new Date(+global.date + 6e5).toISOString()
+          @cancel_date = moment(date).format('llll')
+          @cancel_rel_date = moment(date).fromNow()
+          @story_state = _.extend {}, @story, {
+            state: 'CANCELLED'
+            cancelled_at: date
+          }
           next()
 
         describe 'in global context', ->
           it 'builds the join request cancel story (text)', (next) ->
             expect(@odysseus.toString(@story_state)).to.equal """
-              Juan Mata cancelled the request for change of roles in the process 'Strengthen Midfield'.
-              [#{@text_date}]
+              [#{@cancel_date}] - Juan Mata cancelled the request for change \
+              of roles in the process 'Strengthen Midfield'.
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_state)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> cancelled the request for change of roles in the process <span class='pl-object'>Strengthen Midfield</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> cancelled the request for change of roles in the process <span class='pl-object'>Strengthen Midfield</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
             """
             next()
 
@@ -1090,14 +1111,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the role request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata cancelled the request for change of roles in this process.
-              [#{@text_date}]
+              [#{@cancel_date}] - Juan Mata cancelled the request for \
+              change of roles in this process.
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> cancelled the request for change of roles in this process.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata</span> cancelled the request for change of roles in this process.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
             """
             next()
 
@@ -1109,39 +1130,44 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the role request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              You cancelled the request for change of roles in the process 'Strengthen Midfield'.
-              [#{@text_date}]
+              [#{@cancel_date}] - You cancelled the request for change of \
+              roles in the process 'Strengthen Midfield'.
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>You</span> cancelled the request for change of roles in the process <span class='pl-object'>Strengthen Midfield</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>You</span> cancelled the request for change of roles in the process <span class='pl-object'>Strengthen Midfield</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
             """
             next()
 
       describe 'when state is ACCEPTED', ->
         before (next) ->
+          date = new Date(+global.date + 6e5).toISOString()
+          @accept_date = moment(date).format('llll')
+          @accept_rel_date = moment(date).fromNow()
           @story_state = _.extend {}, @story, {
             state: 'ACCEPTED'
             accepted_by: {
               id: 'jose'
               alias: 'Jose Mourinho'
             }
+            accepted_at: date
           }
           next()
 
         describe 'in global context', ->
           it 'builds the join request cancel story (text)', (next) ->
             expect(@odysseus.toString(@story_state)).to.equal """
-              Juan Mata\u2019s request for change of roles in the process 'Strengthen Midfield' has been accepted by Jose Mourinho.
-              [#{@text_date}]
+              [#{@accept_date}] - Juan Mata\u2019s request for change \
+              of roles in the process 'Strengthen Midfield' has \
+              been accepted by Jose Mourinho.
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_state)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request for change of roles in the process <span class='pl-object'>Strengthen Midfield</span> has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request for change of roles in the process <span class='pl-object'>Strengthen Midfield</span> has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
             """
             next()
 
@@ -1153,14 +1179,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the role request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata\u2019s request for change of roles in this process has been accepted by Jose Mourinho.
-              [#{@text_date}]
+              [#{@accept_date}] - Juan Mata\u2019s request for change of \
+              roles in this process has been accepted by Jose Mourinho.
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request for change of roles in this process has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request for change of roles in this process has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
             """
             next()
 
@@ -1172,39 +1198,44 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the role request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Your request for change of roles in the process 'Strengthen Midfield' has been accepted by Jose Mourinho.
-              [#{@text_date}]
+              [#{@accept_date}] - Your request for change of roles in the \
+              process 'Strengthen Midfield' has been accepted by Jose Mourinho.
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Your</span> request for change of roles in the process <span class='pl-object'>Strengthen Midfield</span> has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Your</span> request for change of roles in the process <span class='pl-object'>Strengthen Midfield</span> has been accepted by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
             """
             next()
 
       describe 'when state is REJECTED', ->
         before (next) ->
+          date = new Date(+global.date + 6e5).toISOString()
+          @reject_date = moment(date).format('llll')
+          @reject_rel_date = moment(date).fromNow()
           @story_state = _.extend {}, @story, {
             state: 'REJECTED'
             rejected_by: {
               id: 'jose'
               alias: 'Jose Mourinho'
             }
+            rejected_at: date
           }
           next()
 
         describe 'in global context', ->
           it 'builds the join request cancel story (text)', (next) ->
             expect(@odysseus.toString(@story_state)).to.equal """
-              Juan Mata\u2019s request for change of roles in the process 'Strengthen Midfield' has been rejected by Jose Mourinho.
-              [#{@text_date}]
+              [#{@reject_date}] - Juan Mata\u2019s request for change of \
+              roles in the process 'Strengthen Midfield' has been \
+              rejected by Jose Mourinho.
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_state)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request for change of roles in the process <span class='pl-object'>Strengthen Midfield</span> has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request for change of roles in the process <span class='pl-object'>Strengthen Midfield</span> has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_rel_date}</time>
             """
             next()
 
@@ -1216,14 +1247,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the role request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata\u2019s request for change of roles in this process has been rejected by Jose Mourinho.
-              [#{@text_date}]
+              [#{@reject_date}] - Juan Mata\u2019s request for change of \
+              roles in this process has been rejected by Jose Mourinho.
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request for change of roles in this process has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request for change of roles in this process has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_rel_date}</time>
             """
             next()
 
@@ -1235,17 +1266,17 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the role request story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Your request for change of roles in the process 'Strengthen Midfield' has been rejected by Jose Mourinho.
-              [#{@text_date}]
+              [#{@reject_date}] - Your request for change of roles in \
+              the process 'Strengthen Midfield' has been \
+              rejected by Jose Mourinho.
             """
             next()
 
           it 'builds the role request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Your</span> request for change of roles in the process <span class='pl-object'>Strengthen Midfield</span> has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Your</span> request for change of roles in the process <span class='pl-object'>Strengthen Midfield</span> has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_rel_date}</time>
             """
             next()
-
 
 
   ###*
@@ -1289,14 +1320,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the invite story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Your invitation to Juan Mata to join the team 'Manchester United' as midfielder is pending.
-              [#{@text_date}]
+              [#{@text_date}] - Your invitation to Juan Mata to join the \
+              team 'Manchester United' as midfielder is pending.
             """
             next()
 
           it 'builds the invite story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Your</span> invitation to <span class='pl-target'>Juan Mata</span> to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul> is pending.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Your</span> invitation to <span class='pl-target'>Juan Mata</span> to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul> is pending.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
             """
             next()
 
@@ -1308,14 +1339,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the invite story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              David Moyes invited you to join the team 'Manchester United' as midfielder.
-              [#{@text_date}]
+              [#{@text_date}] - David Moyes invited you to join the team \
+              'Manchester United' as midfielder.
             """
             next()
 
           it 'builds the invite story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>David Moyes</span> invited <span class='pl-target'>you</span> to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>David Moyes</span> invited <span class='pl-target'>you</span> to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
             """
             next()
 
@@ -1323,7 +1354,7 @@ describe 'The Notification Story Builder', ->
         before (next) ->
           date = new Date(+global.date + 6e5).toISOString()
           @cancel_date = moment(date).format('llll')
-          @cancel_relative_date = moment(date).fromNow()
+          @cancel_rel_date = moment(date).fromNow()
           @story_state = _.extend {}, @story, {
             state: 'CANCELLED'
             cancelled_at: date
@@ -1338,14 +1369,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the invite story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              You cancelled the invitation for Juan Mata to join the team 'Manchester United'.
-              [#{@cancel_date}]
+              [#{@cancel_date}] - You cancelled the invitation for Juan Mata \
+              to join the team 'Manchester United'.
             """
             next()
 
           it 'builds the invite story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>You</span> cancelled the invitation for <span class='pl-target'>Juan Mata</span> to join the team <span class='pl-object'>Manchester United</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>You</span> cancelled the invitation for <span class='pl-target'>Juan Mata</span> to join the team <span class='pl-object'>Manchester United</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
             """
             next()
 
@@ -1357,14 +1388,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the invite story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              David Moyes cancelled the invitation for you to join the team 'Manchester United'.
-              [#{@cancel_date}]
+              [#{@cancel_date}] - David Moyes cancelled the invitation for \
+              you to join the team 'Manchester United'.
             """
             next()
 
           it 'builds the invite story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>David Moyes</span> cancelled the invitation for <span class='pl-target'>you</span> to join the team <span class='pl-object'>Manchester United</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>David Moyes</span> cancelled the invitation for <span class='pl-target'>you</span> to join the team <span class='pl-object'>Manchester United</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
             """
             next()
 
@@ -1372,7 +1403,7 @@ describe 'The Notification Story Builder', ->
         before (next) ->
           date = new Date(+global.date + 6e5).toISOString()
           @accept_date = moment(date).format('llll')
-          @accept_relative_date = moment(date).fromNow()
+          @accept_rel_date = moment(date).fromNow()
           @story_state = _.extend {}, @story, {
             state: 'ACCEPTED'
             accepted_at: date
@@ -1387,14 +1418,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the invite story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata accepted your invitation to join the team 'Manchester United' as midfielder.
-              [#{@accept_date}]
+              [#{@accept_date}] - Juan Mata accepted your invitation to \
+              join the team 'Manchester United' as midfielder.
             """
             next()
 
           it 'builds the invite story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-target'>Juan Mata</span> accepted <span class='pl-actor'>your</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_relative_date}</time>
+              <div class='pl-content'><span class='pl-target'>Juan Mata</span> accepted <span class='pl-actor'>your</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
             """
             next()
 
@@ -1402,7 +1433,7 @@ describe 'The Notification Story Builder', ->
         before (next) ->
           date = new Date(+global.date + 6e5).toISOString()
           @reject_date = moment(date).format('llll')
-          @reject_relative_date = moment(date).fromNow()
+          @reject_rel_date = moment(date).fromNow()
           @story_state = _.extend {}, @story, {
             state: 'REJECTED'
             rejected_at: date
@@ -1417,14 +1448,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the invite story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata rejected your invitation to join the team 'Manchester United' as midfielder.
-              [#{@reject_date}]
+              [#{@reject_date}] - Juan Mata rejected your invitation to join \
+              the team 'Manchester United' as midfielder.
             """
             next()
 
           it 'builds the invite story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-target'>Juan Mata</span> rejected <span class='pl-actor'>your</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_relative_date}</time>
+              <div class='pl-content'><span class='pl-target'>Juan Mata</span> rejected <span class='pl-actor'>your</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_rel_date}</time>
             """
             next()
 
@@ -1464,14 +1495,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the invite story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Your invitation to Juan Mata to join the process 'Strengthen Midfield' as player in midfielder lane is pending.
-              [#{@text_date}]
+              [#{@text_date}] - Your invitation to Juan Mata to join the \
+              process 'Strengthen Midfield' as player in midfielder lane is pending.
             """
             next()
 
           it 'builds the invite story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>Your</span> invitation to <span class='pl-target'>Juan Mata</span> to join the process <span class='pl-object'>Strengthen Midfield</span> as <ul class='pl-role-list'><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfielder</span> lane</li></ul> is pending.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>Your</span> invitation to <span class='pl-target'>Juan Mata</span> to join the process <span class='pl-object'>Strengthen Midfield</span> as <ul class='pl-role-list'><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfielder</span> lane</li></ul> is pending.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
             """
             next()
 
@@ -1483,14 +1514,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the invite story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              David Moyes invited you to join the process 'Strengthen Midfield' as player in midfielder lane.
-              [#{@text_date}]
+              [#{@text_date}] - David Moyes invited you to join the process \
+              'Strengthen Midfield' as player in midfielder lane.
             """
             next()
 
           it 'builds the invite story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>David Moyes</span> invited <span class='pl-target'>you</span> to join the process <span class='pl-object'>Strengthen Midfield</span> as <ul class='pl-role-list'><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfielder</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>David Moyes</span> invited <span class='pl-target'>you</span> to join the process <span class='pl-object'>Strengthen Midfield</span> as <ul class='pl-role-list'><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfielder</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
             """
             next()
 
@@ -1498,7 +1529,7 @@ describe 'The Notification Story Builder', ->
         before (next) ->
           date = new Date(+global.date + 6e5).toISOString()
           @cancel_date = moment(date).format('llll')
-          @cancel_relative_date = moment(date).fromNow()
+          @cancel_rel_date = moment(date).fromNow()
           @story_state = _.extend {}, @story, {
             state: 'CANCELLED'
             cancelled_at: date
@@ -1513,14 +1544,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the invite story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              You cancelled the invitation for Juan Mata to join the process 'Strengthen Midfield'.
-              [#{@cancel_date}]
+              [#{@cancel_date}] - You cancelled the invitation for Juan Mata \
+              to join the process 'Strengthen Midfield'.
             """
             next()
 
           it 'builds the invite story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>You</span> cancelled the invitation for <span class='pl-target'>Juan Mata</span> to join the process <span class='pl-object'>Strengthen Midfield</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>You</span> cancelled the invitation for <span class='pl-target'>Juan Mata</span> to join the process <span class='pl-object'>Strengthen Midfield</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
             """
             next()
 
@@ -1532,14 +1563,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the invite story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              David Moyes cancelled the invitation for you to join the process 'Strengthen Midfield'.
-              [#{@cancel_date}]
+              [#{@cancel_date}] - David Moyes cancelled the invitation for \
+              you to join the process 'Strengthen Midfield'.
             """
             next()
 
           it 'builds the invite story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>David Moyes</span> cancelled the invitation for <span class='pl-target'>you</span> to join the process <span class='pl-object'>Strengthen Midfield</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_relative_date}</time>
+              <div class='pl-content'><span class='pl-actor'>David Moyes</span> cancelled the invitation for <span class='pl-target'>you</span> to join the process <span class='pl-object'>Strengthen Midfield</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
             """
             next()
 
@@ -1547,7 +1578,7 @@ describe 'The Notification Story Builder', ->
         before (next) ->
           date = new Date(+global.date + 6e5).toISOString()
           @accept_date = moment(date).format('llll')
-          @accept_relative_date = moment(date).fromNow()
+          @accept_rel_date = moment(date).fromNow()
           @story_state = _.extend {}, @story, {
             state: 'ACCEPTED'
             accepted_at: date
@@ -1562,14 +1593,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the invite story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata accepted your invitation to join the process 'Strengthen Midfield' as player in midfielder lane.
-              [#{@accept_date}]
+              [#{@accept_date}] - Juan Mata accepted your invitation to join \
+              the process 'Strengthen Midfield' as player in midfielder lane.
             """
             next()
 
           it 'builds the invite story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-target'>Juan Mata</span> accepted <span class='pl-actor'>your</span> invitation to join the process <span class='pl-object'>Strengthen Midfield</span> as <ul class='pl-role-list'><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfielder</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_relative_date}</time>
+              <div class='pl-content'><span class='pl-target'>Juan Mata</span> accepted <span class='pl-actor'>your</span> invitation to join the process <span class='pl-object'>Strengthen Midfield</span> as <ul class='pl-role-list'><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfielder</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
             """
             next()
 
@@ -1577,7 +1608,7 @@ describe 'The Notification Story Builder', ->
         before (next) ->
           date = new Date(+global.date + 6e5).toISOString()
           @reject_date = moment(date).format('llll')
-          @reject_relative_date = moment(date).fromNow()
+          @reject_rel_date = moment(date).fromNow()
           @story_state = _.extend {}, @story, {
             state: 'REJECTED'
             rejected_at: date
@@ -1592,14 +1623,14 @@ describe 'The Notification Story Builder', ->
 
           it 'builds the invite story (text)', (next) ->
             expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              Juan Mata rejected your invitation to join the process 'Strengthen Midfield' as player in midfielder lane.
-              [#{@reject_date}]
+              [#{@reject_date}] - Juan Mata rejected your invitation to join \
+              the process 'Strengthen Midfield' as player in midfielder lane.
             """
             next()
 
           it 'builds the invite story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-target'>Juan Mata</span> rejected <span class='pl-actor'>your</span> invitation to join the process <span class='pl-object'>Strengthen Midfield</span> as <ul class='pl-role-list'><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfielder</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_relative_date}</time>
+              <div class='pl-content'><span class='pl-target'>Juan Mata</span> rejected <span class='pl-actor'>your</span> invitation to join the process <span class='pl-object'>Strengthen Midfield</span> as <ul class='pl-role-list'><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfielder</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_rel_date}</time>
             """
             next()
 
@@ -1640,14 +1671,14 @@ describe 'The Notification Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@special_story)).to.equal """
-            Juan Mata rejected David Moyes\u2019s invitation to join the team 'Manchester United' as midfielder.
-            [#{@text_date}]
+            [#{@text_date}] - Juan Mata rejected David Moyes\u2019s \
+            invitation to join the team 'Manchester United' as midfielder.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@special_story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> rejected <span class='pl-target'>David Moyes\u2019s</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> rejected <span class='pl-target'>David Moyes\u2019s</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1660,28 +1691,30 @@ describe 'The Notification Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@special_story)).to.equal """
-            Juan Mata rejected David Moyes\u2019s invitation to join the team 'Manchester United' as midfielder, playmaker.
-            [#{@text_date}]
+            [#{@text_date}] - Juan Mata rejected David Moyes\u2019s \
+            invitation to join the team 'Manchester United' as \
+            midfielder, playmaker.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@special_story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> rejected <span class='pl-target'>David Moyes\u2019s</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> rejected <span class='pl-target'>David Moyes\u2019s</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
       describe 'in global context', ->
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            Juan Mata rejected David Moyes\u2019s invitation to join the team 'Manchester United' as midfielder, playmaker.
-            [#{@text_date}]
+            [#{@text_date}] - Juan Mata rejected David Moyes\u2019s \
+            invitation to join the team 'Manchester United' as \
+            midfielder, playmaker.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> rejected <span class='pl-target'>David Moyes\u2019s</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> rejected <span class='pl-target'>David Moyes\u2019s</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1693,14 +1726,14 @@ describe 'The Notification Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Juan Mata rejected David Moyes\u2019s invitation to join this team as midfielder, playmaker.
-            [#{@text_date}]
+            [#{@text_date}] - Juan Mata rejected David Moyes\u2019s \
+            invitation to join this team as midfielder, playmaker.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> rejected <span class='pl-target'>David Moyes\u2019s</span> invitation to join this team as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> rejected <span class='pl-target'>David Moyes\u2019s</span> invitation to join this team as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1712,14 +1745,14 @@ describe 'The Notification Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            You rejected David Moyes\u2019s invitation to join the team 'Manchester United' as midfielder, playmaker.
-            [#{@text_date}]
+            [#{@text_date}] - You rejected David Moyes\u2019s invitation \
+            to join the team 'Manchester United' as midfielder, playmaker.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>You</span> rejected <span class='pl-target'>David Moyes\u2019s</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>You</span> rejected <span class='pl-target'>David Moyes\u2019s</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1731,14 +1764,14 @@ describe 'The Notification Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Juan Mata rejected your invitation to join the team 'Manchester United' as midfielder, playmaker.
-            [#{@text_date}]
+            [#{@text_date}] - Juan Mata rejected your invitation to \
+            join the team 'Manchester United' as midfielder, playmaker.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> rejected <span class='pl-target'>your</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>Juan Mata</span> rejected <span class='pl-target'>your</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li><li><span class='pl-role'>playmaker</span></li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1775,14 +1808,15 @@ describe 'The Notification Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@special_story)).to.equal """
-            David Moyes rejected Sir Alex Ferguson\u2019s invitation to join the process 'Qualify for UEFA Champions League 2014' as admin in team lane.
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes rejected Sir Alex Ferguson\u2019s \
+            invitation to join the process 'Qualify for UEFA Champions \
+            League 2014' as admin in team lane.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@special_story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>David Moyes</span> rejected <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>David Moyes</span> rejected <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1795,28 +1829,30 @@ describe 'The Notification Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@special_story)).to.equal """
-            David Moyes rejected Sir Alex Ferguson\u2019s invitation to join the process 'Qualify for UEFA Champions League 2014' as admin in team lane, player in board lane.
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes rejected Sir Alex Ferguson\u2019s \
+            invitation to join the process 'Qualify for UEFA Champions \
+            League 2014' as admin in team lane, player in board lane.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@special_story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>David Moyes</span> rejected <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>David Moyes</span> rejected <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
       describe 'in global context', ->
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
-            David Moyes rejected Sir Alex Ferguson\u2019s invitation to join the process 'Qualify for UEFA Champions League 2014' as admin in team lane, player in board lane.
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes rejected Sir Alex Ferguson\u2019s \
+            invitation to join the process 'Qualify for UEFA Champions \
+            League 2014' as admin in team lane, player in board lane.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>David Moyes</span> rejected <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>David Moyes</span> rejected <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1828,14 +1864,15 @@ describe 'The Notification Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            David Moyes rejected Sir Alex Ferguson\u2019s invitation to join this process as admin in team lane, player in board lane.
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes rejected Sir Alex Ferguson\u2019s \
+            invitation to join this process as \
+            admin in team lane, player in board lane.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>David Moyes</span> rejected <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join this process as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>David Moyes</span> rejected <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join this process as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1847,14 +1884,15 @@ describe 'The Notification Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            You rejected Sir Alex Ferguson\u2019s invitation to join the process 'Qualify for UEFA Champions League 2014' as admin in team lane, player in board lane.
-            [#{@text_date}]
+            [#{@text_date}] - You rejected Sir Alex Ferguson\u2019s \
+            invitation to join the process 'Qualify for UEFA Champions \
+            League 2014' as admin in team lane, player in board lane.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>You</span> rejected <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>You</span> rejected <span class='pl-target'>Sir Alex Ferguson\u2019s</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1866,14 +1904,15 @@ describe 'The Notification Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            David Moyes rejected your invitation to join the process 'Qualify for UEFA Champions League 2014' as admin in team lane, player in board lane.
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes rejected your invitation to join \
+            the process 'Qualify for UEFA Champions League 2014' as \
+            admin in team lane, player in board lane.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>David Moyes</span> rejected <span class='pl-target'>your</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-actor'>David Moyes</span> rejected <span class='pl-target'>your</span> invitation to join the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> as <ul class='pl-role-list'><li><span class='pl-role'>admin</span> in <span class='pl-lane'>team</span> lane</li><li><span class='pl-role'>player</span> in <span class='pl-lane'>board</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1913,14 +1952,14 @@ describe 'The Notification Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Nemanja Vidic\u2019s request for a change of roles in the team 'Manchester United' has been rejected by you.
-            [#{@text_date}]
+            [#{@text_date}] - Nemanja Vidic\u2019s request for a change \
+            of roles in the team 'Manchester United' has been rejected by you.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Nemanja Vidic\u2019s</span> request for a change of roles in the team <span class='pl-object'>Manchester United</span> has been rejected by <span class='pl-actor'>you</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Nemanja Vidic\u2019s</span> request for a change of roles in the team <span class='pl-object'>Manchester United</span> has been rejected by <span class='pl-actor'>you</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1932,14 +1971,14 @@ describe 'The Notification Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Your request for a change of roles in the team 'Manchester United' has been rejected by David Moyes.
-            [#{@text_date}]
+            [#{@text_date}] - Your request for a change of roles in the \
+            team 'Manchester United' has been rejected by David Moyes.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Your</span> request for a change of roles in the team <span class='pl-object'>Manchester United</span> has been rejected by <span class='pl-actor'>David Moyes</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Your</span> request for a change of roles in the team <span class='pl-object'>Manchester United</span> has been rejected by <span class='pl-actor'>David Moyes</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1976,14 +2015,15 @@ describe 'The Notification Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            David Moyes\u2019s request for a change of roles in the process 'Qualify for UEFA Champions League 2014' has been rejected by you.
-            [#{@text_date}]
+            [#{@text_date}] - David Moyes\u2019s request for a change of \
+            roles in the process 'Qualify for UEFA Champions \
+            League 2014' has been rejected by you.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been rejected by <span class='pl-actor'>you</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>David Moyes\u2019s</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been rejected by <span class='pl-actor'>you</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -1995,14 +2035,15 @@ describe 'The Notification Story Builder', ->
 
         it 'builds the invite accept story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-            Your request for a change of roles in the process 'Qualify for UEFA Champions League 2014' has been rejected by Sir Alex Ferguson.
-            [#{@text_date}]
+            [#{@text_date}] - Your request for a change of roles in the \
+            process 'Qualify for UEFA Champions League 2014' has been \
+            rejected by Sir Alex Ferguson.
           """
           next()
 
         it 'builds the invite accept story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-target'>Your</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been rejected by <span class='pl-actor'>Sir Alex Ferguson</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+            <div class='pl-content'><span class='pl-target'>Your</span> request for a change of roles in the process <span class='pl-object'>Qualify for UEFA Champions League 2014</span> has been rejected by <span class='pl-actor'>Sir Alex Ferguson</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -2037,21 +2078,23 @@ describe 'The Notification Story Builder', ->
           }
         ],
         timestamp: @iso_date
-        code: "229ab956-6af7-4438-8d12-5a6045a9542c",
-        id: "b6172731-98da-11e3-bb03-ed7aec7ec4e1"
-        play_token: "YmMzMDQ3YTAtOThkYS0xMWUzLWJiMDMtZWQ3YWVjN2VjNGUxOGFiYjFhMTgtMzljNy00MGYyLTg5MWItOGIxNTZjZjRkYTEz",
+        code: "229...a92c",
+        id: "b61...c4e1"
+        play_token: "YmS...TjEz",
       }
       next()
 
     it 'builds the escalation story (text)', (next) ->
       expect(@odysseus.toString(@story)).to.equal """
-        There is a potential transfer target!
-        [#{@text_date}]
+        [#{@text_date}] - There is a potential transfer target!
       """
       next()
 
     it 'builds the invite accept story (html)', (next) ->
       expect(@odysseus.toHTML(@story)).to.equal """
-        <div class='pl-content'>There is a potential transfer target!</div><time class='pl-ts' title='On #{@text_date}'>#{@relative_date}</time>
+        <div class='pl-content'>\
+          There is a potential transfer target!\
+        </div>\
+        <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
       """
       next()
