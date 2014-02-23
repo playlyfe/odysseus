@@ -329,6 +329,7 @@ describe 'The Activity Story Builder', ->
           },
           roles: {
             '*': 'ceo',
+            '~': 'employee'
             'management': 'super_admin'
           },
           timestamp: @iso_date
@@ -340,7 +341,8 @@ describe 'The Activity Story Builder', ->
         it 'builds the process joining story (text)', (next) ->
           expect(@odysseus.toString(@story)).to.equal """
             [#{@text_date}] - Satya joined the process 'The Revamping of \
-            Microsoft' as ceo in All lanes, super_admin in management lane.
+            Microsoft' as ceo in All lanes, employee in No lanes, \
+            super_admin in management lane.
           """
           next()
 
@@ -354,6 +356,10 @@ describe 'The Activity Story Builder', ->
                 <li>\
                   <span class='pl-role'>ceo</span> in \
                   <span class='pl-lane'>All</span> lanes\
+                </li>\
+                <li>\
+                  <span class='pl-role'>employee</span> in \
+                  <span class='pl-lane'>No</span> lanes\
                 </li>\
                 <li>\
                   <span class='pl-role'>super_admin</span> in \
@@ -383,13 +389,31 @@ describe 'The Activity Story Builder', ->
         it 'builds the process joining story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
             [#{@text_date}] - Satya joined this process as \
-            ceo in All lanes, super_admin in management lane.
+            ceo in All lanes, employee in No lanes, \
+            super_admin in management lane.
           """
           next()
 
         it 'builds the process joining story (html)', (next) ->
           expect(@odysseus.toHTML(@story, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>Satya</span> joined this process as <ul class='pl-role-list'><li><span class='pl-role'>ceo</span> in <span class='pl-lane'>All</span> lanes</li><li><span class='pl-role'>super_admin</span> in <span class='pl-lane'>management</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
+            <div class='pl-content'>\
+              <span class='pl-actor'>Satya</span> joined this process as \
+                <ul class='pl-role-list'>\
+                  <li>\
+                    <span class='pl-role'>ceo</span> in \
+                    <span class='pl-lane'>All</span> lanes\
+                  </li>\
+                  <li>\
+                    <span class='pl-role'>employee</span> in \
+                    <span class='pl-lane'>No</span> lanes\
+                  </li>\
+                  <li>\
+                    <span class='pl-role'>super_admin</span> in \
+                    <span class='pl-lane'>management</span> lane\
+                  </li>\
+                </ul>.\
+              </div>\
+              <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -411,13 +435,32 @@ describe 'The Activity Story Builder', ->
         it 'builds the process joining story (text)', (next) ->
           expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
             [#{@text_date}] - You joined the process 'The Revamping of \
-            Microsoft' as ceo in All lanes, super_admin in management lane.
+            Microsoft' as ceo in All lanes, employee in No lanes, \
+            super_admin in management lane.
           """
           next()
 
         it 'builds the process joining story (html)', (next) ->
           expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-            <div class='pl-content'><span class='pl-actor'>You</span> joined the process <span class='pl-object'>The Revamping of Microsoft</span> as <ul class='pl-role-list'><li><span class='pl-role'>ceo</span> in <span class='pl-lane'>All</span> lanes</li><li><span class='pl-role'>super_admin</span> in <span class='pl-lane'>management</span> lane</li></ul>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
+            <div class='pl-content'>\
+              <span class='pl-actor'>You</span> joined the process \
+              <span class='pl-object'>The Revamping of Microsoft</span> as \
+              <ul class='pl-role-list'>\
+                <li>\
+                  <span class='pl-role'>ceo</span> in \
+                  <span class='pl-lane'>All</span> lanes\
+                </li>\
+                <li>\
+                  <span class='pl-role'>employee</span> in \
+                  <span class='pl-lane'>No</span> lanes\
+                </li>\
+                <li>\
+                  <span class='pl-role'>super_admin</span> in \
+                  <span class='pl-lane'>management</span> lane\
+                </li>\
+              </ul>.\
+            </div>\
+            <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
           """
           next()
 
@@ -914,6 +957,7 @@ describe 'The Activity Story Builder', ->
 
 
   ###*
+   * @todo add tests for ~ lane
    * The Invite Accept Event
   ###
   describe 'for the "invite:accept" event', ->
@@ -1196,6 +1240,7 @@ describe 'The Activity Story Builder', ->
           next()
 
   ###*
+   * @todo add tests for ~ lane
    * The Role Request Accept Event
   ###
   describe 'for the "role:request:accept" event', ->
@@ -1604,6 +1649,7 @@ describe 'The Activity Story Builder', ->
 
 
   ###*
+   * @todo add tests for ~ lane
    * The Role Change Event
   ###
   describe 'for the "role:change" event', ->
@@ -1945,6 +1991,7 @@ describe 'The Activity Story Builder', ->
           next()
 
   ###*
+   * @todo add tests for ~ lane
    * The Role Assign Event
   ###
   describe 'for the "role:assign" event', ->

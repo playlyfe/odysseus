@@ -103,7 +103,9 @@
               ${ } else if (od.ctx.isProcess) { }$\
                 {{_.reduce(od.story.roles, function(list, role, lane) {\
                   list.push([\
-                    role + ' in ' + (lane === '*' ? 'All lanes' : (lane + ' lane'))\
+                    role + ' in ' + \
+                    (lane === '*' ? 'All lanes' : \
+                      lane === '~' ? 'No lanes' : (lane + ' lane'))\
                   ]);\
                   return list;\
                 }, []).join(', ')}}\
@@ -130,8 +132,8 @@
                     "<li>"+
                       "<span class='@{od.markup.role}@'>{{role}}</span> in "+
                       "<span class='@{od.markup.lane}@'>"+
-                        "{{lane === '*' ? 'All': lane }}"+
-                      "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
+                        "{{lane === '*' ? 'All' : lane === '~' ? 'No' : lane}}"+
+                      "</span> {{lane === '*'||lane === '~' ? 'lanes' : 'lane' }}"+
                     "</li>"+
                   "${ })}$"+
                 "${ } }$</ul>."+
@@ -291,7 +293,9 @@
               ${ } else if (od.ctx.isProcess) { }$\
                 {{_.reduce(od.story.roles, function(list, role, lane) {\
                   list.push([\
-                    role + ' in ' + (lane === '*' ? 'All lanes' : (lane + ' lane'))\
+                    role + ' in ' + \
+                    (lane === '*' ? 'All lanes' : \
+                      lane === '~' ? 'No lanes' : (lane + ' lane'))\
                   ]);\
                   return list;\
                 }, []).join(', ')}}\
@@ -320,8 +324,8 @@
                     "<li>"+
                       "<span class='@{od.markup.role}@'>{{role}}</span> in "+
                       "<span class='@{od.markup.lane}@'>"+
-                        "{{lane === '*' ? 'All': lane }}"+
-                      "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
+                        "{{lane === '*' ? 'All' : lane === '~' ? 'No' : lane}}"+
+                      "</span> {{lane === '*'||lane === '~' ? 'lanes' : 'lane' }}"+
                     "</li>"+
                   "${ })}$"+
                 "${ } }$</ul>."+
@@ -350,7 +354,8 @@
                 {{_.reduce(od.story.roles, function(list, role, lane) {\
                   list.push([\
                     role + ' in ' + \
-                    (lane === '*' ? 'All lanes' : (lane + ' lane'))\
+                    (lane === '*' ? 'All lanes' : \
+                      lane === '~' ? 'No lanes' : (lane + ' lane'))\
                   ]);\
                   return list;\
                 }, []).join(', ')}}\
@@ -379,8 +384,8 @@
                     "<li>"+
                       "<span class='@{od.markup.role}@'>{{role}}</span> in "+
                       "<span class='@{od.markup.lane}@'>"+
-                        "{{lane === '*' ? 'All': lane }}"+
-                      "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
+                        "{{lane === '*' ? 'All' : lane === '~' ? 'No' : lane}}"+
+                      "</span> {{lane === '*'||lane === '~' ? 'lanes' : 'lane' }}"+
                     "</li>"+
                   "${ })}$"+
                 "${ } }$</ul>."+
@@ -416,7 +421,8 @@
                   ${ } else { }$\
                     \n    [{{ !diff.old ? '+' : '-'}}] \
                     {{diff['new'] || diff['old']}} in \
-                    {{lane === '*' ? 'All lanes' : lane + ' lane'}}\
+                    {{lane === '*' ? 'All lanes' : \
+                      lane === '~' ? 'No lanes' : (lane + ' lane')}}\
                   ${ }\
                 });\
               } }$"
@@ -456,8 +462,8 @@
                         "<li class='@{od.markup[!diff.old ? 'diff_add' : 'diff_rem']}@'>"+
                           "<span class='@{od.markup.role}@'>{{diff['new'] || diff['old']}}</span> in "+
                           "<span class='@{od.markup.lane}@'>"+
-                            "{{lane === '*' ? 'All' : lane}}"+
-                          "</span> lane{{lane === '*' ? 's' : ''}}"+
+                            "{{lane === '*' ? 'All' : lane === '~' ? 'No' : lane}}"+
+                          "</span> {{lane === '*'||lane === '~' ? 'lanes' : 'lane' }}"+
                         "</li>"+
                       "${ } }$"+
                     "${ }); }$"+
@@ -527,7 +533,8 @@
                   ${ } else { }$\
                     \n    [{{ !diff.old ? '+' : '-'}}] \
                     {{diff['new'] || diff['old']}} in \
-                    {{lane === '*' ? 'All lanes' : lane + ' lane'}}\
+                    {{lane === '*' ? 'All lanes' : \
+                      lane === '~' ? 'No lanes' : (lane + ' lane')}}\
                   ${ }\
                 });\
               } }$"
@@ -563,8 +570,8 @@
                         "<li class='@{od.markup[!diff.old ? 'diff_add' : 'diff_rem']}@'>"+
                           "<span class='@{od.markup.role}@'>{{diff['new'] || diff['old']}}</span> in "+
                           "<span class='@{od.markup.lane}@'>"+
-                            "{{lane === '*' ? 'All' : lane}}"+
-                          "</span> lane{{lane === '*' ? 's' : ''}}"+
+                            "{{lane === '*' ? 'All' : lane === '~' ? 'No' : lane}}"+
+                          "</span> {{lane === '*'||lane === '~' ? 'lanes' : 'lane' }}"+
                         "</li>"+
                       "${ } }$"+
                     "${ }); }$"+
@@ -602,7 +609,8 @@
                   ${ } else { }$\
                     \n    [{{ !diff.old ? '+' : '-'}}] \
                     {{diff['new'] || diff['old']}} in \
-                    {{lane === '*' ? 'All lanes' : lane + ' lane'}}\
+                    {{lane === '*' ? 'All lanes' : \
+                      lane === '~' ? 'No lanes' : (lane + ' lane')}}\
                   ${ }\
                 });\
               } }$"
@@ -642,8 +650,8 @@
                         "<li class='@{od.markup[!diff.old ? 'diff_add' : 'diff_rem']}@'>"+
                           "<span class='@{od.markup.role}@'>{{diff['new'] || diff['old']}}</span> in "+
                           "<span class='@{od.markup.lane}@'>"+
-                            "{{lane === '*' ? 'All' : lane}}"+
-                          "</span> lane{{lane === '*' ? 's' : ''}}"+
+                            "{{lane === '*' ? 'All' : lane === '~' ? 'No' : lane}}"+
+                          "</span> {{lane === '*'||lane === '~' ? 'lanes' : 'lane' }}"+
                         "</li>"+
                       "${ } }$"+
                     "${ }); }$"+
@@ -675,7 +683,8 @@
                   {{_.reduce(od.story.roles, function(list, role, lane) {\
                     list.push([\
                       role + ' in ' + \
-                      (lane === '*' ? 'All lanes' : (lane + ' lane'))\
+                      (lane === '*' ? 'All lanes' : \
+                        lane === '~' ? 'No lanes' : (lane + ' lane'))\
                     ]);\
                     return list;\
                   }, []).join(', ')}}\
@@ -744,8 +753,8 @@
                         "<li>"+
                           "<span class='@{od.markup.role}@'>{{role}}</span> in "+
                           "<span class='@{od.markup.lane}@'>"+
-                            "{{lane === '*' ? 'All': lane }}"+
-                          "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
+                            "{{lane === '*' ? 'All' : lane === '~' ? 'No' : lane}}"+
+                          "</span> {{lane === '*'||lane === '~' ? 'lanes' : 'lane' }}"+
                         "</li>"+
                       "${ })}$"+
                   "${ } }$</ul>"+
@@ -831,7 +840,8 @@
                   {{_.reduce(od.story.roles, function(list, role, lane) {\
                     list.push([\
                       role + ' in ' + \
-                      (lane === '*' ? 'All lanes' : (lane + ' lane'))\
+                      (lane === '*' ? 'All lanes' : \
+                        lane === '~' ? 'No lanes' : (lane + ' lane'))\
                     ]);\
                     return list;\
                   }, []).join(', ')}}\
@@ -863,7 +873,9 @@
                 ${ } else if (od.ctx.isProcess) { }$\
                   {{_.reduce(od.story.roles, function(list, role, lane) {\
                     list.push([\
-                      role + ' in ' + (lane === '*' ? 'All lanes' : (lane + ' lane'))\
+                      role + ' in ' + \
+                      (lane === '*' ? 'All lanes' : \
+                        lane === '~' ? 'No lanes' : (lane + ' lane'))\
                     ]);\
                     return list;\
                   }, []).join(', ')}}\
@@ -895,8 +907,8 @@
                       "<li>"+
                         "<span class='@{od.markup.role}@'>{{role}}</span> in "+
                         "<span class='@{od.markup.lane}@'>"+
-                          "{{lane === '*' ? 'All': lane }}"+
-                        "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
+                          "{{lane === '*' ? 'All' : lane === '~' ? 'No' : lane}}"+
+                        "</span> {{lane === '*'||lane === '~' ? 'lanes' : 'lane' }}"+
                       "</li>"+
                     "${ })}$"+
                   "${ } }$</ul>"+
@@ -947,8 +959,8 @@
                       "<li>"+
                         "<span class='@{od.markup.role}@'>{{role}}</span> in "+
                         "<span class='@{od.markup.lane}@'>"+
-                          "{{lane === '*' ? 'All': lane }}"+
-                        "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
+                          "{{lane === '*' ? 'All' : lane === '~' ? 'No' : lane}}"+
+                        "</span> {{lane === '*'||lane === '~' ? 'lanes' : 'lane' }}"+
                       "</li>"+
                     "${ })}$"+
                   "${ } }$</ul>."+
@@ -983,7 +995,8 @@
                     function(list, role, lane) {\
                       list.push([\
                         role + ' in ' + \
-                        (lane === '*' ? 'All lanes' : (lane + ' lane'))\
+                        (lane === '*' ? 'All lanes' : \
+                          lane === '~' ? 'No lanes' : (lane + ' lane'))\
                     ]);\
                     return list;\
                   }, []).join(', ')}}\
@@ -1052,8 +1065,8 @@
                       "<li>"+
                         "<span class='@{od.markup.role}@'>{{role}}</span> in "+
                         "<span class='@{od.markup.lane}@'>"+
-                          "{{lane === '*' ? 'All': lane }}"+
-                        "</span> {{lane === '*' ? 'lanes': 'lane' }}"+
+                          "{{lane === '*' ? 'All' : lane === '~' ? 'No' : lane}}"+
+                        "</span> {{lane === '*'||lane === '~' ? 'lanes' : 'lane' }}"+
                       "</li>"+
                     "${ });"+
                   "} }$"+
