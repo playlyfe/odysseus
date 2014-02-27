@@ -236,8 +236,8 @@ describe 'The Activity Story Builder', ->
             name: 'Microsoft Inc'
           },
           roles: {
-            ceo: true,
-            board_member: true
+            ceo: 1,
+            board_member: 2
           },
           timestamp: @iso_date
         }
@@ -3192,6 +3192,7 @@ describe 'The Activity Story Builder', ->
 
 
   ###*
+   * @todo add cases for when the old level does not exist
    * The Level event
   ###
   describe 'for the "level" event', ->

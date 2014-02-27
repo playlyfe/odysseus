@@ -1412,7 +1412,7 @@
                 (od.story.actor.alias||od.story.actor.id) + '\u2019s'}} \
               ${ change = od.story.changes[0]; }$\
               '{{change.metric.name}}' level changed to \
-              '{{change.delta['new']}}' from '{{change.delta['old']}}'."
+              '{{change.delta['new']}}' from '{{change.delta['old'] || 'nothing'}}'."
         html: "<div class='@{od.markup.content}@'>\
                   <span class='@{od.markup.actor}@'>\
                   {{od.ctx.amActor ? 'Your' : \
@@ -1425,7 +1425,7 @@
                   @{od.markup.diff_add}@'>{{change.delta['new']}}</span> \
                 from \
                 <span class='@{od.markup.score_delta_value}@ \
-                  @{od.markup.diff_rem}@'>{{change.delta['old']}}</span>.\
+                  @{od.markup.diff_rem}@'>{{change.delta['old'] || 'nothing'}}</span>.\
               </div>\
               <time class='@{od.markup.timestamp}@' title='On \
                 {{(ts = moment(od.story.timestamp)).format(\'llll\')}}'>\
