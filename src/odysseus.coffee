@@ -1204,104 +1204,109 @@
                  \n    [-] {{change.delta['old']}}\
                ${ }\
               }) }$"
-        html: "<div class='@{od.markup.content}@'>"+
-                "<span class='@{od.markup.actor}@'>"+
-                  "{{od.ctx.amActor ? 'You' : od.story.actor.alias||od.story.actor.id}}"+
-                "</span> completed "+
-                "<span class='@{od.markup.score_activity}@'>"+
-                  "{{od.story.activity.name}}"+
-                "</span>."+
-                "${ if(od.story.changes) { }$"+
-                  "<table class='@{od.markup.score_table}@'>"+
-                "${ }"+
-                "_.forEach(od.story.changes, function(change) {"+
-                  "if (change.metric.type === 'point') {"+
-                     "diff = ZERO.plus(change.delta['new']).minus(change.delta['old']);"+
-                     "diff = (diff.gt(ZERO) ? '+' : '') + diff.toString();"+
-                  "}$"+
-                    "<tbody class='@{od.markup.score_table_header}@'>"+
-                    "<tr>"+
-                      "<td>"+
-                        "<span class='@{od.markup.score_metric}@'>"+
-                          "{{change.metric.name}}"+
-                        "</span>"+
-                      "</td>"+
-                      "<td>"+
-                        "<span class='@{od.markup.score_delta_value}@'>"+
-                          "{{diff}}"+
-                        "</span>"+
-                      "</td>"+
-                    "</tr>"+
-                    "</tbody>"+
-                  "${ } else if(change.metric.type === 'set') { }$"+
-                    "<tbody class='@{od.markup.score_table_header}@'>"+
-                    "<tr>"+
-                      "<td colspan='2'>"+
-                        "<span class='@{od.markup.score_metric}@'>"+
-                          "{{change.metric.name}}"+
-                        "</span>"+
-                      "</td>"+
-                    "</tr>"+
-                    "</tbody>"+
-                    "<tbody class='@{od.markup.score_table_body}@'>"+
-                    "${ _.forEach(change.delta, function(delta, item) {"+
-                      "diff = ZERO.plus(delta['new']).minus(delta['old']);"+
-                      "diff = (diff.gt(ZERO) ? '+' : '') + diff.toString();"+
-                    "}$"+
-                      "<tr>"+
-                        "<td>"+
-                          "<span class='@{od.markup.score_delta_item}@'>"+
-                            "{{item}}"+
-                          "</span>"+
-                        "</td>"+
-                        "<td>"+
-                          "<span class='@{od.markup.score_delta_value}@'>"+
-                            "{{diff}}"+
-                          "</span>"+
-                        "</td>"+
-                      "</tr>"+
-                    "${ }); }$"+
-                    "</tbody>"+
-                  "${ } else if(change.metric.type === 'state') { }$"+
-                    "<tbody class='@{od.markup.score_table_header}@'>"+
-                    "<tr>"+
-                      "<td colspan='2'>"+
-                        "<span class='@{od.markup.score_metric}@'>"+
-                          "{{change.metric.name}}"+
-                        "</span>"+
-                      "</td>"+
-                    "</tr>"+
-                    "</tbody>"+
-                    "<tbody class='@{od.markup.score_table_body}@'>"+
-                    "<tr>"+
-                      "<td>"+
-                        "<span class='@{od.markup.score_delta_value}@ @{od.markup.diff_add}@'>"+
-                          "{{change.delta['new']}}"+
-                        "</span>"+
-                      "</td>"+
-                      "<td>"+
-                        "<span class='@{od.markup.score_delta_value}@ @{od.markup.diff_rem}@'>"+
-                          "{{change.delta['old']}}"+
-                        "</span>"+
-                      "</td>"+
-                    "</tr>"+
-                    "</tbody>"+
-                  "${ }"+
-                "});"+
-                "if(od.story.changes) { }$"+
-                  "</table>"+
-                "${ }"+
-                "if(!od.ctx.isItem) { }$"+
-                  "<footer class='@{od.markup.footer}@'>"+
-                    "<span class='@{od.markup.object}@'>"+
-                      "{{od.story.process.name||od.story.process.id}}"+
-                    "</span>"+
-                  "</footer>"+
-                "${ } }$"+
-              "</div>"+
-              "<time class='@{od.markup.timestamp}@' title='On "+
-                "{{(ts = moment(od.story.timestamp)).format(\'llll\')}}'>"+
-                "{{ts.fromNow()}}</time>"
+        html: """
+              <div class='@{od.markup.content}@'>\
+                <span class='@{od.markup.actor}@'>\
+                  {{od.ctx.amActor ? 'You' : \
+                    od.story.actor.alias||od.story.actor.id}}\
+                </span> completed \
+                <span class='@{od.markup.score_activity}@'>\
+                  {{od.story.activity.name}}\
+                </span>.\
+                ${ if(od.story.changes) { }$\
+                  <table class='@{od.markup.score_table}@'>\
+                ${ }\
+                _.forEach(od.story.changes, function(change) {\
+                  if (change.metric.type === 'point') {\
+                     diff = ZERO.plus(change.delta['new'])\
+                                .minus(change.delta['old']);\
+                     diff = (diff.gt(ZERO) ? '+' : '') + diff.toString();\
+                  }$\
+                    <tbody class='@{od.markup.score_table_header}@'>\
+                    <tr>\
+                      <td>\
+                        <span class='@{od.markup.score_metric}@'>\
+                          {{change.metric.name}}\
+                        </span>\
+                      </td>\
+                      <td>\
+                        <span class='@{od.markup.score_delta_value}@'>\
+                          {{diff}}\
+                        </span>\
+                      </td>\
+                    </tr>\
+                    </tbody>\
+                  ${ } else if(change.metric.type === 'set') { }$\
+                    <tbody class='@{od.markup.score_table_header}@'>\
+                    <tr>\
+                      <td colspan='2'>\
+                        <span class='@{od.markup.score_metric}@'>\
+                          {{change.metric.name}}\
+                        </span>\
+                      </td>\
+                    </tr>\
+                    </tbody>\
+                    <tbody class='@{od.markup.score_table_body}@'>\
+                    ${ _.forEach(change.delta, function(delta, item) {\
+                      diff = ZERO.plus(delta['new']).minus(delta['old']);\
+                      diff = (diff.gt(ZERO) ? '+' : '') + diff.toString();\
+                    }$\
+                      <tr>\
+                        <td>\
+                          <span class='@{od.markup.score_delta_item}@'>\
+                            {{item}}\
+                          </span>\
+                        </td>\
+                        <td>\
+                          <span class='@{od.markup.score_delta_value}@'>\
+                            {{diff}}\
+                          </span>\
+                        </td>\
+                      </tr>\
+                    ${ }); }$\
+                    </tbody>\
+                  ${ } else if(change.metric.type === 'state') { }$\
+                    <tbody class='@{od.markup.score_table_header}@'>\
+                    <tr>\
+                      <td colspan='2'>\
+                        <span class='@{od.markup.score_metric}@'>\
+                          {{change.metric.name}}\
+                        </span>\
+                      </td>\
+                    </tr>\
+                    </tbody>\
+                    <tbody class='@{od.markup.score_table_body}@'>\
+                    <tr>\
+                      <td>\
+                        <span class='@{od.markup.score_delta_value}@ \
+                          @{od.markup.diff_add}@'>{{change.delta['new']}}\
+                        </span>\
+                      </td>\
+                      <td>\
+                        <span class='@{od.markup.score_delta_value}@ \
+                          @{od.markup.diff_rem}@'>\
+                          {{change.delta['old'] || '--'}}\
+                        </span>\
+                      </td>\
+                    </tr>\
+                    </tbody>\
+                  ${ }\
+                });\
+                if(od.story.changes) { }$\
+                  </table>\
+                ${ }\
+                if(!od.ctx.isItem) { }$\
+                  <footer class='@{od.markup.footer}@'>\
+                    <span class='@{od.markup.object}@'>\
+                      {{od.story.process.name||od.story.process.id}}\
+                    </span>\
+                  </footer>\
+                ${ } }$\
+              </div>\
+              <time class='@{od.markup.timestamp}@' title='On \
+                {{(ts = moment(od.story.timestamp)).format(\'llll\')}}'>\
+                {{ts.fromNow()}}</time>
+              """
         image: ''
       },
       "resolution": {
