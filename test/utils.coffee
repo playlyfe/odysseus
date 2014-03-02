@@ -31,6 +31,8 @@ before (next) ->
       score_delta_item: "pl-score-delta-item"
       score_delta_value: "pl-score-delta-value"
       achievement_table: "pl-achievement-table"
+      footer: "pl-footer"
+      admin: "pl-admin"
       timestamp: "pl-ts"
       content: "pl-content"
       image: "pl-image"
