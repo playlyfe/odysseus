@@ -891,12 +891,8 @@
                 {{ od.ctx.amActor ? ' is pending' : '' }}.\
               ${ } else if(od.story.state === 'CANCELLED') { }$\
                 [{{moment(od.story.cancelled_at).format('llll')}}] - \
-                {{od.ctx.amActor ? 'You' : \
-                od.story.actor.alias||od.story.actor.id}} \
-                cancelled the invitation for \
-                {{od.ctx.amInvitee ? 'you' : \
-                  od.story.invitee.alias||od.story.invitee.id}} \
-                to join \
+                {{od.story.actor.alias||od.story.actor.id}} \
+                withdrew the invitation to join \
                 the {{od.ctx.isTeam ? 'team' : 'process'}} \
                 '{{od.story.team ? od.story.team.name || od.story.team.id : \
                   od.story.process.name || od.story.process.id}}'.\
@@ -962,13 +958,9 @@
               "${ } else if(od.story.state === 'CANCELLED') { }$"+
                 "<div class='@{od.markup.content}@'>"+
                   "<span class='@{od.markup.actor}@'>"+
-                    "{{od.ctx.amActor ? 'You' : od.story.actor.alias||od.story.actor.id}}"+
+                    "{{od.story.actor.alias||od.story.actor.id}}"+
                   "</span>"+
-                  " cancelled the invitation for "+
-                  "<span class='@{od.markup.target}@'>"+
-                    "{{od.ctx.amInvitee ? 'you' : od.story.invitee.alias||od.story.invitee.id}}"+
-                  "</span>"+
-                  " to join "+
+                  " withdrew the invitation to join "+
                   "the {{od.ctx.isTeam ? 'team' : 'process'}}"+
                     " <span class='@{od.markup.object}@'>"+
                       "{{od.story.team ? od.story.team.name || od.story.team.id :"+
@@ -986,10 +978,10 @@
                   "<span class='@{od.markup.actor}@'>your</span>"+
                   " invitation to join "+
                   "the {{od.ctx.isTeam ? 'team' : 'process'}}"+
-                    " <span class='@{od.markup.object}@'>"+
-                      "{{od.story.team ? od.story.team.name || od.story.team.id :"+
-                      "od.story.process.name || od.story.process.id}}"+
-                    "</span>"+
+                  " <span class='@{od.markup.object}@'>"+
+                    "{{od.story.team ? od.story.team.name || od.story.team.id :"+
+                    "od.story.process.name || od.story.process.id}}"+
+                  "</span>"+
                   " as "+
                   "<ul class='@{od.markup.role_list}@'>"+
                   "${ if (od.ctx.isTeam) { }$"+
@@ -1658,35 +1650,15 @@
 
     buildContext: (story, ext) ->
       ctx = {}
-      ctx.isItem = ext.context in ['team', 'process']
       ctx.isDummy = ext.env is 'debug'
 
-      # Determine the object in the story.
-      if story.event in [
-        'create',
-        'delete',
-        'leave',
-        'kick',
-        'join',
-        'join:request',
-        'join:request:accept',
-        'join:request:reject',
-        'invite',
-        'invite:accept',
-        'invite:reject',
-        'role:request',
-        'role:request:accept',
-        'role:request:reject',
-        'role:change',
-        'role:assign',
-        'resolution'
-      ]
-        # Determine whether the current story is for a team or process
-        # to simplify template code.
-        if story.team? or ext.context is 'team'
-          ctx.isTeam = true
-        else if story.process? or ext.context is 'process'
-          ctx.isProcess = true;
+      # Determine whether the current story is for a team or process
+      # to simplify template code.
+      ctx.isItem = ext.context in ['team', 'process']
+      if story.team? or ext.context is 'team'
+        ctx.isTeam = true
+      else if story.process? or ext.context is 'process'
+        ctx.isProcess = true;
 
       # Determine whether the actor is the current player
       if story.event in [
@@ -1735,7 +1707,7 @@
       else if story.event in ['invite:accept', 'invite:reject']
         unless story.inviter? and ext.profile?.id isnt story.inviter.id
           ctx.amInviter = true
-      else if story.event is 'invite'
+      else if story.event is 'invite' and story.state is 'PENDING'
         unless story.invitee? and ext.profile?.id isnt story.invitee.id
           ctx.amInvitee = true
 

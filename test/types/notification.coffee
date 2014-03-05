@@ -1362,49 +1362,30 @@ describe 'The Notification Story Builder', ->
           date = new Date(+global.date + 6e5).toISOString()
           @cancel_date = moment(date).format('llll')
           @cancel_rel_date = moment(date).fromNow()
-          @story_state = _.extend {}, @story, {
+          @story_state = _.chain({}).extend(@story, {
             state: 'CANCELLED'
             cancelled_at: date
-          }
+          }).omit('invitee').value()
           next()
 
-        describe "in actor's context", ->
-          before (next) ->
-            @story_ctx = _.omit @story_state, 'actor'
-            @externals = { profile: {id: 'david', alias: 'David Moyes'} }
-            next()
+        it 'builds the invite story (text)', (next) ->
+          expect(@odysseus.toString(@story_state)).to.equal """
+            [#{@cancel_date}] - David Moyes withdrew the invitation \
+            to join the team 'Manchester United'.
+          """
+          next()
 
-          it 'builds the invite story (text)', (next) ->
-            expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              [#{@cancel_date}] - You cancelled the invitation for Juan Mata \
-              to join the team 'Manchester United'.
-            """
-            next()
-
-          it 'builds the invite story (html)', (next) ->
-            expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>You</span> cancelled the invitation for <span class='pl-target'>Juan Mata</span> to join the team <span class='pl-object'>Manchester United</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
-            """
-            next()
-
-        describe "in invitee's context", ->
-          before (next) ->
-            @story_ctx = _.omit @story_state, 'invitee'
-            @externals = { profile: {id: 'mata', alias: 'Juan Mata'} }
-            next()
-
-          it 'builds the invite story (text)', (next) ->
-            expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              [#{@cancel_date}] - David Moyes cancelled the invitation for \
-              you to join the team 'Manchester United'.
-            """
-            next()
-
-          it 'builds the invite story (html)', (next) ->
-            expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>David Moyes</span> cancelled the invitation for <span class='pl-target'>you</span> to join the team <span class='pl-object'>Manchester United</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
-            """
-            next()
+        it 'builds the invite story (html)', (next) ->
+          expect(@odysseus.toHTML(@story_state)).to.equal """
+            <div class='pl-content'>\
+              <span class='pl-actor'>David Moyes</span> \
+              withdrew the invitation to join the team \
+              <span class='pl-object'>Manchester United</span>.\
+            </div>\
+            <time class='pl-ts' title='On #{@cancel_date}'>\
+              #{@cancel_rel_date}</time>
+          """
+          next()
 
       describe 'when state is ACCEPTED', ->
         before (next) ->
@@ -1418,20 +1399,15 @@ describe 'The Notification Story Builder', ->
           next()
 
         describe "in actor's context", ->
-          before (next) ->
-            @story_ctx = _.omit @story_state, 'actor'
-            @externals = { profile: {id: 'david', alias: 'David Moyes'} }
-            next()
-
           it 'builds the invite story (text)', (next) ->
-            expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
+            expect(@odysseus.toString(@story_state)).to.equal """
               [#{@accept_date}] - Juan Mata accepted your invitation to \
               join the team 'Manchester United' as midfielder.
             """
             next()
 
           it 'builds the invite story (html)', (next) ->
-            expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
+            expect(@odysseus.toHTML(@story_state)).to.equal """
               <div class='pl-content'><span class='pl-target'>Juan Mata</span> accepted <span class='pl-actor'>your</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
             """
             next()
@@ -1448,20 +1424,15 @@ describe 'The Notification Story Builder', ->
           next()
 
         describe "in actor's context", ->
-          before (next) ->
-            @story_ctx = _.omit @story_state, 'actor'
-            @externals = { profile: {id: 'david', alias: 'David Moyes'} }
-            next()
-
           it 'builds the invite story (text)', (next) ->
-            expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
+            expect(@odysseus.toString(@story_state)).to.equal """
               [#{@reject_date}] - Juan Mata rejected your invitation to join \
               the team 'Manchester United' as midfielder.
             """
             next()
 
           it 'builds the invite story (html)', (next) ->
-            expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
+            expect(@odysseus.toHTML(@story_state)).to.equal """
               <div class='pl-content'><span class='pl-target'>Juan Mata</span> rejected <span class='pl-actor'>your</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_rel_date}</time>
             """
             next()
@@ -1546,43 +1517,24 @@ describe 'The Notification Story Builder', ->
           }
           next()
 
-        describe "in actor's context", ->
-          before (next) ->
-            @story_ctx = _.omit @story_state, 'actor'
-            @externals = { profile: {id: 'david', alias: 'David Moyes'} }
-            next()
+        it 'builds the invite story (text)', (next) ->
+          expect(@odysseus.toString(@story_state)).to.equal """
+            [#{@cancel_date}] - David Moyes withdrew the invitation \
+            to join the process 'Strengthen Midfield'.
+          """
+          next()
 
-          it 'builds the invite story (text)', (next) ->
-            expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              [#{@cancel_date}] - You cancelled the invitation for Juan Mata \
-              to join the process 'Strengthen Midfield'.
-            """
-            next()
-
-          it 'builds the invite story (html)', (next) ->
-            expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>You</span> cancelled the invitation for <span class='pl-target'>Juan Mata</span> to join the process <span class='pl-object'>Strengthen Midfield</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
-            """
-            next()
-
-        describe "in invitee's context", ->
-          before (next) ->
-            @story_ctx = _.omit @story_state, 'invitee'
-            @externals = { profile: {id: 'mata', alias: 'Juan Mata'} }
-            next()
-
-          it 'builds the invite story (text)', (next) ->
-            expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
-              [#{@cancel_date}] - David Moyes cancelled the invitation for \
-              you to join the process 'Strengthen Midfield'.
-            """
-            next()
-
-          it 'builds the invite story (html)', (next) ->
-            expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
-              <div class='pl-content'><span class='pl-actor'>David Moyes</span> cancelled the invitation for <span class='pl-target'>you</span> to join the process <span class='pl-object'>Strengthen Midfield</span>.</div><time class='pl-ts' title='On #{@cancel_date}'>#{@cancel_rel_date}</time>
-            """
-            next()
+        it 'builds the invite story (html)', (next) ->
+          expect(@odysseus.toHTML(@story_state)).to.equal """
+            <div class='pl-content'>\
+              <span class='pl-actor'>David Moyes</span> \
+              withdrew the invitation to join the process \
+              <span class='pl-object'>Strengthen Midfield</span>.\
+            </div>\
+            <time class='pl-ts' title='On #{@cancel_date}'>\
+              #{@cancel_rel_date}</time>
+          """
+          next()
 
       describe 'when state is ACCEPTED', ->
         before (next) ->
