@@ -1398,17 +1398,64 @@ describe 'The Notification Story Builder', ->
           }
           next()
 
-        describe "in actor's context", ->
+        describe "in global context", ->
           it 'builds the invite story (text)', (next) ->
             expect(@odysseus.toString(@story_state)).to.equal """
+              [#{@accept_date}] - Juan Mata accepted David Moyes\u2019s \
+              invitation to join the team 'Manchester United' as midfielder.
+            """
+            next()
+
+          it 'builds the invite story (html)', (next) ->
+            expect(@odysseus.toHTML(@story_state)).to.equal """
+              <div class='pl-content'><span class='pl-target'>Juan Mata</span> accepted <span class='pl-actor'>David Moyes\u2019s</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
+            """
+            next()
+
+        describe "in actor's context", ->
+          before (next) ->
+            @story_state_actor = _.omit @story_state, 'actor'
+            next()
+
+          it 'builds the invite story (text)', (next) ->
+            expect(@odysseus.toString(@story_state_actor)).to.equal """
               [#{@accept_date}] - Juan Mata accepted your invitation to \
               join the team 'Manchester United' as midfielder.
             """
             next()
 
           it 'builds the invite story (html)', (next) ->
-            expect(@odysseus.toHTML(@story_state)).to.equal """
+            expect(@odysseus.toHTML(@story_state_actor)).to.equal """
               <div class='pl-content'><span class='pl-target'>Juan Mata</span> accepted <span class='pl-actor'>your</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
+            """
+            next()
+
+        describe "in invitee's context", ->
+          before (next) ->
+            @story_state_invitee = _.omit @story_state, 'invitee'
+            next()
+
+          it 'builds the invite story (text)', (next) ->
+            expect(@odysseus.toString(@story_state_invitee)).to.equal """
+              [#{@accept_date}] - You accepted David Moyes\u2019s invitation to \
+              join the team 'Manchester United' as midfielder.
+            """
+            next()
+
+          it 'builds the invite story (html)', (next) ->
+            expect(@odysseus.toHTML(@story_state_invitee)).to.equal """
+              <div class='pl-content'>\
+                <span class='pl-target'>You</span> \
+                accepted <span class='pl-actor'>David Moyes\u2019s</span> \
+                invitation to join the team \
+                <span class='pl-object'>Manchester United</span> as \
+                <ul class='pl-role-list'>\
+                  <li><span class='pl-role'>midfielder</span></li>\
+                </ul>.\
+              </div>\
+              <time class='pl-ts' title='On #{@accept_date}'>\
+                #{@accept_rel_date}\
+              </time>
             """
             next()
 
@@ -1423,17 +1470,64 @@ describe 'The Notification Story Builder', ->
           }
           next()
 
-        describe "in actor's context", ->
+        describe "in global context", ->
           it 'builds the invite story (text)', (next) ->
             expect(@odysseus.toString(@story_state)).to.equal """
-              [#{@reject_date}] - Juan Mata rejected your invitation to join \
-              the team 'Manchester United' as midfielder.
+              [#{@accept_date}] - Juan Mata rejected David Moyes\u2019s \
+              invitation to join the team 'Manchester United' as midfielder.
             """
             next()
 
           it 'builds the invite story (html)', (next) ->
             expect(@odysseus.toHTML(@story_state)).to.equal """
-              <div class='pl-content'><span class='pl-target'>Juan Mata</span> rejected <span class='pl-actor'>your</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_rel_date}</time>
+              <div class='pl-content'><span class='pl-target'>Juan Mata</span> rejected <span class='pl-actor'>David Moyes\u2019s</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
+            """
+            next()
+
+        describe "in actor's context", ->
+          before (next) ->
+            @story_state_actor = _.omit @story_state, 'actor'
+            next()
+
+          it 'builds the invite story (text)', (next) ->
+            expect(@odysseus.toString(@story_state_actor)).to.equal """
+              [#{@accept_date}] - Juan Mata rejected your invitation to \
+              join the team 'Manchester United' as midfielder.
+            """
+            next()
+
+          it 'builds the invite story (html)', (next) ->
+            expect(@odysseus.toHTML(@story_state_actor)).to.equal """
+              <div class='pl-content'><span class='pl-target'>Juan Mata</span> rejected <span class='pl-actor'>your</span> invitation to join the team <span class='pl-object'>Manchester United</span> as <ul class='pl-role-list'><li><span class='pl-role'>midfielder</span></li></ul>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
+            """
+            next()
+
+        describe "in invitee's context", ->
+          before (next) ->
+            @story_state_invitee = _.omit @story_state, 'invitee'
+            next()
+
+          it 'builds the invite story (text)', (next) ->
+            expect(@odysseus.toString(@story_state_invitee)).to.equal """
+              [#{@accept_date}] - You rejected David Moyes\u2019s invitation to \
+              join the team 'Manchester United' as midfielder.
+            """
+            next()
+
+          it 'builds the invite story (html)', (next) ->
+            expect(@odysseus.toHTML(@story_state_invitee)).to.equal """
+              <div class='pl-content'>\
+                <span class='pl-target'>You</span> \
+                rejected <span class='pl-actor'>David Moyes\u2019s</span> \
+                invitation to join the team \
+                <span class='pl-object'>Manchester United</span> as \
+                <ul class='pl-role-list'>\
+                  <li><span class='pl-role'>midfielder</span></li>\
+                </ul>.\
+              </div>\
+              <time class='pl-ts' title='On #{@accept_date}'>\
+                #{@accept_rel_date}\
+              </time>
             """
             next()
 
@@ -1469,11 +1563,10 @@ describe 'The Notification Story Builder', ->
         describe "in actor's context", ->
           before (next) ->
             @story_ctx = _.omit @story_state, 'actor'
-            @externals = { profile: {id: 'david', alias: 'David Moyes'} }
             next()
 
           it 'builds the invite story (text)', (next) ->
-            expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
+            expect(@odysseus.toString(@story_ctx)).to.equal """
               [#{@text_date}] - Your invitation to Juan Mata to join the \
               process 'Strengthen Midfield' as player in midfielder lane, \
               admin in No lanes is pending.
@@ -1481,7 +1574,7 @@ describe 'The Notification Story Builder', ->
             next()
 
           it 'builds the invite story (html)', (next) ->
-            expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
+            expect(@odysseus.toHTML(@story_ctx)).to.equal """
               <div class='pl-content'><span class='pl-actor'>Your</span> invitation to <span class='pl-target'>Juan Mata</span> to join the process <span class='pl-object'>Strengthen Midfield</span> as <ul class='pl-role-list'><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfielder</span> lane</li><li><span class='pl-role'>admin</span> in <span class='pl-lane'>No</span> lanes</li></ul> is pending.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
             """
             next()
@@ -1550,11 +1643,10 @@ describe 'The Notification Story Builder', ->
         describe "in actor's context", ->
           before (next) ->
             @story_ctx = _.omit @story_state, 'actor'
-            @externals = { profile: {id: 'david', alias: 'David Moyes'} }
             next()
 
           it 'builds the invite story (text)', (next) ->
-            expect(@odysseus.toString(@story_ctx, @externals)).to.equal """
+            expect(@odysseus.toString(@story_ctx)).to.equal """
               [#{@accept_date}] - Juan Mata accepted your invitation to join \
               the process 'Strengthen Midfield' as player in midfielder lane, \
               admin in No lanes.
@@ -1562,8 +1654,27 @@ describe 'The Notification Story Builder', ->
             next()
 
           it 'builds the invite story (html)', (next) ->
-            expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
+            expect(@odysseus.toHTML(@story_ctx)).to.equal """
               <div class='pl-content'><span class='pl-target'>Juan Mata</span> accepted <span class='pl-actor'>your</span> invitation to join the process <span class='pl-object'>Strengthen Midfield</span> as <ul class='pl-role-list'><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfielder</span> lane</li><li><span class='pl-role'>admin</span> in <span class='pl-lane'>No</span> lanes</li></ul>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
+            """
+            next()
+
+        describe "in invitee's context", ->
+          before (next) ->
+            @story_ctx = _.omit @story_state, 'invitee'
+            next()
+
+          it 'builds the invite story (text)', (next) ->
+            expect(@odysseus.toString(@story_ctx)).to.equal """
+              [#{@accept_date}] - You accepted David Moyes\u2019s \
+              invitation to join the process 'Strengthen Midfield' as \
+              player in midfielder lane, admin in No lanes.
+            """
+            next()
+
+          it 'builds the invite story (html)', (next) ->
+            expect(@odysseus.toHTML(@story_ctx)).to.equal """
+              <div class='pl-content'><span class='pl-target'>You</span> accepted <span class='pl-actor'>David Moyes\u2019s</span> invitation to join the process <span class='pl-object'>Strengthen Midfield</span> as <ul class='pl-role-list'><li><span class='pl-role'>player</span> in <span class='pl-lane'>midfielder</span> lane</li><li><span class='pl-role'>admin</span> in <span class='pl-lane'>No</span> lanes</li></ul>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
             """
             next()
 
