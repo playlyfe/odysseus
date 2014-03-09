@@ -754,7 +754,8 @@
                   '{{od.story.team ? od.story.team.name || od.story.team.id :\
                     od.story.process.name || od.story.process.id}}'\
                 ${ } }$ has been accepted by \
-                {{od.story.accepted_by.alias||od.story.accepted_by.id}}.\
+                {{od.ctx.amMetaActor ? 'you' : \
+                  od.story.accepted_by.alias||od.story.accepted_by.id}}.\
               ${ } else if(od.story.state === 'REJECTED') { }$\
                 [{{moment(od.story.rejected_at).format('llll')}}] - \
                 {{od.ctx.amActor ? 'Your' : \
@@ -766,7 +767,8 @@
                   '{{od.story.team ? od.story.team.name || od.story.team.id :\
                     od.story.process.name || od.story.process.id}}'\
                 ${ } }$ has been rejected by \
-                {{od.story.rejected_by.alias||od.story.rejected_by.id}}.\
+                {{od.ctx.amMetaActor ? 'you' : \
+                  od.story.rejected_by.alias||od.story.rejected_by.id}}.\
               ${ } }$"
 
         html: "${ if(od.story.state === 'PENDING') { }$"+
@@ -835,7 +837,8 @@
                     "</span>"+
                   "${ } }$ has been accepted by "+
                   "<span class='@{od.markup.target}@'>"+
-                    "{{od.story.accepted_by.alias||od.story.accepted_by.id}}"+
+                    "{{od.ctx.amMetaActor ? 'you' : "+
+                      "od.story.accepted_by.alias||od.story.accepted_by.id}}"+
                   "</span>."+
                 "</div>"+
                 "<time class='@{od.markup.timestamp}@' title='On "+
@@ -854,7 +857,8 @@
                     "</span>"+
                   "${ } }$ has been rejected by "+
                   "<span class='@{od.markup.target}@'>"+
-                    "{{od.story.rejected_by.alias||od.story.rejected_by.id}}"+
+                    "{{od.ctx.amMetaActor ? 'you' : "+
+                      "od.story.rejected_by.alias||od.story.rejected_by.id}}"+
                   "</span>."+
                 "</div>"+
                 "<time class='@{od.markup.timestamp}@' title='On "+
@@ -1697,10 +1701,8 @@
       # Determine whether the target is the current player
       if story.event in [
         'kick',
-        'join:request',
         'join:request:accept',
         'join:request:reject',
-        'role:request',
         'role:request:accept',
         'role:request:reject',
         'role:assign'
@@ -1717,6 +1719,13 @@
       else if story.event is 'invite'
         unless story.invitee? and ext.profile?.id isnt story.invitee.id
           ctx.amInvitee = true
+
+      if story.event is 'join:request'
+        if story.state is 'ACCEPTED' and
+          ext.profile?.id is story.accepted_by.id or
+          story.state is 'REJECTED' and
+          ext.profile?.id is story.rejected_by.id
+            ctx.amMetaActor = true
 
       # Finally, return the config object
       return ctx
