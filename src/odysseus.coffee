@@ -900,9 +900,12 @@
                 od.story.state === 'REJECTED') { }$\
                 [{{moment(od.story.accepted_at||\
                   od.story.rejected_at).format('llll')}}] - \
-                {{od.story.invitee.alias||od.story.invitee.id}} \
+                {{od.ctx.amInvitee ? 'You' : \
+                  od.story.invitee.alias||od.story.invitee.id}} \
                 {{od.story.accepted_at ? 'accepted' : 'rejected'}} \
-                your invitation to join \
+                {{od.ctx.amActor ? 'your' : \
+                  (od.story.actor.alias||od.story.actor.id)+'\u2019s'}} \
+                invitation to join \
                 the {{od.ctx.isTeam ? 'team' : 'process'}} \
                 '{{od.story.team ? od.story.team.name || od.story.team.id : \
                   od.story.process.name || od.story.process.id}}' as \
@@ -973,9 +976,13 @@
               "${ } else if(od.story.state === 'ACCEPTED' || od.story.state === 'REJECTED') { }$"+
                 "<div class='@{od.markup.content}@'>"+
                   "<span class='@{od.markup.target}@'>"+
-                    "{{od.story.invitee.alias||od.story.invitee.id}}"+
+                    "{{od.ctx.amInvitee ? 'You' : \
+                      od.story.invitee.alias||od.story.invitee.id}}"+
                   "</span> {{od.story.accepted_at ? 'accepted' : 'rejected'}} "+
-                  "<span class='@{od.markup.actor}@'>your</span>"+
+                  "<span class='@{od.markup.actor}@'>"+
+                    "{{od.ctx.amActor ? 'your' : \
+                      (od.story.actor.alias||od.story.actor.id)+'\u2019s'}}"+
+                  "</span>"+
                   " invitation to join "+
                   "the {{od.ctx.isTeam ? 'team' : 'process'}}"+
                   " <span class='@{od.markup.object}@'>"+
@@ -1707,7 +1714,7 @@
       else if story.event in ['invite:accept', 'invite:reject']
         unless story.inviter? and ext.profile?.id isnt story.inviter.id
           ctx.amInviter = true
-      else if story.event is 'invite' and story.state is 'PENDING'
+      else if story.event is 'invite'
         unless story.invitee? and ext.profile?.id isnt story.invitee.id
           ctx.amInvitee = true
 
