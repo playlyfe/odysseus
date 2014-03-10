@@ -2163,6 +2163,7 @@ describe 'The Notification Story Builder', ->
 
 
   ###*
+   * @todo Add tests for completion of the escalation
    * For Escalation Event
   ###
   describe 'for the "escalation" event', ->

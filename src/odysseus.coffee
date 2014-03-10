@@ -1641,10 +1641,33 @@
       },
       "escalation": {
         text: "[{{moment(od.story.timestamp).format('llll')}}] - \
-              {{od.story.message}}"
-        html: "<div class='@{od.markup.content}@'>\
-                {{od.story.message}}\
+              {{od.story.message}}\
+              ${ if (!!od.story.completed) { \
+                var completed = od.story.completed; }$  \
+                [*] {{od.ctx.amPlayer ? 'You' : \
+                      completed.player.alias||completed.player.id}} completed \
+                    {{completed.trigger.name||completed.trigger.id}}\
+                \n    [{{moment(od.story.timestamp).format('llll')}}]\
+              ${ } }$"
+        html: "<div class='@{od.markup.content}@\
+                @{!!od.story.completed?' '+od.markup.escalation_inactive:''}@'>\
+                  {{od.story.message}}\
               </div>\
+              ${ if (!!od.story.completed) { \
+                var completed = od.story.completed; }$\
+                <footer class='@{od.markup.footer}@ \
+                  @{od.markup.escalation_footer}@'>\
+                  <span class='@{od.markup.escalation_player}@'>
+                    {{od.ctx.amPlayer ? 'You' : \
+                      completed.player.alias||completed.player.id}} completed \
+                    {{completed.trigger.name||completed.trigger.id}}
+                  </span>\
+                  <time class='@{od.markup.escalation_timestamp}@ \
+                    @{od.markup.timestamp}@' title='Completed on \
+                    {{(ts = moment(completed.timestamp)).format(\'llll\')}}'>\
+                    {{ts.fromNow()}}</time>
+                </footer>\
+              ${ } }$\
               <time class='@{od.markup.timestamp}@' title='On \
                 {{(ts = moment(od.story.timestamp)).format(\'llll\')}}'>\
                 {{ts.fromNow()}}</time>"
@@ -1719,13 +1742,15 @@
       else if story.event is 'invite'
         unless story.invitee? and ext.profile?.id isnt story.invitee.id
           ctx.amInvitee = true
-
-      if story.event is 'join:request'
+      else if story.event is 'join:request'
         if story.state is 'ACCEPTED' and
           ext.profile?.id is story.accepted_by.id or
           story.state is 'REJECTED' and
           ext.profile?.id is story.rejected_by.id
             ctx.amMetaActor = true
+      else if story.event is 'escalation'
+        if story.completed? and ext.profile?.id is story.completed.player.id
+          ctx.amPlayer = true
 
       # Finally, return the config object
       return ctx
@@ -1759,6 +1784,9 @@
         ctx: context,
         markup: @options.markup
       })
+      if story.event is 'escalation'
+        html = _.unescape html    # The escalation text already comes rendered,
+                                  # so unescape all HTML tags, etc
       if config.image is true
         image = """
           <div class='#{@options.markup.image}'>\
