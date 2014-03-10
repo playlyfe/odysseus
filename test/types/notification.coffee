@@ -220,6 +220,24 @@ describe 'The Notification Story Builder', ->
             """
             next()
 
+        describe "in acceptor's context", ->
+          before (next) ->
+            @externals = { profile: {id: 'jose', alias: 'Jose Mourinho'} }
+            next()
+
+          it 'builds the join request story (text)', (next) ->
+            expect(@odysseus.toString(@story_state, @externals)).to.equal """
+              [#{@accept_date}] - Juan Mata\u2019s request to join the team \
+              'Manchester United' has been accepted by you.
+            """
+            next()
+
+          it 'builds the join request story (html)', (next) ->
+            expect(@odysseus.toHTML(@story_state, @externals)).to.equal """
+              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request to join the team <span class='pl-object'>Manchester United</span> has been accepted by <span class='pl-target'>you</span>.</div><time class='pl-ts' title='On #{@accept_date}'>#{@accept_rel_date}</time>
+            """
+            next()
+
       describe 'when state is REJECTED', ->
         before (next) ->
           date = new Date(+global.date + 6e5).toISOString()
@@ -284,6 +302,24 @@ describe 'The Notification Story Builder', ->
           it 'builds the join request story (html)', (next) ->
             expect(@odysseus.toHTML(@story_ctx, @externals)).to.equal """
               <div class='pl-content'><span class='pl-actor'>Your</span> request to join the team <span class='pl-object'>Manchester United</span> has been rejected by <span class='pl-target'>Jose Mourinho</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_rel_date}</time>
+            """
+            next()
+
+        describe "in rejector's context", ->
+          before (next) ->
+            @externals = { profile: {id: 'jose', alias: 'Jose Mourinho'} }
+            next()
+
+          it 'builds the join request story (text)', (next) ->
+            expect(@odysseus.toString(@story_state, @externals)).to.equal """
+              [#{@reject_date}] - Juan Mata\u2019s request to join the team \
+              'Manchester United' has been rejected by you.
+            """
+            next()
+
+          it 'builds the join request story (html)', (next) ->
+            expect(@odysseus.toHTML(@story_state, @externals)).to.equal """
+              <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> request to join the team <span class='pl-object'>Manchester United</span> has been rejected by <span class='pl-target'>you</span>.</div><time class='pl-ts' title='On #{@reject_date}'>#{@reject_rel_date}</time>
             """
             next()
 
@@ -2127,6 +2163,7 @@ describe 'The Notification Story Builder', ->
 
 
   ###*
+   * @todo Add tests for completion of the escalation
    * For Escalation Event
   ###
   describe 'for the "escalation" event', ->
