@@ -1,6 +1,6 @@
 {
   "name": "odysseus",
-  "version": "0.4.8",
+  "version": "0.5.0",
   "description": "Parse and build stories out of Playlyfe Events.",
   "main": "./odysseus.js",
   "keywords": [
