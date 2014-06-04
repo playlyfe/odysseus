@@ -1,4 +1,4 @@
-((root, factory) ->
+((global, factory) ->
   # AMD. Register as anonymous module.
   if typeof define is 'function' and define.amd
     define ['lodash', 'moment', 'bignumber'], factory
@@ -8,6 +8,12 @@
       require('lodash'),
       require('moment'),
       require('bignumber.js')
+    )
+  else
+    global['Odysseus'] = factory(
+      global['_'],
+      global['moment'],
+      global['BigNumber']
     )
 )(this, (_, moment, BigNumber) ->
   # Override the templating delimiters to distinguish from HTML tags
