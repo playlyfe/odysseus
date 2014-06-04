@@ -4,8 +4,8 @@
   "description": "Parse and build stories out of Playlyfe Events.",
   "main": "./odysseus",
   "scripts": {
-    "test": "mocha",
-    "prepublish": "./node_modules/.bin/coffee -o . -b -c src/odysseus.coffee"
+    "test": "gulp test",
+    "prepublish": "gulp publish"
   },
   "keywords": [
     "playlyfe",
@@ -36,11 +36,20 @@
     "bignumber.js": "1.3.0"
   },
   "devDependencies": {
-    "mocha": "1.17.1",
     "chai": "1.5.0",
+    "coffee-script": "1.7.1",
+    "gulp": "3.7.0",
+    "gulp-clean": "0.3.0",
+    "gulp-coffee": "2.0.0",
+    "gulp-coffeelint": "0.3.3",
+    "gulp-mocha": "0.4.1",
+    "gulp-plumber": "0.6.2",
+    "gulp-rename": "1.2.0",
+    "gulp-uglify": "0.3.0",
+    "gulp-util": "2.2.16",
     "jscoverage": "0.3.6",
-    "sinon-chai": "2.3.1",
+    "mocha": "1.17.1",
     "sinon": "1.6.0",
-    "coffee-script": "1.7.1"
+    "sinon-chai": "2.3.1"
   }
 }
