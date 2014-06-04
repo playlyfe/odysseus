@@ -10,8 +10,7 @@
     "story-builder"
   ],
   "ignore": [
-    "node_modules",
-    "test"
+    "node_modules"
   ],
   "license": "MIT"
 }
