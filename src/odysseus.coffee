@@ -1202,7 +1202,7 @@
                ${ } else if(change.metric.type === 'set') { }$\
                  \n  [>] {{change.metric.name}}\
                  ${ _.forEach(change.delta, function(delta, item) {\
-                   diff = ZERO.plus(delta['new']).minus(delta['old']);\
+                   diff = ZERO.plus(delta['new']).minus(delta['old']||'0');\
                    diff = (diff.gt(ZERO) ? '+' : '') + diff.toString();\
                  }$\
                    \n    [*] {{diff}} {{item}}\
@@ -1257,7 +1257,7 @@
                     </tbody>\
                     <tbody class='@{od.markup.score_table_body}@'>\
                     ${ _.forEach(change.delta, function(delta, item) {\
-                      diff = ZERO.plus(delta['new']).minus(delta['old']);\
+                      diff = ZERO.plus(delta['new']).minus(delta['old']||'0');\
                       diff = (diff.gt(ZERO) ? '+' : '') + diff.toString();\
                     }$\
                       <tr>\
@@ -1341,7 +1341,7 @@
                 ${ } else if(change.metric.type === 'set') { }$\
                  \n  [>] {{change.metric.name}}\
                  ${ _.forEach(change.delta, function(delta, item) {\
-                   diff = ZERO.plus(delta['new']).minus(delta['old']);\
+                   diff = ZERO.plus(delta['new']).minus(delta['old']||'0');\
                    diff = (diff.gt(ZERO) ? '+' : '') + diff.toString()\
                  }$\
                    \n    [*] {{diff}} {{item}}\
@@ -1401,7 +1401,7 @@
                     </tbody>\
                     <tbody class='@{od.markup.score_table_body}@'>\
                     ${ _.forEach(change.delta, function(delta, item) {\
-                      diff = ZERO.plus(delta['new']).minus(delta['old']);\
+                      diff = ZERO.plus(delta['new']).minus(delta['old']||'0');\
                       diff = (diff.gt(ZERO) ? '+' : '') + diff.toString();\
                     }$\
                       <tr>\
@@ -1499,7 +1499,7 @@
               "${ _.forEach(od.story.changes, function(change) { }$"+
                 "\n  [>] {{change.metric.name}}"+
                 "${ _.forEach(change.delta, function(delta, item) {"+
-                  "diff = ZERO.plus(delta['new']).minus(delta['old']);"+
+                  "diff = ZERO.plus(delta['new']).minus(delta['old']||'0');"+
                   "diff = (diff.gt(ZERO) ? '+' : '') + diff.toString();"+
                 "}$"+
                 "\n    [*] {{diff}} {{item}}"+
@@ -1524,7 +1524,7 @@
                   "</tbody>"+
                   "<tbody class='@{od.markup.score_table_body}@'>"+
                     "${ _.forEach(change.delta, function(delta, item) {"+
-                      "diff = ZERO.plus(delta['new']).minus(delta['old']);"+
+                      "diff = ZERO.plus(delta['new']).minus(delta['old']||'0');"+
                       "diff = (diff.gt(ZERO) ? '+' : '') + diff.toString();"+
                     "}$"+
                     "<tr>"+
