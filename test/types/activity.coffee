@@ -1,4 +1,4 @@
-Odysseus = require '../../odysseus'
+Odysseus = require '../../src/odysseus'
 _ = require 'lodash'
 
 describe 'The Activity Story Builder', ->
@@ -3477,6 +3477,27 @@ describe 'The Activity Story Builder', ->
         next()
 
     describe "in global context", ->
+      it 'builds the achievement story (text)', (next) ->
+        expect(@odysseus.toString(@story)).to.equal """
+          [#{@text_date}] - Juan Mata unlocked an achievement.
+            Changes:
+            [>] UEFA Awards
+              [*] +1 Golden Boot
+        """
+        next()
+
+      it 'builds the achievement story (html)', (next) ->
+        expect(@odysseus.toHTML(@story)).to.equal """
+          <div class='pl-content'><span class='pl-actor'>Juan Mata</span> unlocked an achievement.<table class='pl-score-table pl-achievement-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr></tbody></table></div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
+        """
+        next()
+
+    describe "if old item count is null", ->
+      before (next) ->
+        @new_story = _.clone @story, true
+        @new_story.changes[0].delta['Golden Boot'].old = null
+        next()
+
       it 'builds the achievement story (text)', (next) ->
         expect(@odysseus.toString(@story)).to.equal """
           [#{@text_date}] - Juan Mata unlocked an achievement.
