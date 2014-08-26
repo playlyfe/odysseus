@@ -1,4 +1,4 @@
-Odysseus = require '../../odysseus'
+Odysseus = require '../../src/odysseus'
 _ = require 'lodash'
 moment = require 'moment'
 

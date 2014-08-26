@@ -1,4 +1,4 @@
-Odysseus = require '../../odysseus'
+Odysseus = require '../../src/odysseus'
 _ = require 'lodash'
 
 describe 'The Activity Story Builder', ->
@@ -3492,7 +3492,7 @@ describe 'The Activity Story Builder', ->
         """
         next()
 
-    describe.only "if old item count is null", ->
+    describe "if old item count is null", ->
       before (next) ->
         @new_story = _.clone @story, true
         @new_story.changes[0].delta['Golden Boot'].old = null

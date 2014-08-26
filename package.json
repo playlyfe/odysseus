@@ -4,7 +4,7 @@
   "description": "Parse and build stories out of Playlyfe Events.",
   "main": "./odysseus",
   "scripts": {
-    "test": "gulp test",
+    "test": "./node_modules/.bin/mocha",
     "prepublish": "gulp publish"
   },
   "keywords": [
