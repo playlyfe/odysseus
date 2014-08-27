@@ -5,12 +5,11 @@ uglify = require 'gulp-uglify'
 coffeelint = require 'gulp-coffeelint'
 rename = require 'gulp-rename'
 plumber = require 'gulp-plumber'
-clean = require 'gulp-clean'
+rimraf = require 'gulp-rimraf'
 header = require 'gulp-header'
 bump = require 'gulp-bump'
+runSequence = require 'run-sequence'
 
-pkg = require './package.json'
-bower = require './bower.json'
 banner =
   long: """
   /**
@@ -32,7 +31,7 @@ paths =
 # Define the gulp tasks
 gulp.task 'clean', ->
   gulp.src(paths.build, {read: false})
-    .pipe(clean())
+    .pipe(rimraf())
 
 gulp.task 'lint', ->
   gulp.src([paths.src, paths.test], {base: './src'})
@@ -40,7 +39,9 @@ gulp.task 'lint', ->
     .pipe(coffeelint.reporter())
 
 gulp.task 'build', ['clean'], (cb) ->
-  gutil.log gutil.colors.black.bgCyan(" Run `publish` after build ")
+  pkg = require './package.json'
+  console.log 'PACK', pkg.version
+  gutil.log gutil.colors.black.bgYellow(" Run `publish` after build ")
   gulp.src(paths.src)
     .pipe(plumber({
         errorHandler: (err)->
@@ -56,7 +57,7 @@ gulp.task 'build', ['clean'], (cb) ->
     .pipe(header(banner.short, {pkg: pkg}))
     .pipe(gulp.dest paths.build)
 
-gulp.task 'bump', ['build'], ->
+gulp.task 'bump', ->
   gulp.src(['./bower.json', './package.json'])
     .pipe(bump())  # Bump version
     .pipe(gulp.dest './')
@@ -66,4 +67,6 @@ gulp.task 'watch', ->
   gulp.watch paths.test, ['lint']
 
 gulp.task 'default', ['watch']
-gulp.task 'publish', ['build', 'bump']
+gulp.task 'publish', ->
+  runSequence 'bump', 'build', ->
+    gutil.log gutil.colors.black.bgCyan(" Run `npm publish` to push to npm ")
