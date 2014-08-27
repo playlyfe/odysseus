@@ -1,6 +1,6 @@
 {
   "name": "playlyfe-odysseus",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Parse and build stories out of Playlyfe Events.",
   "main": "./index",
   "scripts": {
