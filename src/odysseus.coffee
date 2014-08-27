@@ -1463,11 +1463,12 @@
               {{od.ctx.amActor ? 'Your' : \
                 (od.story.actor.alias||od.story.actor.id) + '\u2019s'}} \
               ${ change = od.story.changes[0]; }$\
-              '{{change.metric.name}}' level changed to \
-              '{{change.delta['new']}}'\
-              ${ if (change.delta['old']) { }$ \
-                from '{{change.delta['old']}}'\
-              ${ } }$."
+              '{{change.metric.name}}' level changed \
+              ${ if (change.delta['old']) { }$\
+                from '{{change.delta['old']}}' \
+              ${ } }$\
+              to '{{change.delta['new']}}'\
+              ."
         html: "<div class='@{od.markup.content}@'>\
                   <span class='@{od.markup.actor}@'>\
                   {{od.ctx.amActor ? 'Your' : \
@@ -1475,15 +1476,15 @@
                 </span> \
                 ${ change = od.story.changes[0]; }$\
                 <span class='@{od.markup.score_metric}@'>\
-                  {{change.metric.name}}</span> level changed to \
-                <span class='@{od.markup.score_delta_value}@ \
+                  {{change.metric.name}}</span> level changed\
+                  ${ if (change.delta['old']) { }$ \
+                    from <span class='@{od.markup.score_delta_value}@ \
+                      @{od.markup.diff_rem}@'>{{change.delta['old']}}\
+                    </span>\
+                  ${ } }$ \
+                to <span class='@{od.markup.score_delta_value}@ \
                   @{od.markup.diff_add}@'>{{change.delta['new']}}</span>\
-                ${ if (change.delta['old']) { }$ \
-                  from \
-                  <span class='@{od.markup.score_delta_value}@ \
-                    @{od.markup.diff_rem}@'>{{change.delta['old']}}\
-                  </span>\
-                ${ } }$.\
+                .\
               </div>\
               <time class='@{od.markup.timestamp}@' title='On \
                 {{(ts = moment(od.story.timestamp)).format(\'llll\')}}'>\

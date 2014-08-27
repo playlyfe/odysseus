@@ -3382,13 +3382,13 @@ describe 'The Activity Story Builder', ->
       it 'builds the levelling story (text)', (next) ->
         expect(@odysseus.toString(@story, @externals)).to.equal """
           [#{@text_date}] - Your 'Transfer Market Standing' level \
-          changed to 'Hot Property' from 'Meh'.
+          changed from 'Meh' to 'Hot Property'.
         """
         next()
 
       it 'builds the levelling story (html)', (next) ->
         expect(@odysseus.toHTML(@story, @externals)).to.equal """
-          <div class='pl-content'><span class='pl-actor'>Your</span> <span class='pl-score-metric'>Transfer Market Standing</span> level changed to <span class='pl-score-delta-value pl-diff-add'>Hot Property</span> from <span class='pl-score-delta-value pl-diff-rem'>Meh</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
+          <div class='pl-content'><span class='pl-actor'>Your</span> <span class='pl-score-metric'>Transfer Market Standing</span> level changed from <span class='pl-score-delta-value pl-diff-rem'>Meh</span> to <span class='pl-score-delta-value pl-diff-add'>Hot Property</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
 
@@ -3396,13 +3396,13 @@ describe 'The Activity Story Builder', ->
       it 'builds the levelling story (text)', (next) ->
         expect(@odysseus.toString(@story)).to.equal """
           [#{@text_date}] - Juan Mata\u2019s 'Transfer Market Standing' level \
-          changed to 'Hot Property' from 'Meh'.
+          changed from 'Meh' to 'Hot Property'.
         """
         next()
 
       it 'builds the levelling story (html)', (next) ->
         expect(@odysseus.toHTML(@story)).to.equal """
-          <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> <span class='pl-score-metric'>Transfer Market Standing</span> level changed to <span class='pl-score-delta-value pl-diff-add'>Hot Property</span> from <span class='pl-score-delta-value pl-diff-rem'>Meh</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
+          <div class='pl-content'><span class='pl-actor'>Juan Mata\u2019s</span> <span class='pl-score-metric'>Transfer Market Standing</span> level changed from <span class='pl-score-delta-value pl-diff-rem'>Meh</span> to <span class='pl-score-delta-value pl-diff-add'>Hot Property</span>.</div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
 
