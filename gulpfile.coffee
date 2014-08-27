@@ -39,10 +39,8 @@ gulp.task 'lint', ->
     .pipe(coffeelint())
     .pipe(coffeelint.reporter())
 
-gulp.task 'test', ->
-  require('child_process').spawn('mocha', { stdio: 'inherit' });
-
 gulp.task 'build', ['clean'], (cb) ->
+  gutil.log gutil.colors.black.bgCyan(" Run `publish` after build ")
   gulp.src(paths.src)
     .pipe(plumber({
         errorHandler: (err)->
@@ -59,8 +57,8 @@ gulp.task 'build', ['clean'], (cb) ->
     .pipe(gulp.dest paths.build)
 
 gulp.task 'bump', ['build'], ->
-  gulp.src('./bower.json')
-    .pipe(bump({version: pkg.version}))  # Sync with package.json version
+  gulp.src(['./bower.json', './package.json'])
+    .pipe(bump())  # Bump version
     .pipe(gulp.dest './')
 
 gulp.task 'watch', ->

@@ -1,8 +1,8 @@
 {
   "name": "playlyfe-odysseus",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Parse and build stories out of Playlyfe Events.",
-  "main": "./odysseus",
+  "main": "./index",
   "scripts": {
     "test": "./node_modules/.bin/mocha",
     "prepublish": "gulp publish"
@@ -35,11 +35,11 @@
     "chai": "1.5.0",
     "coffee-script": "1.7.1",
     "gulp": "3.7.0",
-    "gulp-bump": "^0.1.8",
+    "gulp-bump": "0.1.8",
     "gulp-clean": "0.3.0",
     "gulp-coffee": "2.0.0",
     "gulp-coffeelint": "0.3.3",
-    "gulp-header": "^1.0.2",
+    "gulp-header": "1.0.2",
     "gulp-mocha": "0.4.1",
     "gulp-plumber": "0.6.2",
     "gulp-rename": "1.2.0",
