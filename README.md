@@ -9,11 +9,13 @@ Odysseus is a story spinner at heart, taking in the events in JSON format, and s
 
 ## Usage
 
-Odysseus can be used as a node module, or as a *bower module* (todo)
+Odysseus can be used as a node module, or as a bower module.
+It depends on the libraries [momentjs](https://github.com/moment/moment)
+and [lodash](https://github.com/lodash/lodash).
 
 #### Node
 
-    Odysseus = require('odysseus');
+    Odysseus = require('playlyfe-odysseus');
     odysseus = new Odysseus(config);
     ...
 
