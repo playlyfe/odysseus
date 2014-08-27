@@ -57,8 +57,8 @@ gulp.task 'build', ['clean'], (cb) ->
     .pipe(gulp.dest paths.build)
 
 gulp.task 'bump', ['build'], ->
-  gulp.src('./bower.json')
-    .pipe(bump({version: pkg.version}))  # Sync with package.json version
+  gulp.src(['./bower.json', './package.json'])
+    .pipe(bump())  # Bump version
     .pipe(gulp.dest './')
 
 gulp.task 'watch', ->
