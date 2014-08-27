@@ -43,6 +43,7 @@ gulp.task 'test', ->
   require('child_process').spawn('mocha', { stdio: 'inherit' });
 
 gulp.task 'build', ['clean'], (cb) ->
+  gutil.log gutil.colors.black.bgCyan(" Run `publish` after build ")
   gulp.src(paths.src)
     .pipe(plumber({
         errorHandler: (err)->
