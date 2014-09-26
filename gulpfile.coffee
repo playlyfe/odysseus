@@ -40,7 +40,6 @@ gulp.task 'lint', ->
 
 gulp.task 'build', ['clean'], (cb) ->
   pkg = require './package.json'
-  console.log 'PACK', pkg.version
   gutil.log gutil.colors.black.bgYellow(" Run `publish` after build ")
   gulp.src(paths.src)
     .pipe(plumber({
