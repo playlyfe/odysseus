@@ -55,24 +55,41 @@
        * Activity Templates
       ###
       "create": {
-        text: "[{{moment(od.story.timestamp).format('llll')}}] - \
-              {{od.ctx.amActor ? 'You' : od.story.actor.alias||od.story.actor.id}} created \
-              the {{od.ctx.isTeam ? 'team' : 'process'}} \
-              '{{od.story.team ? od.story.team.name || od.story.team.id :\
-                od.story.process.name || od.story.process.id}}'."
-
-        html: "<div class='@{od.markup.content}@'>"+
-                "<span class='@{od.markup.actor}@'>"+
-                  "{{od.ctx.amActor ? 'You' : od.story.actor.alias||od.story.actor.id}}"+
-                "</span> created the {{od.ctx.isTeam ? 'team' : 'process'}} "+
-                "<span class='@{od.markup.object}@'>"+
-                  "{{od.story.team ? od.story.team.name || od.story.team.id :"+
-                  "od.story.process.name || od.story.process.id}}"+
-                "</span>."+
-              "</div>"+
-              "<time class='@{od.markup.timestamp}@' title='On "+
-                "{{(ts = moment(od.story.timestamp)).format(\'llll\')}}'>"+
-                "{{ts.fromNow()}}</time>"
+        text: "
+          [{{moment(od.story.timestamp).format('llll')}}] - \
+          {{ od.story.admin ? '[Admin Event] ' : '' }}\
+          The '{{ \
+            od.story.team ? od.story.team.name || od.story.team.id :
+            od.story.process.name || od.story.process.id \
+          }}' \
+          {{ od.ctx.isTeam ? 'team' : 'process' }} was created\
+          ${ if (!od.story.admin) { }$ \
+            by {{ od.ctx.amActor ? 'you' :
+              od.story.actor.alias || od.story.actor.id}}\
+          ${ } }$.
+        "
+        html: "
+          <div class='@{od.markup.content}@'>\
+            The <span class='@{od.markup.object}@'>\
+              {{od.story.team ? od.story.team.name || od.story.team.id :
+              od.story.process.name || od.story.process.id}}\
+            </span> {{od.ctx.isTeam ? 'team' : 'process'}} was created\
+            ${ if (!od.story.admin) { }$ \
+              by <span class='@{od.markup.actor}@'>\
+                {{ od.ctx.amActor ? 'you' :
+                   od.story.actor.alias || od.story.actor.id }}\
+              </span>\
+            ${ } }$.\
+            ${ if (!!od.story.admin) { }$\
+              <footer class='@{od.markup.footer}@'>\
+                <span class='@{od.markup.admin}@'>Admin Event</span>\
+              </footer>\
+            ${ } }$\
+          </div>\
+          <time class='@{od.markup.timestamp}@' title='On \
+            {{(ts = moment(od.story.timestamp)).format(\'llll\')}}'>\
+            {{ts.fromNow()}}</time>
+        "
         image: ''
       },
       "delete": {
@@ -1679,6 +1696,133 @@
                 {{(ts = moment(od.story.timestamp)).format(\'llll\')}}'>\
                 {{ts.fromNow()}}</time>"
         image: ''
+      },
+      "action": {
+        text: "[{{moment(od.story.timestamp).format('llll')}}] -
+              {{od.ctx.amActor ? 'You' : \
+                od.story.actor.alias||od.story.actor.id}} completed \
+              '{{od.story.action.name}}'.\
+              ${ if (od.story.changes) { }$\
+                \n  Changes:\
+              ${ } }$\
+              ${ _.forEach(od.story.changes, function (change) {\
+               if(change.metric.type === 'point') {\
+                  diff = ZERO.plus(change.delta['new'])\
+                            .minus(change.delta['old']);\
+                  diff = (diff.gt(ZERO) ? '+' : '') + diff.toString();
+               }$\
+                 \n    [*] {{diff}} {{change.metric.name}}\
+               ${ } else if(change.metric.type === 'set') { }$\
+                 \n  [>] {{change.metric.name}}\
+                 ${ _.forEach(change.delta, function(delta, item) {\
+                   diff = ZERO.plus(delta['new']).minus(delta['old']||'0');\
+                   diff = (diff.gt(ZERO) ? '+' : '') + diff.toString();\
+                 }$\
+                   \n    [*] {{diff}} {{item}}\
+                 ${ }); }$\
+               ${ } else if(change.metric.type === 'state') { }$\
+                 \n  [>] {{change.metric.name}}\
+                 \n    [+] {{change.delta['new']}}\
+                 \n    [-] {{change.delta['old']}}\
+               ${ }\
+              }) }$"
+        html: """
+              <div class='@{od.markup.content}@'>\
+                <span class='@{od.markup.actor}@'>\
+                  {{od.ctx.amActor ? 'You' : \
+                    od.story.actor.alias||od.story.actor.id}}\
+                </span> completed \
+                <span class='@{od.markup.score_activity}@'>\
+                  {{od.story.action.name}}\
+                </span>.\
+                ${ if(od.story.changes) { }$\
+                  <table class='@{od.markup.score_table}@'>\
+                ${ }\
+                _.forEach(od.story.changes, function(change) {\
+                  if (change.metric.type === 'point') {\
+                     diff = ZERO.plus(change.delta['new'])\
+                                .minus(change.delta['old']);\
+                     diff = (diff.gt(ZERO) ? '+' : '') + diff.toString();\
+                  }$\
+                    <tbody class='@{od.markup.score_table_header}@'>\
+                    <tr>\
+                      <td>\
+                        <span class='@{od.markup.score_metric}@'>\
+                          {{change.metric.name}}\
+                        </span>\
+                      </td>\
+                      <td>\
+                        <span class='@{od.markup.score_delta_value}@'>\
+                          {{diff}}\
+                        </span>\
+                      </td>\
+                    </tr>\
+                    </tbody>\
+                  ${ } else if(change.metric.type === 'set') { }$\
+                    <tbody class='@{od.markup.score_table_header}@'>\
+                    <tr>\
+                      <td colspan='2'>\
+                        <span class='@{od.markup.score_metric}@'>\
+                          {{change.metric.name}}\
+                        </span>\
+                      </td>\
+                    </tr>\
+                    </tbody>\
+                    <tbody class='@{od.markup.score_table_body}@'>\
+                    ${ _.forEach(change.delta, function(delta, item) {\
+                      diff = ZERO.plus(delta['new']).minus(delta['old']||'0');\
+                      diff = (diff.gt(ZERO) ? '+' : '') + diff.toString();\
+                    }$\
+                      <tr>\
+                        <td>\
+                          <span class='@{od.markup.score_delta_item}@'>\
+                            {{item}}\
+                          </span>\
+                        </td>\
+                        <td>\
+                          <span class='@{od.markup.score_delta_value}@'>\
+                            {{diff}}\
+                          </span>\
+                        </td>\
+                      </tr>\
+                    ${ }); }$\
+                    </tbody>\
+                  ${ } else if(change.metric.type === 'state') { }$\
+                    <tbody class='@{od.markup.score_table_header}@'>\
+                    <tr>\
+                      <td colspan='2'>\
+                        <span class='@{od.markup.score_metric}@'>\
+                          {{change.metric.name}}\
+                        </span>\
+                      </td>\
+                    </tr>\
+                    </tbody>\
+                    <tbody class='@{od.markup.score_table_body}@'>\
+                    <tr>\
+                      <td>\
+                        <span class='@{od.markup.score_delta_value}@ \
+                          @{od.markup.diff_add}@'>{{change.delta['new']}}\
+                        </span>\
+                      </td>\
+                      <td>\
+                        <span class='@{od.markup.score_delta_value}@ \
+                          @{od.markup.diff_rem}@'>\
+                          {{change.delta['old'] || '--'}}\
+                        </span>\
+                      </td>\
+                    </tr>\
+                    </tbody>\
+                  ${ }\
+                });\
+                if(od.story.changes) { }$\
+                  </table>\
+                ${ } }$\
+              </div>\
+              <time class='@{od.markup.timestamp}@' title='On \
+                {{(ts = moment(od.story.timestamp)).format(\'llll\')}}'>\
+                {{ts.fromNow()}}</time>
+              """
+        image: ''
       }
     }
 
@@ -1722,7 +1866,8 @@
         'progress',
         'level',
         'achievement',
-        'resolution'
+        'resolution',
+        'action'
       ]
         # Determine whether the current player is the actor
         unless story.actor? and ext.profile?.id isnt story.actor.id
