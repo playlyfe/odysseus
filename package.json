@@ -4,8 +4,7 @@
   "description": "Parse and build stories out of Playlyfe Events.",
   "main": "./index",
   "scripts": {
-    "test": "./node_modules/.bin/mocha",
-    "prepublish": "gulp publish"
+    "test": "./node_modules/.bin/mocha"
   },
   "keywords": [
     "playlyfe",
