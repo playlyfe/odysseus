@@ -2658,6 +2658,17 @@ describe 'The Activity Story Builder', ->
                 'new': "3"
               }
             }
+            {
+              metric: {
+                name: "Offsides"
+                id: "offsides"
+                type: "point"
+              },
+              delta: {
+                'old': null,
+                'new': "5"
+              }
+            }
           ]
         }
         next()
@@ -2668,6 +2679,7 @@ describe 'The Activity Story Builder', ->
           'UEFA Champions League'.
             Changes:
               [*] +2 Goals
+              [*] +5 Offsides
         """
         next()
 
@@ -2683,6 +2695,12 @@ describe 'The Activity Story Builder', ->
                   <td><span class='pl-score-delta-value'>+2</span></td>\
                 </tr>\
               </tbody>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td><span class='pl-score-metric'>Offsides</span></td>\
+                  <td><span class='pl-score-delta-value'>+5</span></td>\
+                </tr>\
+              </tbody>\
             </table>\
             <footer class='pl-footer'>\
               <span class='pl-object'>UEFA Champions League</span>\
@@ -2691,6 +2709,7 @@ describe 'The Activity Story Builder', ->
           <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
+
 
     describe 'for "set" metric changes', ->
       before (next) ->
@@ -2704,7 +2723,7 @@ describe 'The Activity Story Builder', ->
               },
               delta: {
                 "Golden Boot": {
-                  "old": "0",
+                  "old": null,
                   "new": "1"
                 },
                 "Champion": {
@@ -2923,7 +2942,7 @@ describe 'The Activity Story Builder', ->
               },
               delta: {
                 "Golden Boot": {
-                  "old": "0",
+                  "old": null,
                   "new": "1"
                 },
                 "Champion": {
@@ -3505,6 +3524,19 @@ describe 'The Activity Story Builder', ->
                 "new": "1"
               }
             }
+          },
+          {
+            metric: {
+              id: "ucl",
+              name: "Champion",
+              type: "set"
+            },
+            delta: {
+              "England": {
+                "old": null,
+                "new": "1"
+              }
+            }
           }
         ],
         timestamp: @iso_date
@@ -3522,13 +3554,45 @@ describe 'The Activity Story Builder', ->
             Changes:
             [>] UEFA Awards
               [*] +1 Golden Boot
+            [>] Champion
+              [*] +1 England
         """
         next()
 
       it 'builds the achievement story (html)', (next) ->
-        expect(@odysseus.toHTML(@story, @externals)).to.equal """
-          <div class='pl-content'>Congratulations! <span class='pl-actor'>You</span> unlocked an achievement.<table class='pl-score-table pl-achievement-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr></tbody></table></div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
-        """
+        expect(@odysseus.toHTML(@story, @externals)).to.equal "
+          <div class='pl-content'>\
+            Congratulations! <span class='pl-actor'>You</span> unlocked \
+            an achievement.\
+            <table class='pl-score-table pl-achievement-table'>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td colspan='2'><span class='pl-score-metric'>UEFA Awards\
+                    </span></td>\
+                </tr>\
+              </tbody>\
+              <tbody class='pl-score-body'>\
+                <tr>\
+                  <td><span class='pl-score-delta-item'>Golden Boot</span></td>\
+                  <td><span class='pl-score-delta-value'>+1</span></td>\
+                </tr>\
+              </tbody>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td colspan='2'><span class='pl-score-metric'>Champion\
+                    </span></td>\
+                </tr>\
+              </tbody>\
+              <tbody class='pl-score-body'>\
+                <tr>\
+                  <td><span class='pl-score-delta-item'>England</span></td>\
+                  <td><span class='pl-score-delta-value'>+1</span></td>\
+                </tr>\
+              </tbody>\
+            </table>\
+          </div>\
+          <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>\
+        "
         next()
 
     describe "in global context", ->
@@ -3538,34 +3602,44 @@ describe 'The Activity Story Builder', ->
             Changes:
             [>] UEFA Awards
               [*] +1 Golden Boot
+            [>] Champion
+              [*] +1 England
         """
         next()
 
       it 'builds the achievement story (html)', (next) ->
-        expect(@odysseus.toHTML(@story)).to.equal """
-          <div class='pl-content'><span class='pl-actor'>Juan Mata</span> unlocked an achievement.<table class='pl-score-table pl-achievement-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr></tbody></table></div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
-        """
-        next()
-
-    describe "if old item count is null", ->
-      before (next) ->
-        @new_story = _.clone @story, true
-        @new_story.changes[0].delta['Golden Boot'].old = null
-        next()
-
-      it 'builds the achievement story (text)', (next) ->
-        expect(@odysseus.toString(@story)).to.equal """
-          [#{@text_date}] - Juan Mata unlocked an achievement.
-            Changes:
-            [>] UEFA Awards
-              [*] +1 Golden Boot
-        """
-        next()
-
-      it 'builds the achievement story (html)', (next) ->
-        expect(@odysseus.toHTML(@story)).to.equal """
-          <div class='pl-content'><span class='pl-actor'>Juan Mata</span> unlocked an achievement.<table class='pl-score-table pl-achievement-table'><tbody class='pl-score-header'><tr><td colspan='2'><span class='pl-score-metric'>UEFA Awards</span></td></tr></tbody><tbody class='pl-score-body'><tr><td><span class='pl-score-delta-item'>Golden Boot</span></td><td><span class='pl-score-delta-value'>+1</span></td></tr></tbody></table></div><time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
-        """
+        expect(@odysseus.toHTML(@story)).to.equal "
+          <div class='pl-content'>\
+            <span class='pl-actor'>Juan Mata</span> unlocked an achievement.\
+            <table class='pl-score-table pl-achievement-table'>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td colspan='2'><span class='pl-score-metric'>UEFA Awards\
+                    </span></td>\
+                </tr>\
+              </tbody>\
+              <tbody class='pl-score-body'>\
+                <tr>\
+                  <td><span class='pl-score-delta-item'>Golden Boot</span></td>\
+                  <td><span class='pl-score-delta-value'>+1</span></td>\
+                </tr>\
+              </tbody>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td colspan='2'><span class='pl-score-metric'>Champion\
+                    </span></td>\
+                </tr>\
+              </tbody>\
+              <tbody class='pl-score-body'>\
+                <tr>\
+                  <td><span class='pl-score-delta-item'>England</span></td>\
+                  <td><span class='pl-score-delta-value'>+1</span></td>\
+                </tr>\
+              </tbody>\
+            </table>\
+          </div>\
+          <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>\
+        "
         next()
 
   ###*
@@ -3595,6 +3669,17 @@ describe 'The Activity Story Builder', ->
               'new': "3"
             }
           }
+          {
+            metric: {
+              name: "Offsides"
+              id: "offsides"
+              type: "point"
+            },
+            delta: {
+              'old': null,
+              'new': "5"
+            }
+          }
         ]
         timestamp: @iso_date
       }
@@ -3606,6 +3691,7 @@ describe 'The Activity Story Builder', ->
           [#{@text_date}] - Juan Mata completed 'Goal!!!'.
             Changes:
               [*] +2 Goals
+              [*] +5 Offsides
         """
         next()
 
@@ -3619,6 +3705,12 @@ describe 'The Activity Story Builder', ->
                 <tr>\
                   <td><span class='pl-score-metric'>Goals</span></td>\
                   <td><span class='pl-score-delta-value'>+2</span></td>\
+                </tr>\
+              </tbody>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td><span class='pl-score-metric'>Offsides</span></td>\
+                  <td><span class='pl-score-delta-value'>+5</span></td>\
                 </tr>\
               </tbody>\
             </table>\
@@ -3639,7 +3731,7 @@ describe 'The Activity Story Builder', ->
               },
               delta: {
                 "Golden Boot": {
-                  "old": "0",
+                  "old": null,
                   "new": "1"
                 },
                 "Champion": {
@@ -3765,6 +3857,7 @@ describe 'The Activity Story Builder', ->
         [#{@text_date}] - You completed 'Goal!!!'.
           Changes:
             [*] +2 Goals
+            [*] +5 Offsides
         """
         next()
 
@@ -3778,6 +3871,12 @@ describe 'The Activity Story Builder', ->
                 <tr>\
                   <td><span class='pl-score-metric'>Goals</span></td>\
                   <td><span class='pl-score-delta-value'>+2</span></td>\
+                </tr>\
+              </tbody>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td><span class='pl-score-metric'>Offsides</span></td>\
+                  <td><span class='pl-score-delta-value'>+5</span></td>\
                 </tr>\
               </tbody>\
             </table>\

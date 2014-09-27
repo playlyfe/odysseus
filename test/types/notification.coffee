@@ -2243,6 +2243,17 @@ describe 'The Notification Story Builder', ->
                 'old': "1",
                 'new': "3"
               }
+            },
+            {
+              metric: {
+                name: "Offsides"
+                id: "offsides"
+                type: "point"
+              },
+              delta: {
+                'old': null,
+                'new': "5"
+              }
             }
           ]
         }
@@ -2253,6 +2264,7 @@ describe 'The Notification Story Builder', ->
           [#{@text_date}] - Juan Mata\u2019s scores were changed.
             New Scores:
               [*] 3 Goals
+              [*] 5 Offsides
         """
         next()
 
@@ -2266,6 +2278,12 @@ describe 'The Notification Story Builder', ->
                 <tr>\
                   <td><span class='pl-score-metric'>Goals</span></td>\
                   <td><span class='pl-score-delta-value'>3</span></td>\
+                </tr>\
+              </tbody>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td><span class='pl-score-metric'>Offsides</span></td>\
+                  <td><span class='pl-score-delta-value'>5</span></td>\
                 </tr>\
               </tbody>\
             </table>\
@@ -2286,7 +2304,7 @@ describe 'The Notification Story Builder', ->
               },
               delta: {
                 "Golden Boot": {
-                  "old": "0",
+                  "old": null,
                   "new": "1"
                 },
                 "Champion": {
@@ -2513,6 +2531,17 @@ describe 'The Notification Story Builder', ->
               'old': "1",
               'new': "3"
             }
+          },
+          {
+            metric: {
+              name: "Offsides"
+              id: "offsides"
+              type: "point"
+            },
+            delta: {
+              'old': null,
+              'new': "5"
+            }
           }
         ]
         timestamp: @iso_date
@@ -2525,6 +2554,7 @@ describe 'The Notification Story Builder', ->
           [#{@text_date}] - Juan Mata completed 'Goal!!!'.
             Changes:
               [*] +2 Goals
+              [*] +5 Offsides
         """
         next()
 
@@ -2538,6 +2568,12 @@ describe 'The Notification Story Builder', ->
                 <tr>\
                   <td><span class='pl-score-metric'>Goals</span></td>\
                   <td><span class='pl-score-delta-value'>+2</span></td>\
+                </tr>\
+              </tbody>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td><span class='pl-score-metric'>Offsides</span></td>\
+                  <td><span class='pl-score-delta-value'>+5</span></td>\
                 </tr>\
               </tbody>\
             </table>\
@@ -2558,7 +2594,7 @@ describe 'The Notification Story Builder', ->
               },
               delta: {
                 "Golden Boot": {
-                  "old": "0",
+                  "old": null,
                   "new": "1"
                 },
                 "Champion": {
@@ -2684,6 +2720,7 @@ describe 'The Notification Story Builder', ->
         [#{@text_date}] - You completed 'Goal!!!'.
           Changes:
             [*] +2 Goals
+            [*] +5 Offsides
         """
         next()
 
@@ -2697,6 +2734,12 @@ describe 'The Notification Story Builder', ->
                 <tr>\
                   <td><span class='pl-score-metric'>Goals</span></td>\
                   <td><span class='pl-score-delta-value'>+2</span></td>\
+                </tr>\
+              </tbody>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td><span class='pl-score-metric'>Offsides</span></td>\
+                  <td><span class='pl-score-delta-value'>+5</span></td>\
                 </tr>\
               </tbody>\
             </table>\
