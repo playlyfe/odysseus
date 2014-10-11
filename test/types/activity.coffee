@@ -3824,20 +3824,89 @@ describe 'The Activity Story Builder', ->
           <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
+
+  ###*
+   * The Custom Rule Event
+  ###
+  describe 'for the "custom_rule" event', ->
+    before (next) ->
+      @story = {
+        event: "custom_rule",
+        rule: {
+          id: "golden_boot_criteria",
+          name: "Golden Boot Criteria"
+        },
+        actor: {
+          id: 'juan',
+          alias: 'Juan Mata'
+        },
+        changes: [
+          {
+            metric: {
+              name: "Goals"
+              id: "goals"
+              type: "point"
+            },
+            delta: {
+              'old': "1",
+              'new': "3"
+            }
+          }
+          {
+            metric: {
+              name: "Offsides"
+              id: "offsides"
+              type: "compound"
+            },
+            delta: {
+              'old': null,
+              'new': "5"
+            }
+          }
+          {
+            metric: {
+              name: "UEFA Awards"
+              type: "set"
+              id: "uefa_awards"
+            },
+            delta: {
+              "Champion": {
+                "old": "3",
+                "new": "4"
               },
-              delta: {
-                "old": "Meh"
-                "new": "Hot Property"
+              "Suspensions": {
+                "old": "1",
+                "new": "0"
               }
             }
-          ]
-        }
-        next()
+          }
+          {
+            metric: {
+              name: "Transfer Market Standing"
+              type: "state"
+              id: "transfers"
+            },
+            delta: {
+              "old": "Meh"
+              "new": "Hot Property"
+            }
+          }
+        ]
+        timestamp: @iso_date
+      }
+      next()
 
+    describe 'for public viewing', ->
       it 'builds the progress story (text)', (next) ->
-        expect(@odysseus.toString(@action_story)).to.equal """
-          [#{@text_date}] - Juan Mata completed 'Goal!!!'.
+        expect(@odysseus.toString(@story)).to.equal """
+          [#{@text_date}] - Juan Mata was awarded via 'Golden Boot Criteria' \
+          rule.
             Changes:
+              [*] +2 Goals
+              [*] +5 Offsides
+            [>] UEFA Awards
+              [*] +1 Champion
+              [*] -1 Suspensions
             [>] Transfer Market Standing
               [+] Hot Property
               [-] Meh
@@ -3845,11 +3914,39 @@ describe 'The Activity Story Builder', ->
         next()
 
       it 'builds the progress story (html)', (next) ->
-        expect(@odysseus.toHTML(@action_story)).to.equal """
+        expect(@odysseus.toHTML(@story)).to.equal """
           <div class='pl-content'>\
-            <span class='pl-actor'>Juan Mata</span> completed \
-            <span class='pl-activity'>Goal!!!</span>.\
+            <span class='pl-actor'>Juan Mata</span> was awarded via \
+            <span class='pl-rule'>Golden Boot Criteria</span> rule.\
             <table class='pl-score-table'>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td><span class='pl-score-metric'>Goals</span></td>\
+                  <td><span class='pl-score-delta-value'>+2</span></td>\
+                </tr>\
+              </tbody>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td><span class='pl-score-metric'>Offsides</span></td>\
+                  <td><span class='pl-score-delta-value'>+5</span></td>\
+                </tr>\
+              </tbody>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td colspan='2'><span class='pl-score-metric'>\
+                    UEFA Awards</span></td>\
+                </tr>\
+              </tbody>\
+              <tbody class='pl-score-body'>\
+                <tr>\
+                  <td><span class='pl-score-delta-item'>Champion</span></td>\
+                  <td><span class='pl-score-delta-value'>+1</span></td>\
+                </tr>\
+                <tr>\
+                  <td><span class='pl-score-delta-item'>Suspensions</span></td>\
+                  <td><span class='pl-score-delta-value'>-1</span></td>\
+                </tr>\
+              </tbody>\
               <tbody class='pl-score-header'>\
                 <tr>\
                   <td colspan='2'><span class='pl-score-metric'>Transfer \
@@ -3873,34 +3970,28 @@ describe 'The Activity Story Builder', ->
     describe "when the target player is the actor themself", ->
       before (next) ->
         @res_story = _.clone @story, true
+        @res_story.changes.length = 1
         delete @res_story.actor
         next()
 
-      it 'builds the action story (text)', (next) ->
+      it 'builds the custom rule story (text)', (next) ->
         expect(@odysseus.toString(@res_story, @externals)).to.equal """
-        [#{@text_date}] - You completed 'Goal!!!'.
+        [#{@text_date}] - You were awarded via 'Golden Boot Criteria' rule.
           Changes:
             [*] +2 Goals
-            [*] +5 Offsides
         """
         next()
 
-      it 'builds the action story (html)', (next) ->
+      it 'builds the custom rule story (html)', (next) ->
         expect(@odysseus.toHTML(@res_story)).to.equal """
           <div class='pl-content'>\
-            <span class='pl-actor'>You</span> completed \
-            <span class='pl-activity'>Goal!!!</span>.\
+            <span class='pl-actor'>You</span> were awarded via \
+            <span class='pl-rule'>Golden Boot Criteria</span> rule.\
             <table class='pl-score-table'>\
               <tbody class='pl-score-header'>\
                 <tr>\
                   <td><span class='pl-score-metric'>Goals</span></td>\
                   <td><span class='pl-score-delta-value'>+2</span></td>\
-                </tr>\
-              </tbody>\
-              <tbody class='pl-score-header'>\
-                <tr>\
-                  <td><span class='pl-score-metric'>Offsides</span></td>\
-                  <td><span class='pl-score-delta-value'>+5</span></td>\
                 </tr>\
               </tbody>\
             </table>\
