@@ -3673,11 +3673,43 @@ describe 'The Activity Story Builder', ->
             metric: {
               name: "Offsides"
               id: "offsides"
-              type: "point"
+              type: "compound"
             },
             delta: {
               'old': null,
               'new': "5"
+            }
+          }
+          {
+            metric: {
+              name: "UEFA Awards"
+              type: "set"
+              id: "uefa_awards"
+            },
+            delta: {
+              "Golden Boot": {
+                "old": null,
+                "new": "1"
+              },
+              "Champion": {
+                "old": "3",
+                "new": "4"
+              },
+              "Suspensions": {
+                "old": "1",
+                "new": "0"
+              }
+            }
+          }
+          {
+            metric: {
+              name: "Transfer Market Standing"
+              type: "state"
+              id: "transfers"
+            },
+            delta: {
+              "old": "Meh"
+              "new": "Hot Property"
             }
           }
         ]
@@ -3685,13 +3717,20 @@ describe 'The Activity Story Builder', ->
       }
       next()
 
-    describe 'for "point" metric changes', ->
+    describe 'for public viewing', ->
       it 'builds the progress story (text)', (next) ->
         expect(@odysseus.toString(@story)).to.equal """
           [#{@text_date}] - Juan Mata completed 'Goal!!!'.
             Changes:
               [*] +2 Goals
               [*] +5 Offsides
+            [>] UEFA Awards
+              [*] +1 Golden Boot
+              [*] +1 Champion
+              [*] -1 Suspensions
+            [>] Transfer Market Standing
+              [+] Hot Property
+              [-] Meh
         """
         next()
 
@@ -3713,58 +3752,6 @@ describe 'The Activity Story Builder', ->
                   <td><span class='pl-score-delta-value'>+5</span></td>\
                 </tr>\
               </tbody>\
-            </table>\
-          </div>\
-          <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
-        """
-        next()
-
-    describe 'for "set" metric changes', ->
-      before (next) ->
-        @action_story = _.extend {}, @story, {
-          changes: [
-            {
-              metric: {
-                name: "UEFA Awards"
-                type: "set"
-                id: "uefa_awards"
-              },
-              delta: {
-                "Golden Boot": {
-                  "old": null,
-                  "new": "1"
-                },
-                "Champion": {
-                  "old": "3",
-                  "new": "4"
-                },
-                "Suspensions": {
-                  "old": "1",
-                  "new": "0"
-                }
-              }
-            }
-          ]
-        }
-        next()
-
-      it 'builds the progress story (text)', (next) ->
-        expect(@odysseus.toString(@action_story)).to.equal """
-          [#{@text_date}] - Juan Mata completed 'Goal!!!'.
-            Changes:
-            [>] UEFA Awards
-              [*] +1 Golden Boot
-              [*] +1 Champion
-              [*] -1 Suspensions
-        """
-        next()
-
-      it 'builds the progress story (html)', (next) ->
-        expect(@odysseus.toHTML(@action_story)).to.equal """
-          <div class='pl-content'>\
-            <span class='pl-actor'>Juan Mata</span> completed \
-            <span class='pl-activity'>Goal!!!</span>.\
-            <table class='pl-score-table'>\
               <tbody class='pl-score-header'>\
                 <tr>\
                   <td colspan='2'><span class='pl-score-metric'>\
@@ -3785,21 +3772,58 @@ describe 'The Activity Story Builder', ->
                   <td><span class='pl-score-delta-value'>-1</span></td>\
                 </tr>\
               </tbody>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td colspan='2'><span class='pl-score-metric'>Transfer \
+                    Market Standing</span></td>\
+                </tr>\
+              </tbody>\
+              <tbody class='pl-score-body'>\
+                <tr>\
+                  <td><span class='pl-score-delta-value pl-diff-add'>\
+                    Hot Property</span></td>\
+                  <td><span class='pl-score-delta-value pl-diff-rem'>\
+                    Meh</span></td>\
+                </tr>\
+              </tbody>\
             </table>\
           </div>\
           <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
         """
         next()
 
-    describe 'for "state" metric changes', ->
+    describe "when the target player is the actor themself", ->
       before (next) ->
-        @action_story = _.extend {}, @story, {
-          changes: [
-            {
-              metric: {
-                name: "Transfer Market Standing"
-                type: "state"
-                id: "transfers"
+        @res_story = _.clone @story, true
+        @res_story.changes.length = 1
+        delete @res_story.actor
+        next()
+
+      it 'builds the action story (text)', (next) ->
+        expect(@odysseus.toString(@res_story, @externals)).to.equal """
+        [#{@text_date}] - You completed 'Goal!!!'.
+          Changes:
+            [*] +2 Goals
+        """
+        next()
+
+      it 'builds the action story (html)', (next) ->
+        expect(@odysseus.toHTML(@res_story)).to.equal """
+          <div class='pl-content'>\
+            <span class='pl-actor'>You</span> completed \
+            <span class='pl-activity'>Goal!!!</span>.\
+            <table class='pl-score-table'>\
+              <tbody class='pl-score-header'>\
+                <tr>\
+                  <td><span class='pl-score-metric'>Goals</span></td>\
+                  <td><span class='pl-score-delta-value'>+2</span></td>\
+                </tr>\
+              </tbody>\
+            </table>\
+          </div>\
+          <time class='pl-ts' title='On #{@text_date}'>#{@rel_date}</time>
+        """
+        next()
               },
               delta: {
                 "old": "Meh"

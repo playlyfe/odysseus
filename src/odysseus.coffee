@@ -1213,7 +1213,7 @@
                 _ref = (od.story.changes || []), \
                 len = _ref.length; i < _ref.length; i++) { \
                   change = _ref[i];\
-                  if(change.metric.type === 'point') {\
+                  if(change.metric.type === 'point'||change.metric.type === 'compound') {\
                      diff = ZERO.plus(change.delta['new'])\
                                .minus(change.delta['old'] || 0);\
                      diff = (diff.gt(ZERO) ? '+' : '') + diff.toString();
@@ -1249,7 +1249,7 @@
                 _ref = (od.story.changes || []),
                 len = _ref.length; i < _ref.length; i++) {
                   change = _ref[i];\
-                  if (change.metric.type === 'point') {\
+                  if (change.metric.type === 'point'||change.metric.type === 'compound') {\
                      diff = ZERO.plus(change.delta['new'])\
                                 .minus(change.delta['old'] || 0);\
                      diff = (diff.gt(ZERO) ? '+' : '') + diff.toString();\
@@ -1359,7 +1359,7 @@
                 _ref = (od.story.deferred.changes || []),
                 len = _ref.length; i < _ref.length; i++) {
                   change = _ref[i];\
-                  if(change.metric.type === 'point') {\
+                  if(change.metric.type === 'point'||change.metric.type === 'compound') {\
                     diff = ZERO.plus(change.delta['new'])\
                               .minus(change.delta['old'] || 0);\
                     diff = (diff.gt(ZERO) ? '+' : '') + diff.toString()\
@@ -1400,7 +1400,7 @@
                   _ref = (od.story.deferred.changes || []),
                   len = _ref.length; i < _ref.length; i++) {
                   change = _ref[i];\
-                    if(change.metric.type === 'point') {\
+                    if(change.metric.type === 'point'||change.metric.type === 'compound') {\
                        diff = ZERO.plus(change.delta['new'])\
                                 .minus(change.delta['old'] || 0);\
                        diff = (diff.gt(ZERO) ? '+' : '') + diff.toString();\
@@ -1600,7 +1600,7 @@
                 _ref = (od.story.changes || []),
                 len = _ref.length; i < _ref.length; i++) {
                   change = _ref[i];\
-                  if(change.metric.type === 'point') { }$\
+                  if(change.metric.type === 'point'||change.metric.type === 'compound') { }$\
                     \n    [*] {{change.delta['new']}} {{change.metric.name}}\
                   ${ } else if(change.metric.type === 'set') { }$\
                     \n  [>] {{change.metric.name}}\
@@ -1621,7 +1621,7 @@
                   _ref = (od.story.changes || []),
                   len = _ref.length; i < _ref.length; i++) {
                     change = _ref[i];\
-                    if (change.metric.type === 'point') { }$\
+                    if (change.metric.type === 'point'||change.metric.type === 'compound') { }$\
                       <tbody class='@{od.markup.score_table_header}@'>\
                       <tr>\
                         <td>\
@@ -1737,7 +1737,7 @@
                 _ref = (od.story.changes || []),
                 len = _ref.length; i < _ref.length; i++) {
                   change = _ref[i];\
-                  if(change.metric.type === 'point') {\
+                  if(change.metric.type === 'point'||change.metric.type === 'compound') {\
                      diff = ZERO.plus(change.delta['new'])\
                                .minus(change.delta['old'] || 0);\
                      diff = (diff.gt(ZERO) ? '+' : '') + diff.toString();
