@@ -24,6 +24,7 @@ before (next) ->
       diff_rem: "pl-diff-rem"
       diff_change: "pl-diff-change"
       score_activity: "pl-activity"
+      score_rule: "pl-rule"
       score_table: "pl-score-table"
       score_table_header: "pl-score-header"
       score_table_body: "pl-score-body"
